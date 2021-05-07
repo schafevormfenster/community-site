@@ -2,6 +2,8 @@ import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import Head from 'next/head';
+import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
+import { Community } from '../src/entities/Community';
 
 interface IParams extends ParsedUrlQuery {
   slug: string;
@@ -32,13 +34,24 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export default function Page({ hello, context }) {
+  const community: Community = {
+    name: hello,
+    slug: hello,
+    wikimediaCommonsImages: [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Melkerschule_Schlatkow.jpg/800px-Melkerschule_Schlatkow.jpg',
+    ],
+    municipality: {
+      name: 'Gemeinde Hallohagen',
+      slug: 'hallohagen',
+    },
+  };
+
   return (
     <>
       <Head>
         <title>{hello} (Dorf)</title>
       </Head>
-      <div className="font-body">Dorf</div>
-      <div className="font-title">{hello}</div>
+      <CommunityHeader community={community}></CommunityHeader>
       <pre>{JSON.stringify(hello, undefined, 2)}</pre>
     </>
   );
