@@ -14,6 +14,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#001e60', // dark blue text color
+        twitter: '#1DA1F2',
       },
       fontFamily: {
         body: ['Catamaran', 'Catamaran ExtraLight', 'Helvetica Neue', 'Arial', 'sans-serif'],
@@ -26,6 +27,19 @@ module.exports = {
           'Liberation Mono',
           'monospace',
         ],
+      },
+      width: {
+        '2/1': '180%',
+        '3/1': '270%',
+        '4/1': '360%',
+        '5/1': '450%',
+        '6/1': '540%',
+        '7/1': '630%',
+        '8/1': '720%',
+        '9/1': '810%',
+        '10/1': '900%',
+        '11/1': '990%',
+        '12/1': '1080%',
       },
     },
   },

@@ -4,7 +4,9 @@ import { ParsedUrlQuery } from 'querystring';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
 import { Community } from '../src/entities/Community';
-import { useEmblaCarousel } from 'embla-carousel/react';
+import { News } from '../src/entities/News';
+import NewsTeaser from '../src/components/News/NewsTeaser';
+import NewsArrangement from '../src/components/News/NewsArrangement';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -56,36 +58,30 @@ export default function Page({ hello, context }) {
     },
   };
 
-  // TODO: Integrate with twitter api
-  const [emblaRef, emblaApi] = useEmblaCarousel();
-  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
-  const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState([]);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  const scrollTo = useCallback(index => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-    setPrevBtnEnabled(emblaApi.canScrollPrev());
-    setNextBtnEnabled(emblaApi.canScrollNext());
-  }, [emblaApi, setSelectedIndex]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    setScrollSnaps(emblaApi.scrollSnapList());
-    emblaApi.on('select', onSelect);
-  }, [emblaApi, setScrollSnaps, onSelect]);
+  const newsTeasers: News[] = [
+    {
+      abstract: 'Die Störche kommen.',
+      image: 'https://pbs.twimg.com/media/E0caS5jX0AIcHN4?format=jpg&name=900x900',
+      link:
+        'https://twitter.com/GSchmatzin/status/1389107927152214017?ref_src=twsrc%5Etfw%7Ctwcamp%5Eembeddedtimeline%7Ctwgr%5EeyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfX0%3D%7Ctwcon%5Etimelinechrome&ref_url=https%3A%2F%2Fschafe-vorm-fenster.de%2Fschlatkow%2F',
+    },
+    {
+      abstract:
+        'Die Gemeinde Schmatzin wünscht allen EinwohnerInnen ein frohes neues Jahr. In Mietshäusern sind nun Brandmelder Pflicht - aber auch für jedes Privathaus sind sie dringend zu empfehlen. Unsere Feuerwehr ist toll - aber jede Sekunde zählt.',
+      image: null,
+      link: 'https://twitter.com/GSchmatzin/status/1375109025281548289/photo/1',
+    },
+    {
+      abstract: 'Endlich endlich. Unser Floß in #Schlatkow ist wieder im Wasser!',
+      image: 'https://pbs.twimg.com/media/ExVeXMVXEAUPYHZ?format=jpg&name=900x900',
+    },
+    {
+      abstract:
+        'Diese Woche werden die neuen Klettergerüste in #Schlatkow aufgebaut. Danach ist noch einiges zu tun (Sand, Zaun, Geländer, ...) aber es geht vorwärts.',
+      image: 'https://pbs.twimg.com/media/Eu_S8aIWgAQ_Mpa?format=jpg&name=900x900',
+      link: 'https://twitter.com/GSchmatzin/status/1364541158614065156/photo/1',
+    },
+  ];
 
   return (
     <>
@@ -94,48 +90,19 @@ export default function Page({ hello, context }) {
       </Head>
       <CommunityHeader community={community}></CommunityHeader>
       <main className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="">
-          <div className="embla overflow-hidden">
-            <div className="embla__viewport" ref={emblaRef}>
-              <div className="embla__container">
-                <div className="embla__slide h-96 bg-pink-200" key={1}>
-                  <div className="relative h-full w-full">
-                    <img
-                      className="absolute w-full h-full object-cover object-center"
-                      src="https://pbs.twimg.com/media/E0caS5jX0AIcHN4?format=jpg&name=900x900"
-                    />
-                    <p className="absolute left-0 bottom-0 right-0 p-4 bg-black bg-opacity-60 text-white">
-                      Die Störche kommen.
-                    </p>
-                  </div>
-                </div>
-                <div className="embla__slide h-96 bg-blue-200" key={2}>
-                  Slide 2
-                </div>
-                <div className="embla__slide h96 bg-red-200" key={3}>
-                  Slide 3
-                </div>
-              </div>
-            </div>
-
-            <button className="embla__prev" onClick={scrollPrev}>
-              Prev
-            </button>
-            <button className="embla__next" onClick={scrollNext}>
-              Next
-            </button>
-          </div>
-          <div className="embla__dots">
-            {scrollSnaps.map((_, index) => (
-              <DotButton
+        <div className="col-span-1">
+          <NewsArrangement>
+            {newsTeasers.map((newsTeaser, index) => (
+              <NewsTeaser
+                abstract={newsTeaser.abstract}
+                image={newsTeaser.image}
+                link={newsTeaser.link}
                 key={index}
-                selected={index === selectedIndex}
-                onClick={() => scrollTo(index)}
               />
             ))}
-          </div>
+          </NewsArrangement>
         </div>
-        <div className="">Termine</div>
+        <div className="col-span-1">Termine</div>
       </main>
       <pre>{JSON.stringify(hello, undefined, 2)}</pre>
     </>
