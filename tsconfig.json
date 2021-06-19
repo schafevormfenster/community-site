@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "decorators-legacy": true,
     "jsx": "preserve",
     "target": "es5",
     "lib": [

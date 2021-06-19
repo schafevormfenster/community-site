@@ -1,5 +1,7 @@
+import { CommunityDTO } from '../entityDTOs/CommunityDTO';
 import { GeoLocation } from '../types/GeoLocation';
 import { Municipality, MunicipalityExcerpt } from './Municipality';
+import { first, last, join, split, sortBy, unionBy, filter, merge } from 'lodash';
 
 interface CommunityCore {
   _id: string;

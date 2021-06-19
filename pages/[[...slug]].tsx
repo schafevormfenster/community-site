@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import Head from 'next/head';
@@ -8,9 +8,10 @@ import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
-import { first, last, join, split, sortBy, unionBy, filter, merge } from 'lodash';
+import { first, join, sortBy, merge } from 'lodash';
 import { Event } from '../src/entities/Event';
-import FreshChat from 'react-freshchat';
+import communityByDTO from '../src/mapper/communityByDTO';
+import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -60,38 +61,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   await cdnClient
     .fetch(query, queryParams)
     .then(response => {
-      const communityDto = first(response);
-      // console.debug(communityDto);
-      // TODO: move type mapping into a separate function, maybe just into the fetch function?
-      community = {
-        _id: communityDto._id,
-        name: communityDto.name,
-        slug: communityDto.slug.current,
-        location: {
-          identifiers: {
-            geonamesId: last(split(communityDto._id, '.')),
-            googlePlaceId: communityDto.place_id,
-            wikidataId: communityDto.wikidata_id,
-          },
-        },
-        wikimediaCommonsImages: communityDto.wikimedia_commons_imagelinks,
-        municipality: {
-          _id: communityDto.municipality._id,
-          name: communityDto.municipality.name,
-          slug: communityDto.municipality.slug.current,
-          location: {
-            identifiers: {
-              geonamesId: last(split(communityDto.municipality._id, '.')),
-              googlePlaceId: communityDto.municipality.place_id,
-            },
-          },
-          socialMediaAccounts: {
-            twitter: {
-              user: communityDto.municipality.twitter_user,
-            },
-          },
-        },
-      };
+      const communityDto: CommunityDTO = first(response);
+      community = communityByDTO(communityDto);
     })
     .catch(err => {
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
@@ -127,7 +98,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   //let communitiesOfMunicipality: Community[] = undefined;
 
   /**
-   * Fetch all other communities of the same municipality, to fetch events later on.
+   * Fetch all other communities of the same municipality, exclude the current one.
    */
   let communitiesOfMunicipality: any[] = undefined;
   // TODO: filter the current community right here in the query
@@ -141,8 +112,6 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .fetch(communitiesOfMunicipalityQuery, communitiesOfMunicipalityQueryParams)
     .then(response => {
       communitiesOfMunicipality = response; // ensure union by id and sort by name
-
-      console.log(communitiesOfMunicipality);
       // TODO: create a mapping from response to entity array
     })
     .catch(err => {
@@ -150,7 +119,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     });
 
   /**
-   * Fetch events of all communities of the
+   * Fetch events of all these other communities with a scope hogher than for the own community.
    */
   const communitiesOfMunicipalityIdArray = communitiesOfMunicipality.map(c => {
     return c._id;
