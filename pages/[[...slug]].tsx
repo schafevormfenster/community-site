@@ -3,15 +3,20 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
-import { Community } from '../src/entities/Community';
+import { Community, CommunityExcerpt } from '../src/entities/Community';
 import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
 import { first, join, sortBy, merge } from 'lodash';
 import { Event } from '../src/entities/Event';
-import communityByDTO from '../src/mapper/communityByDTO';
-import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
+import { communityByDTO, communityExcerptByDTO } from '../src/mapper/communityByDTO';
+import {
+  CommunityDTO,
+  CommunityDTOcoreQueryFields,
+  CommunityDTOdetailQueryFields,
+} from '../src/entityDTOs/CommunityDTO';
+import { EventDTOteaserQueryFields, eventDTOteaserQueryFields } from '../src/entityDTOs/EventDTO';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -49,8 +54,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   /**
    * fetch community data incl. image and municipality
    */
-  const query =
-    '*[_type == "community" && slug.current == $slug]{ _id, slug, name, place_id, wikidata_id, wikimedia_commons_imagelinks, municipality->{_id, slug, name, place_id, twitter_user }}';
+  const query = `*[_type == "community" && slug.current == $slug]{ ${CommunityDTOdetailQueryFields} }`;
   const queryParams = {
     slug: slug,
   };
@@ -72,8 +76,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    * fetch all events for the given community incl. organizer and place
    */
 
-  const eventQuery =
-    '*[_type == "event" && references($communityId)]{ _id, name, start, location, community->{_id, slug, name }}';
+  const eventQuery = `*[_type == "event" && references($communityId)]{ ${EventDTOteaserQueryFields} }`;
+
+  console.log(eventQuery);
   const eventQueryParams = {
     communityId: community._id,
   };
@@ -100,10 +105,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   /**
    * Fetch all other communities of the same municipality, exclude the current one.
    */
-  let communitiesOfMunicipality: any[] = undefined;
+  let communitiesOfMunicipality: CommunityExcerpt[] = undefined;
   // TODO: filter the current community right here in the query
-  const communitiesOfMunicipalityQuery =
-    '*[_type == "community" && _id != $currentCommuinityId && references($municipalityId)]{ _id, slug, name}';
+  const communitiesOfMunicipalityQuery = `*[_type == "community" && _id != $currentCommuinityId && references($municipalityId)]{ ${CommunityDTOcoreQueryFields} }`;
   const communitiesOfMunicipalityQueryParams = {
     municipalityId: community.municipality._id,
     currentCommuinityId: community._id,
@@ -111,27 +115,25 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   await cdnClient
     .fetch(communitiesOfMunicipalityQuery, communitiesOfMunicipalityQueryParams)
     .then(response => {
-      communitiesOfMunicipality = response; // ensure union by id and sort by name
-      // TODO: create a mapping from response to entity array
+      const communityDtoList: CommunityDTO[] = response;
+      communitiesOfMunicipality = communityDtoList
+        ? communityDtoList.map(communityDto => {
+            return communityExcerptByDTO(communityDto);
+          })
+        : undefined;
     })
     .catch(err => {
-      console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
+      console.warn(
+        `The query to lookup communities of the same municipality '${community.municipality._id}' at sanity failed:`
+      );
     });
 
   /**
    * Fetch events of all these other communities with a scope hogher than for the own community.
    */
-  const communitiesOfMunicipalityIdArray = communitiesOfMunicipality.map(c => {
-    return c._id;
-  });
-  console.log(communitiesOfMunicipalityIdArray);
-
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
-      console.log('other community: ' + c.name);
-
-      const municipalityEventsQuery =
-        '*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]][0..2]{ _id, name, start, location, community->{_id, slug, name }, calendar->{_id, name, scope}}';
+      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]][0..2]{ ${EventDTOteaserQueryFields} }`;
       const municipalityEventsQueryParams = {
         communityId: c._id,
       };
@@ -233,7 +235,7 @@ export default function Page(props: IPageProps) {
         <title> (Dorf)</title>
       </Head>
       <CommunityHeader community={community}></CommunityHeader>
-      <main className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="col-span-1">
           <NewsArrangement>
             {newsTeasers.map((newsTeaser, index) => (
@@ -246,7 +248,7 @@ export default function Page(props: IPageProps) {
             ))}
           </NewsArrangement>
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 md:col-span-2">
           <h2>Termine</h2> <pre>{JSON.stringify(events, undefined, 2)}</pre>
         </div>
       </main>

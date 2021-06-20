@@ -13,7 +13,7 @@ interface MunicipalityCore {
 export interface Municipality extends MunicipalityCore {
   description?: string;
   wikimediaCommonsImages?: string[];
-  location?: GeoLocation;
+  geoLocation?: GeoLocation;
   socialMediaAccounts?: SocialMediaAccounts;
 }
 
