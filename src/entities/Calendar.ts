@@ -8,7 +8,7 @@ export interface Calendar {
   name: string;
   description?: string;
   organizer: Organizer;
-  scope: '0' | '1' | '2' | '3';
+  scope: 'Community' | 'Municipality' | 'Surrounding' | 'Region';
   publication_status: '0' | '1';
-  display_mode: '0' | '1' | '2' | '3' | '4';
+  display_mode: 'micro' | 'mini' | 'oneline' | 'default' | 'extended';
 }

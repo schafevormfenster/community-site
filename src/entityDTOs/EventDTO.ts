@@ -1,4 +1,8 @@
-import { CalendarDTO, CalendarDTOcoreQueryFields } from './CalendarDTO';
+import {
+  CalendarDTO,
+  CalendarDTOcoreQueryFields,
+  CalendarDTOteaserQueryFields,
+} from './CalendarDTO';
 import { CommunityDTO, CommunityDTOcoreQueryFields } from './CommunityDTO';
 import { PlaceDTO, PlaceDTOcoreQueryFields } from './PlaceDTO';
 
@@ -24,6 +28,6 @@ export interface EventDTO {
 
 export const EventDTOcoreQueryFields = '_id, name, start';
 
-export const EventDTOteaserQueryFields = `_id, name, start, end, allday, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOcoreQueryFields} }, place->{ ${PlaceDTOcoreQueryFields} }`;
+export const EventDTOteaserQueryFields = `_id, name, start, end, allday, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOteaserQueryFields} }, place->{ ${PlaceDTOcoreQueryFields} }`;
 
 export const EventDTOdetailQueryFields = `cancelled, location, description, ${EventDTOteaserQueryFields}`;

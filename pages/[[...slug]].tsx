@@ -16,7 +16,8 @@ import {
   CommunityDTOcoreQueryFields,
   CommunityDTOdetailQueryFields,
 } from '../src/entityDTOs/CommunityDTO';
-import { EventDTOteaserQueryFields, eventDTOteaserQueryFields } from '../src/entityDTOs/EventDTO';
+import { EventDTO, EventDTOteaserQueryFields } from '../src/entityDTOs/EventDTO';
+import { eventByDTO } from '../src/mapper/eventByDTO';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -76,37 +77,30 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    * fetch all events for the given community incl. organizer and place
    */
 
+  let events: Event[] = []; // init events array with proper type
   const eventQuery = `*[_type == "event" && references($communityId)]{ ${EventDTOteaserQueryFields} }`;
-
-  console.log(eventQuery);
   const eventQueryParams = {
     communityId: community._id,
   };
-
-  // let events: Event[] = undefined;
-  let events = [];
-
-  // TODO: move fetching into a separate function and map properly to event type
   await cdnClient
     .fetch(eventQuery, eventQueryParams)
     .then(response => {
-      events = response;
-      // TODO: create a mapping from response to entity array
+      const eventDtoList: EventDTO[] = response;
+      if (eventDtoList)
+        eventDtoList.map(eventDto => {
+          return events.push(eventByDTO(eventDto));
+        });
     })
     .catch(err => {
-      console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
+      console.warn(
+        `The query to lookup events of the community '${community._id}' at sanity failed:`
+      );
     });
-
-  /**
-   * TODO: Prio 1: fetch all events of communities of the same municipality but only with municipality scope
-   */
-  //let communitiesOfMunicipality: Community[] = undefined;
 
   /**
    * Fetch all other communities of the same municipality, exclude the current one.
    */
   let communitiesOfMunicipality: CommunityExcerpt[] = undefined;
-  // TODO: filter the current community right here in the query
   const communitiesOfMunicipalityQuery = `*[_type == "community" && _id != $currentCommuinityId && references($municipalityId)]{ ${CommunityDTOcoreQueryFields} }`;
   const communitiesOfMunicipalityQueryParams = {
     municipalityId: community.municipality._id,
@@ -129,7 +123,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     });
 
   /**
-   * Fetch events of all these other communities with a scope hogher than for the own community.
+   * Fetch events of all these other communities with a scope higher than for the own community.
    */
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
@@ -137,15 +131,14 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const municipalityEventsQueryParams = {
         communityId: c._id,
       };
-
-      // TODO: move fetching into a separate function and map properly to event type
       await cdnClient
         .fetch(municipalityEventsQuery, municipalityEventsQueryParams)
         .then(response => {
-          console.log(response);
-          events = merge(events, response);
-
-          // TODO: create a mapping from response to entity array
+          const municipalityEventDtoList: EventDTO[] = response;
+          if (municipalityEventDtoList)
+            municipalityEventDtoList.map(eventDto => {
+              return events.push(eventByDTO(eventDto));
+            });
         })
         .catch(err => {
           console.warn(
@@ -172,9 +165,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   // events = unionBy(events, '_id');
 
   /**
-   * TODO: sort events by start date
+   * Sort all collected events by start date.
    */
-  events = sortBy(events, ['start']);
+  events = sortBy(events, ['start', 'allday']);
 
   return {
     props: {

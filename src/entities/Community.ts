@@ -14,7 +14,7 @@ interface CommunityCore {
 export interface Community extends CommunityCore {
   description?: string;
   wikimediaCommonsImages?: string[];
-  location?: GeoLocation;
+  geoLocation?: GeoLocation;
   municipality: Municipality;
 }
 

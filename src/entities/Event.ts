@@ -9,16 +9,16 @@ export interface Event {
   _id: string;
   summary: string;
   description?: string;
-  location: string;
+  location?: string;
   geoLocation?: Geolocation;
-  start?: Date;
-  end?: Date;
+  start?: string; // TODO: change to Date and add to mapper
+  end?: string; // TODO: change to Date and add to mapper
   allday?: boolean;
   status?: 'confirmed' | 'cancelled';
   attachments?: string[];
   // metadata
-  created?: Date;
-  updated?: Date;
+  created?: string; // TODO: change to Date and add to mapper
+  updated?: string; // TODO: change to Date and add to mapper
   categories?: string[];
   // ids
   iCalUID?: string;

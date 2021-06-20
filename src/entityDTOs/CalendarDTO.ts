@@ -17,6 +17,6 @@ export interface CalendarDTO {
 
 export const CalendarDTOcoreQueryFields = '_id, name';
 
-export const CalendarDTOteaserQueryFields = `${CalendarDTOcoreQueryFields}`;
+export const CalendarDTOteaserQueryFields = `${CalendarDTOcoreQueryFields}, scope, display_mode`;
 
 export const CalendarDTOdetailQueryFields = `${CalendarDTOteaserQueryFields}`;
