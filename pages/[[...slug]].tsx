@@ -18,6 +18,8 @@ import {
 } from '../src/entityDTOs/CommunityDTO';
 import { EventDTO, EventDTOteaserQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
+import { dateList } from '../src/viewObjects/calendarSheet';
+import Calendar from '../src/components/EventDisplay/Calendar';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -195,7 +197,7 @@ export default function Page(props: IPageProps) {
   if (!community) return <>404 no community</>;
 
   // const events: Event[] = props.events;
-  const events = props.events;
+  const events: Event[] = props.events;
 
   const newsTeasers: News[] = [
     {
@@ -242,7 +244,12 @@ export default function Page(props: IPageProps) {
           </NewsArrangement>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <h2>Termine</h2> <pre>{JSON.stringify(events, undefined, 2)}</pre>
+          <h2>Termine</h2>
+          <Calendar
+            start={new Date(2021, 5, 21)}
+            end={new Date(2021, 9, 0)}
+            events={events}
+          ></Calendar>
         </div>
       </main>
       <footer className="bg-gray-700 text-white text-xs px-8 py-4">
