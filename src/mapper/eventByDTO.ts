@@ -21,6 +21,8 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
+  console.log(eventDto);
+
   return eventDto
     ? {
         _id: eventDto._id,

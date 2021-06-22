@@ -21,7 +21,7 @@ class MyDocument extends Document {
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="theme-color" content="#ffffff" />
         </Head>
-        <body className="bg-white text-primary font-body font-normal text-m leading-normal">
+        <body className="bg-white text-black font-body font-normal text-base leading-normal">
           <Main />
           <NextScript />
         </body>

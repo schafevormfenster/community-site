@@ -5,6 +5,11 @@ import { Event } from '../../entities/Event';
 import { CalendarDisplayModeEnum } from '../../entities/Calendar';
 import CalendarDaySection from './CalendarDaySection';
 import CalendarMonthSection from './CalendarMonthSection';
+import OnelineEvents from './OnelineEvents';
+import MicroEvent from './MicroEvent';
+import AlldayEvent from './AlldayEvent';
+import EventTeaser from './EventTeaser';
+import MiniEvent from './MiniEvent';
 
 export interface CalendarProps {
   start: Date;
@@ -91,14 +96,23 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                     return (
                       <CalendarDaySection day={iDay}>
-                        <h5>micro:</h5>
-                        <pre>{JSON.stringify(microEvents, undefined, 2)}</pre>
-                        <h5>oneline:</h5>
-                        <pre>{JSON.stringify(onelineEvents, undefined, 2)}</pre>
-                        <h5>allday:</h5>
-                        <pre>{JSON.stringify(allDayEvents, undefined, 2)}</pre>
-                        <h5>regular:</h5>
-                        <pre>{JSON.stringify(regularEvents, undefined, 2)}</pre>
+                        {microEvents.length > 0 &&
+                          microEvents.map(event => <MicroEvent event={event} />)}
+
+                        {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
+
+                        {allDayEvents.length > 0 &&
+                          allDayEvents.map(event => <AlldayEvent event={event} />)}
+
+                        {regularEvents.length > 0 &&
+                          regularEvents.map(event => (
+                            <>
+                              {event.calendar.display_mode == 'mini' && <MiniEvent event={event} />}
+                              {event.calendar.display_mode != 'mini' && (
+                                <EventTeaser event={event} />
+                              )}
+                            </>
+                          ))}
                       </CalendarDaySection>
                     );
                   })}
@@ -108,8 +122,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
           })}
         </div>
       ))}
-
-      <pre>{JSON.stringify(myCalenderSheet, undefined, 2)}</pre>
     </main>
   );
 };

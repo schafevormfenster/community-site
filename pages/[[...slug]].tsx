@@ -8,7 +8,7 @@ import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
-import { first, join, sortBy, merge } from 'lodash';
+import { first, join, sortBy } from 'lodash';
 import { Event } from '../src/entities/Event';
 import { communityByDTO, communityExcerptByDTO } from '../src/mapper/communityByDTO';
 import {
@@ -16,9 +16,8 @@ import {
   CommunityDTOcoreQueryFields,
   CommunityDTOdetailQueryFields,
 } from '../src/entityDTOs/CommunityDTO';
-import { EventDTO, EventDTOteaserQueryFields } from '../src/entityDTOs/EventDTO';
+import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
-import { dateList } from '../src/viewObjects/calendarSheet';
 import Calendar from '../src/components/EventDisplay/Calendar';
 
 export const DotButton = ({ selected, onClick }) => (
@@ -80,7 +79,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    */
 
   let events: Event[] = []; // init events array with proper type
-  const eventQuery = `*[_type == "event" && references($communityId)]{ ${EventDTOteaserQueryFields} }`;
+  const eventQuery = `*[_type == "event" && references($communityId)]{ ${EventDTOdetailQueryFields} }`;
   const eventQueryParams = {
     communityId: community._id,
   };
@@ -129,7 +128,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    */
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
-      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]][0..2]{ ${EventDTOteaserQueryFields} }`;
+      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]][0..2]{ ${EventDTOdetailQueryFields} }`;
       const municipalityEventsQueryParams = {
         communityId: c._id,
       };
@@ -244,7 +243,6 @@ export default function Page(props: IPageProps) {
           </NewsArrangement>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <h2>Termine</h2>
           <Calendar
             start={new Date(2021, 5, 21)}
             end={new Date(2021, 9, 0)}
