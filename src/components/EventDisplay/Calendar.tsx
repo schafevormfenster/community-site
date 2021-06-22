@@ -4,6 +4,7 @@ import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
 import { CalendarDisplayModeEnum } from '../../entities/Calendar';
 import CalendarDaySection from './CalendarDaySection';
+import CalendarMonthSection from './CalendarMonthSection';
 
 export interface CalendarProps {
   start: Date;
@@ -21,14 +22,11 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
     <main>
       {myCalenderSheet.years.map(year => (
         <div>
-          <hr />
-          <strong>{year.year}</strong>
           {year.months.map(month => {
             const monthString = moment([month.year, month.month, 12]).format('MMMM YYYY');
             return (
               <div>
-                <p>--=={monthString}==--</p>
-                <div>
+                <CalendarMonthSection month={new Date(month.year, month.month)}>
                   {month.days.map(day => {
                     const iDay = new Date(day.year, day.month, day.day);
                     const dayString = moment([day.year, day.month, day.day, 12]).format(
@@ -104,7 +102,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       </CalendarDaySection>
                     );
                   })}
-                </div>
+                </CalendarMonthSection>
               </div>
             );
           })}

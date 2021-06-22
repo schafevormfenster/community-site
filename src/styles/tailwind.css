@@ -44,3 +44,7 @@ body {
     url(/fonts/catamaran/catamaran-v4-latin-800.woff2) format('woff2'),
     url(/fonts/catamaran/catamaran-v4-latin-800.woff) format('woff');
 }
+
+.text-vertical {
+  writing-mode: vertical-lr;
+}

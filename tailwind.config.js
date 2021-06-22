@@ -14,6 +14,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#001e60', // dark blue text color
+        secondary: '#4196d0',
         twitter: '#1DA1F2',
       },
       fontFamily: {
