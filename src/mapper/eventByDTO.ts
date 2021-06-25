@@ -38,6 +38,11 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
           name: eventDto.calendar.name,
           display_mode: displayMode(eventDto.calendar.display_mode),
         },
+        place: {
+          _id: eventDto?.place ? eventDto.place._id : null,
+          name: eventDto?.place ? eventDto.place.name : null,
+          localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
+        },
       }
     : undefined;
 };

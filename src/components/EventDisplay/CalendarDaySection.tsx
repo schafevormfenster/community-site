@@ -11,7 +11,7 @@ export interface CalendarDaySectionProps {
  */
 const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
   return (
-    <section className="relative border-gray-600 bg-gradient-to-b from-white to-gray-100 clear-both">
+    <section className="relative mb-4 border-gray-600 bg-gradient-to-b from-white to-gray-100 clear-both">
       <div className="sticky top-4 w-12 mb-8 -ml-6 float-left">
         <CalendarSheetIcon day={day} />
       </div>

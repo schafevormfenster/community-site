@@ -15,7 +15,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   if (!event) return <></>;
   return (
     <div className="pb-4 pt-2 border-t border-solid border-gray-300">
-      <p className="mb-1 leading-none">
+      <p className="mb-1 text-gray-700 leading-none">
         <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
         {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
       </p>
@@ -25,11 +25,10 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           <Interweave content={event.description} />
         </div>
       )}
-      <p className="mb-2 leading-none">
+      <p className="mb-2 text-gray-700 leading-none">
         <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-        {event.location}
+        {event.place?.localname}
       </p>
-      {/*<pre>{JSON.stringify(event, undefined, 2)}</pre>*/}
     </div>
   );
 };
