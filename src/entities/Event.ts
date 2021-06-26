@@ -1,6 +1,7 @@
 import { PlaceDTO } from '../entityDTOs/PlaceDTO';
 import { Calendar } from './Calendar';
 import { CommunityExcerpt } from './Community';
+import { Organizer } from './Organizer';
 
 /**
  * Event item.

@@ -1,8 +1,4 @@
-import {
-  CalendarDTO,
-  CalendarDTOcoreQueryFields,
-  CalendarDTOteaserQueryFields,
-} from './CalendarDTO';
+import { CalendarDTO, CalendarDTOteaserQueryFields } from './CalendarDTO';
 import { CommunityDTO, CommunityDTOcoreQueryFields } from './CommunityDTO';
 import { PlaceDTO, PlaceDTOcoreQueryFields } from './PlaceDTO';
 

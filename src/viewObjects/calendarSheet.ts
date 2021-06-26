@@ -23,7 +23,6 @@ export interface CalendarSheet {
 }
 
 export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
-  console.log(start + ' // ' + end);
   let sheet: CalendarSheet = { years: [] };
   const startAsDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
   const endAsDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
@@ -48,9 +47,7 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
         let iMonth: CalendarMonth = { month: m, year: y, days: [] };
 
         // iterate days
-
         const daysInMonth = moment([y, m]).daysInMonth();
-        console.log(y + ' / ' + m + ' / ' + daysInMonth);
         for (var d = 1; d <= daysInMonth; d++) {
           const iDate = new Date(y, m, d);
           if (iDate.getTime() >= startAsDay.getTime() && iDate.getTime() < endAsDay.getTime()) {

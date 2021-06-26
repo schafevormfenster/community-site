@@ -40,8 +40,6 @@ export interface IPageProps {
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
   const slug = join(params!.slug, '/');
 
-  console.log(slug);
-
   // const { slug } = params as IParams;
 
   // use a cdn client for fetching data

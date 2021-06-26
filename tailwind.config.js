@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         primary: '#001e60', // dark blue text color
         secondary: '#4196d0',
+        secondaryDark: '#2f6a91', // https://www.sessions.edu/color-calculator/
         twitter: '#1DA1F2',
       },
       fontFamily: {

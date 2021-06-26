@@ -11,7 +11,7 @@ export interface MicroEventProps {
 const MicroEvent: FC<MicroEventProps> = ({ event }) => {
   if (!event) return <></>;
   return (
-    <div className="pb-4 ">
+    <div className="pb-2">
       <span title={event.description}>{event.summary}</span>
     </div>
   );

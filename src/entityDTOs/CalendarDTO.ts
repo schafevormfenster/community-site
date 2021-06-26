@@ -1,5 +1,4 @@
-import { MunicipalityDTOteaserQueryFields } from './MunicipalityDTO';
-import { OrganizerDTO } from './OrganizerDTO';
+import { OrganizerDTO, OrganizerDTOteaserQueryFields } from './OrganizerDTO';
 
 /**
  * Calendar.
@@ -17,6 +16,6 @@ export interface CalendarDTO {
 
 export const CalendarDTOcoreQueryFields = '_id, name';
 
-export const CalendarDTOteaserQueryFields = `${CalendarDTOcoreQueryFields}, scope, display_mode`;
+export const CalendarDTOteaserQueryFields = `${CalendarDTOcoreQueryFields}, scope, display_mode, organizer->{ ${OrganizerDTOteaserQueryFields} }`;
 
 export const CalendarDTOdetailQueryFields = `${CalendarDTOteaserQueryFields}`;

@@ -21,8 +21,6 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  console.log(eventDto);
-
   return eventDto
     ? {
         _id: eventDto._id,
@@ -37,6 +35,13 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
           _id: eventDto.calendar._id,
           name: eventDto.calendar.name,
           display_mode: displayMode(eventDto.calendar.display_mode),
+          organizer: {
+            _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
+            name: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer.name : null,
+            longname: eventDto?.calendar?.organizer?.longname
+              ? eventDto.calendar?.organizer.longname
+              : eventDto.calendar?.organizer.name,
+          },
         },
         place: {
           _id: eventDto?.place ? eventDto.place._id : null,
