@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 html {
-  @apply bg-gray-100;
-  @apply w-screen overflow-x-hidden;
+  @apply bg-white;
+  @apply m-0 p-0;
 }
 
 body {
