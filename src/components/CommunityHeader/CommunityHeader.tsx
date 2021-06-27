@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Community } from '../../entities/Community';
+import SvFLogo from '../Images/SvFLogo';
 
 export interface CommunityHeaderProps {
   community: Community;
@@ -19,8 +20,9 @@ const CommunityHeader: FC<CommunityHeaderProps> = props => {
   return (
     <header>
       <div className="text-center">
-        <h1 className="text-5xl">{community?.name}</h1>
-        <p>Gemeinde {community.municipality.name}</p>
+        <div className="relative w-10 ml-2 my-2 -mb-5 z-10 ">
+          <SvFLogo />
+        </div>
       </div>
       {badge && badge == 'beta' && <div>BETA</div>}
     </header>

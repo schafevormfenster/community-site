@@ -31,6 +31,9 @@ module.exports = {
           'monospace',
         ],
       },
+      fontSize: {
+        '2xs': '.6rem',
+      },
       width: {
         '2/1': '180%',
         '3/1': '270%',

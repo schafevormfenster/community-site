@@ -36,7 +36,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
               src={newsItem.image}
             />
           )}
-          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
+          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-3 pt-12 text-white">
             <span className="block text-s">
               <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
               {moment(newsItem.date).format('D. MMM')}
@@ -46,7 +46,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
         </a>
       ) : (
         <div className="relative w-80/screen lg:w-full mr-2 lg:mr-0 lg:mb-4 h-80 float-left bg-yellow-200 overflow-hidden">
-          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
+          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-3 pt-12 text-white">
             <span className="block text-s">
               <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
               {moment(newsItem.date).format('D. MMM')}

@@ -19,9 +19,9 @@ const CommunityIntroAsNewsTeaserFormat: FC<CommunityIntroAsNewsTeaserFormatProps
           src={community?.wikimediaCommonsImages[0]}
         />
       )}
-      <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
-        <h1 className="text-3xl">{community.name}</h1>
-        <p className="text-xs">Gemeinde {community.municipality.name}</p>
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-3 pt-12 text-white">
+        <h1 className="text-4xl">{community.name}</h1>
+        <p className="text-s">Gemeinde {community.municipality.name}</p>
       </div>
     </div>
   );

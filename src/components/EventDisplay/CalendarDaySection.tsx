@@ -15,7 +15,7 @@ const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
       <div className="sticky top-4 w-12 mb-8 -ml-6 float-left">
         <CalendarSheetIcon day={day} />
       </div>
-      <div className="ml-8 mr-0 pl-2 pr-4">{children}</div>
+      <div className="ml-8 mr-0 pl-1 pr-2">{children}</div>
     </section>
   );
 };
