@@ -1,4 +1,5 @@
 module.exports = {
+  important: true,
   purge: {
     content: ['./src/**/*.tsx', './pages/**/*.tsx'],
   },
@@ -42,6 +43,8 @@ module.exports = {
         '10/1': '900%',
         '11/1': '990%',
         '12/1': '1080%',
+        '80/screen': '80vw',
+        '90/screen': '90vw',
       },
     },
   },

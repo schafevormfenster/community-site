@@ -28,7 +28,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
       {newsItem?.link ? (
         <a
           href={newsItem.link}
-          className="relative h-full md:h-96 xl:h-80 bg-twitter overflow-hidden"
+          className="relative w-80/screen lg:w-full mr-2 lg:mr-0 lg:mb-4 h-80 float-left bg-twitter overflow-hidden"
         >
           {newsItem.image && (
             <img
@@ -45,7 +45,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
           </p>
         </a>
       ) : (
-        <div className="relative h-full md:h-96 xl:h-80 bg-yellow-200 overflow-hidden">
+        <div className="relative w-80/screen lg:w-full mr-2 lg:mr-0 lg:mb-4 h-80 float-left bg-yellow-200 overflow-hidden">
           <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
             <span className="block text-s">
               <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />

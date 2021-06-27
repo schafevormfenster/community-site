@@ -21,6 +21,8 @@ import { eventByDTO } from '../src/mapper/eventByDTO';
 import Calendar from '../src/components/EventDisplay/Calendar';
 import { NewsDTO, NewsDTOteaserQueryFields, NewsDTOtypeName } from '../src/entityDTOs/NewsDTO';
 import { newsByDTO } from '../src/mapper/newsByDTO';
+import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
+import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -89,7 +91,6 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const newsDtoList: NewsDTO[] = response;
       if (newsDtoList)
         news = newsDtoList.map(newsDto => {
-          console.log(newsByDTO(newsDto));
           return newsByDTO(newsDto);
         });
     })
@@ -227,18 +228,27 @@ export default function Page(props: IPageProps) {
   return (
     <>
       <Head>
-        <title> (Dorf)</title>
+        <title>
+          {community.name} (Gemeinde {community.municipality.name})
+        </title>
       </Head>
-      <CommunityHeader community={community}></CommunityHeader>
-      <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <CommunityHeader community={community} />
+      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4">
         <div className="col-span-1">
-          <NewsArrangement>
-            {news.map((newsItem, index) => (
-              <NewsTeaser newsItem={newsItem} key={index} />
-            ))}
-          </NewsArrangement>
+          {news.length > 0 ? (
+            <NewsArrangement>
+              {community?.wikimediaCommonsImages?.length > 0 && (
+                <CommunityIntroAsNewsTeaserFormat community={community} />
+              )}
+              {news.map((newsItem, index) => (
+                <NewsTeaser newsItem={newsItem} key={index} />
+              ))}
+            </NewsArrangement>
+          ) : (
+            <CommunityIntroWithoutNews community={community}></CommunityIntroWithoutNews>
+          )}
         </div>
-        <div className="col-span-1 md:col-span-2">
+        <div className="col-span-1 lg:col-span-2">
           <Calendar
             start={new Date(2021, 5, 21)}
             end={new Date(2021, 9, 0)}

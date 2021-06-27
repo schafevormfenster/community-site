@@ -12,12 +12,11 @@ export interface NewsArrangementProps {
 const NewsArrangement: FC<NewsArrangementProps> = ({ children }) => {
   if (!children) return <></>;
   const itemCount = React.Children.toArray(children).length;
+  const widthStyle = `calc(${itemCount * 90}vw + ${itemCount}rem)`;
   if (itemCount < 1) return <></>;
   return (
-    <div className="overflow-x-scroll md:overflow-auto">
-      <div
-        className={`h-80 md:h-auto grid grid-cols-${itemCount} md:grid-cols-1 xl:grid-cols-2 gap-4 w-${itemCount}/1 md:w-full`}
-      >
+    <div className="overflow-x-scroll lg:overflow-auto">
+      <div style={{ width: widthStyle }} className={`relative h-80 lg:h-auto lg:w-full`}>
         {children}
       </div>
     </div>
