@@ -1,5 +1,11 @@
+import moment from 'moment';
 import { FC } from 'react';
 import { News } from '../../entities/News';
+import { ClockIcon } from '@heroicons/react/outline';
+
+export interface NewsTeaserProps {
+  newsItem: News;
+}
 
 const NewsTeaserContent: FC<News> = props => {
   const { abstract, image = '' } = props;
@@ -16,18 +22,37 @@ const NewsTeaserContent: FC<News> = props => {
 /**
  * Shows a micronews item.
  */
-const NewsTeaser: FC<News> = props => {
-  const { abstract, image, link = '' } = props;
-
+const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
   return (
     <>
-      {link ? (
-        <a href={link} className="relative h-full md:h-96 xl:h-80 bg-twitter overflow-hidden">
-          <NewsTeaserContent abstract={abstract} image={image} link={link} />
+      {newsItem?.link ? (
+        <a
+          href={newsItem.link}
+          className="relative h-full md:h-96 xl:h-80 bg-twitter overflow-hidden"
+        >
+          {newsItem.image && (
+            <img
+              className="absolute w-full h-full object-cover object-center"
+              src={newsItem.image}
+            />
+          )}
+          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
+            <span className="block text-s">
+              <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
+              {moment(newsItem.date).format('D. MMM')}
+            </span>
+            {newsItem.title}
+          </p>
         </a>
       ) : (
         <div className="relative h-full md:h-96 xl:h-80 bg-yellow-200 overflow-hidden">
-          <NewsTeaserContent abstract={abstract} image={image} link={link} />
+          <p className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent p-4 text-white">
+            <span className="block text-s">
+              <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
+              {moment(newsItem.date).format('D. MMM')}
+            </span>
+            {newsItem.title}
+          </p>
         </div>
       )}
     </>

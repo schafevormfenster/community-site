@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { LocationMarkerIcon, ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
+import { LocationMarkerIcon, ClockIcon } from '@heroicons/react/outline';
 
 export interface MiniEventProps {
   event: Event;

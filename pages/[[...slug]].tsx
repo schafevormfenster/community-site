@@ -19,6 +19,8 @@ import {
 import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
 import Calendar from '../src/components/EventDisplay/Calendar';
+import { NewsDTO, NewsDTOteaserQueryFields, NewsDTOtypeName } from '../src/entityDTOs/NewsDTO';
+import { newsByDTO } from '../src/mapper/newsByDTO';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -35,6 +37,7 @@ interface IParams extends ParsedUrlQuery {
 export interface IPageProps {
   community: Community;
   events: Event[];
+  news: News[];
 }
 
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
@@ -73,9 +76,32 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     });
 
   /**
+   * fetch news for the municipality
+   */
+  let news: News[] = []; // init events array with proper type
+  const newsQuery = `*[_type == "news" && references($municipalityId)] | order(date desc) { ${NewsDTOteaserQueryFields}}`;
+  const newsQueryParams = {
+    municipalityId: community.municipality._id,
+  };
+  await cdnClient
+    .fetch(newsQuery, newsQueryParams)
+    .then(response => {
+      const newsDtoList: NewsDTO[] = response;
+      if (newsDtoList)
+        news = newsDtoList.map(newsDto => {
+          console.log(newsByDTO(newsDto));
+          return newsByDTO(newsDto);
+        });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup events of the community '${community._id}' at sanity failed:`
+      );
+    });
+
+  /**
    * fetch all events for the given community incl. organizer and place
    */
-
   let events: Event[] = []; // init events array with proper type
   const eventQuery = `*[_type == "event" && references($communityId) && !cancelled]{ ${EventDTOdetailQueryFields} }`;
   const eventQueryParams = {
@@ -126,7 +152,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    */
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
-      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]][0..2]{ ${EventDTOdetailQueryFields} }`;
+      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]]{ ${EventDTOdetailQueryFields} }`;
       const municipalityEventsQueryParams = {
         communityId: c._id,
       };
@@ -172,6 +198,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     props: {
       community: community,
       events: events,
+      news: news,
     },
   };
 };
@@ -195,31 +222,7 @@ export default function Page(props: IPageProps) {
 
   // const events: Event[] = props.events;
   const events: Event[] = props.events;
-
-  const newsTeasers: News[] = [
-    {
-      abstract: 'Die Störche kommen.',
-      image: 'https://pbs.twimg.com/media/E0caS5jX0AIcHN4?format=jpg&name=900x900',
-      link:
-        'https://twitter.com/GSchmatzin/status/1389107927152214017?ref_src=twsrc%5Etfw%7Ctwcamp%5Eembeddedtimeline%7Ctwgr%5EeyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfX0%3D%7Ctwcon%5Etimelinechrome&ref_url=https%3A%2F%2Fschafe-vorm-fenster.de%2Fschlatkow%2F',
-    },
-    {
-      abstract:
-        'Die Gemeinde Schmatzin wünscht allen EinwohnerInnen ein frohes neues Jahr. In Mietshäusern sind nun Brandmelder Pflicht - aber auch für jedes Privathaus sind sie dringend zu empfehlen. Unsere Feuerwehr ist toll - aber jede Sekunde zählt.',
-      image: null,
-      link: 'https://twitter.com/GSchmatzin/status/1375109025281548289/photo/1',
-    },
-    {
-      abstract: 'Endlich endlich. Unser Floß in #Schlatkow ist wieder im Wasser!',
-      image: 'https://pbs.twimg.com/media/ExVeXMVXEAUPYHZ?format=jpg&name=900x900',
-    },
-    {
-      abstract:
-        'Diese Woche werden die neuen Klettergerüste in #Schlatkow aufgebaut. Danach ist noch einiges zu tun (Sand, Zaun, Geländer, ...) aber es geht vorwärts.',
-      image: 'https://pbs.twimg.com/media/Eu_S8aIWgAQ_Mpa?format=jpg&name=900x900',
-      link: 'https://twitter.com/GSchmatzin/status/1364541158614065156/photo/1',
-    },
-  ];
+  const news: News[] = props.news;
 
   return (
     <>
@@ -230,13 +233,8 @@ export default function Page(props: IPageProps) {
       <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="col-span-1">
           <NewsArrangement>
-            {newsTeasers.map((newsTeaser, index) => (
-              <NewsTeaser
-                abstract={newsTeaser.abstract}
-                image={newsTeaser.image}
-                link={newsTeaser.link}
-                key={index}
-              />
+            {news.map((newsItem, index) => (
+              <NewsTeaser newsItem={newsItem} key={index} />
             ))}
           </NewsArrangement>
         </div>
