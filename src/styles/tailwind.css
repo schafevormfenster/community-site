@@ -6,7 +6,7 @@
 
 html {
   @apply bg-white;
-  @apply m-0 p-0;
+  @apply w-screen m-0 p-0;
 }
 
 body {

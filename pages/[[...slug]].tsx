@@ -256,10 +256,10 @@ export default function Page(props: IPageProps) {
           ></Calendar>
         </div>
       </main>
-      <footer className="bg-gray-700 text-white text-xs px-8 py-4">
+      {/*<footer className="bg-gray-700 text-white text-xs px-8 py-4">
         <pre>{JSON.stringify(community, undefined, 2)}</pre>
         <hr className="my-4" />
-      </footer>
+          </footer>*/}
     </>
   );
 }
