@@ -20,10 +20,14 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="theme-color" content="#ffffff" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no,"
-          />
+          <meta httpEquiv="refresh" content="14400" />
+          <meta httpEquiv="expires" content="14400" />
+          <meta name="locale" content="de_DE" />
+          <meta name="robots" content="all" />
+          <meta name="author" content="Schafe vorm Fenster UG" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@schafeamfenster" />
+          <meta name="twitter:creator" content="@schafeamfenster" />
         </Head>
         <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base leading-normal">
           <Main />

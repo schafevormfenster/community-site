@@ -19,7 +19,7 @@ import {
 import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
 import Calendar from '../src/components/EventDisplay/Calendar';
-import { NewsDTO, NewsDTOteaserQueryFields, NewsDTOtypeName } from '../src/entityDTOs/NewsDTO';
+import { NewsDTO, NewsDTOteaserQueryFields } from '../src/entityDTOs/NewsDTO';
 import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
@@ -40,21 +40,23 @@ export interface IPageProps {
   community: Community;
   events: Event[];
   news: News[];
+  meta: { canonicalUrl: string };
 }
+
+// use a cdn client for fetching data
+// put it outside to be used in staticProps and staticPaths
+const cdnClient = SanityClientConstructor({
+  apiVersion: process.env.SANITY_APIVERSION,
+  projectId: process.env.SANITY_PROJECTID,
+  dataset: process.env.SANITY_DATASET,
+  token: process.env.SANITY_TOKEN,
+  useCdn: true,
+});
 
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
   const slug = join(params!.slug, '/');
 
   // const { slug } = params as IParams;
-
-  // use a cdn client for fetching data
-  const cdnClient = SanityClientConstructor({
-    apiVersion: process.env.SANITY_APIVERSION,
-    projectId: process.env.SANITY_PROJECTID,
-    dataset: process.env.SANITY_DATASET,
-    token: process.env.SANITY_TOKEN,
-    useCdn: true,
-  });
 
   /**
    * fetch community data incl. image and municipality
@@ -76,6 +78,11 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .catch(err => {
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
     });
+
+  const canonicalUrl =
+    process.env.HTTPS == 'false'
+      ? `http://${process.env.VERCEL_URL}/${community.slug}`
+      : `https://${process.env.VERCEL_URL}/${community.slug}`;
 
   /**
    * fetch news for the municipality
@@ -197,6 +204,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 
   return {
     props: {
+      meta: {
+        canonicalUrl: canonicalUrl,
+      },
       community: community,
       events: events,
       news: news,
@@ -205,19 +215,37 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const arr: string[] = ['schlatkow', 'schmatzin', 'wolfradshof']
-  // let paths = [];
-  //  paths = arr.map((slug) => {
+  /**
+   * fetch community data incl. image and municipality
+   */
+  const communityListQuery = `*[_type == "community" && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
+  let communityList: Community[] = new Array();
+  await cdnClient
+    .fetch(communityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityDtoList.map(communitytDto => {
+          return communityByDTO(communitytDto);
+        });
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
 
-  //     return { params: { slug: slug } };
-  // })
-  // return { paths: paths, fallback: true };
-  return { paths: [], fallback: true };
+  let paths = [];
+  if (communityList)
+    paths = communityList.map(community => {
+      if (community.slug) return { params: { slug: [community.slug] } };
+    });
+  return { paths: paths, fallback: true };
+  //return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
   // TODO: Dummy data, integrate with API
   const community: Community = props.community;
+  const meta = props.meta;
 
   if (!community) return <>404 no community</>;
 
@@ -231,9 +259,27 @@ export default function Page(props: IPageProps) {
         <title>
           {community.name} (Gemeinde {community.municipality.name})
         </title>
+        <meta
+          name="description"
+          content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
+        />
+        <meta
+          name="keywords"
+          content={`${community.name}, ${community.municipality.name}, Events, Termine, News, Veranstaltung, Lebensmittel, Müll, Bus`}
+        />
+        {community?.wikimediaCommonsImages?.length > 0 && (
+          <meta property="og:image" content={community.wikimediaCommonsImages[0]} />
+        )}
+        <meta name="geo.region" content="DE-MV" />
+        <meta
+          name="geo.placename"
+          content={`${community.name}, Gemeinde ${community.municipality.name}`}
+        />
+        <link rel="canonical" href={`${meta.canonicalUrl}`} />
+        <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
       </Head>
       <CommunityHeader community={community} />
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4">
+      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">
         <div className="col-span-1">
           {news.length > 0 ? (
             <NewsArrangement>
@@ -241,7 +287,7 @@ export default function Page(props: IPageProps) {
                 <CommunityIntroAsNewsTeaserFormat community={community} />
               )}
               {news.map((newsItem, index) => (
-                <NewsTeaser newsItem={newsItem} key={index} />
+                <NewsTeaser newsItem={newsItem} key={`news${index}`} />
               ))}
             </NewsArrangement>
           ) : (
@@ -250,8 +296,8 @@ export default function Page(props: IPageProps) {
         </div>
         <div className="col-span-1 lg:col-span-2">
           <Calendar
-            start={new Date(2021, 5, 21)}
-            end={new Date(2021, 9, 0)}
+            start={new Date()}
+            end={new Date(new Date().setDate(new Date().getDate() + 90))}
             events={events}
           ></Calendar>
         </div>

@@ -21,24 +21,28 @@ export const communityByDTO = (communityDto: CommunityDTO): Community => {
         geoLocation: {
           identifiers: {
             geonamesId: last(split(communityDto._id, '.')),
-            googlePlaceId: communityDto.place_id,
-            wikidataId: communityDto.wikidata_id,
+            googlePlaceId: communityDto.place_id ? communityDto.place_id : null,
+            wikidataId: communityDto.wikidata_id ? communityDto.wikidata_id : null,
           },
         },
-        wikimediaCommonsImages: communityDto.wikimedia_commons_imagelinks,
+        wikimediaCommonsImages: communityDto.wikimedia_commons_imagelinks
+          ? communityDto.wikimedia_commons_imagelinks
+          : null,
         municipality: {
-          _id: communityDto.municipality._id,
-          name: communityDto.municipality.name,
-          slug: communityDto.municipality.slug.current,
+          _id: communityDto.municipality ? communityDto.municipality._id : null,
+          name: communityDto.municipality ? communityDto.municipality.name : null,
+          slug: communityDto.municipality ? communityDto.municipality.slug.current : null,
           geoLocation: {
             identifiers: {
-              geonamesId: last(split(communityDto.municipality._id, '.')),
-              googlePlaceId: communityDto.municipality.place_id,
+              geonamesId: communityDto.municipality
+                ? last(split(communityDto.municipality._id, '.'))
+                : null,
+              googlePlaceId: communityDto.municipality ? communityDto.municipality.place_id : null,
             },
           },
           socialMediaAccounts: {
             twitter: {
-              user: communityDto.municipality.twitter_user,
+              user: communityDto.municipality ? communityDto.municipality.twitter_user : null,
             },
           },
         },

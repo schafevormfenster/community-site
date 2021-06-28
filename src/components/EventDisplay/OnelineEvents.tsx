@@ -12,8 +12,8 @@ export interface OnelineEventsProps {
 const OnelineEvents: FC<OnelineEventsProps> = ({ events }) => {
   return (
     <div className="pb-2 whitespace-nowrap overflow-x-scroll">
-      {events.map(event => (
-        <span className="mr-2">
+      {events.map((event, index) => (
+        <span className="mr-2" key={index}>
           {moment(event.start).format('HH:mm')} {event.summary}
         </span>
       ))}

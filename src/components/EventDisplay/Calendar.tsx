@@ -26,98 +26,101 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   return (
     <main>
       {myCalenderSheet.years.map(year => (
-        <div>
-          {year.months.map(month => {
-            const monthString = moment([month.year, month.month, 12]).format('MMMM YYYY');
+        <div key={year.year}>
+          {year.months.map((month, monthIndex) => {
             return (
-              <div>
-                <CalendarMonthSection month={new Date(month.year, month.month)}>
-                  {month.days.map(day => {
-                    const iDay = new Date(day.year, day.month, day.day);
-                    const dayString = moment([day.year, day.month, day.day, 12]).format(
-                      'DD.MM.YYYY'
+              <CalendarMonthSection
+                month={new Date(month.year, month.month)}
+                key={`monthSection${monthIndex}`}
+              >
+                {month.days.map((day, dayIndex) => {
+                  const iDay = new Date(day.year, day.month, day.day);
+
+                  const allDayEvents: Event[] = events.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
+                    );
+                    if (eventStartDay.getTime() === iDay.getTime() && item.allday === true)
+                      return item;
+                  });
+
+                  const onelineEvents: Event[] = events.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
+                    );
+                    if (
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.calendar.display_mode === CalendarDisplayModeEnum.ONELINE
+                    )
+                      return item;
+                  });
+
+                  const microEvents: Event[] = events.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
+                    );
+                    if (
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.calendar.display_mode === CalendarDisplayModeEnum.MICRO
+                    )
+                      return item;
+                  });
+
+                  const regularEvents: Event[] = events.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
                     );
 
-                    const allDayEvents: Event[] = events.filter(item => {
-                      const eventStartDate = new Date(item.start);
-                      const eventStartDay = new Date(
-                        eventStartDate.getFullYear(),
-                        eventStartDate.getMonth(),
-                        eventStartDate.getDate()
-                      );
-                      if (eventStartDay.getTime() === iDay.getTime() && item.allday === true)
-                        return item;
-                    });
+                    if (
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.allday === false &&
+                      item.calendar.display_mode != CalendarDisplayModeEnum.ONELINE &&
+                      item.calendar.display_mode != CalendarDisplayModeEnum.MICRO
+                    )
+                      return item;
+                  });
 
-                    const onelineEvents: Event[] = events.filter(item => {
-                      const eventStartDate = new Date(item.start);
-                      const eventStartDay = new Date(
-                        eventStartDate.getFullYear(),
-                        eventStartDate.getMonth(),
-                        eventStartDate.getDate()
-                      );
-                      if (
-                        eventStartDay.getTime() === iDay.getTime() &&
-                        item.calendar.display_mode === CalendarDisplayModeEnum.ONELINE
-                      )
-                        return item;
-                    });
+                  return (
+                    <CalendarDaySection day={iDay} key={`daySection${dayIndex}`}>
+                      {microEvents.length > 0 &&
+                        microEvents.map((microEvent, microEventIndex) => (
+                          <MicroEvent event={microEvent} key={microEventIndex} />
+                        ))}
 
-                    const microEvents: Event[] = events.filter(item => {
-                      const eventStartDate = new Date(item.start);
-                      const eventStartDay = new Date(
-                        eventStartDate.getFullYear(),
-                        eventStartDate.getMonth(),
-                        eventStartDate.getDate()
-                      );
-                      if (
-                        eventStartDay.getTime() === iDay.getTime() &&
-                        item.calendar.display_mode === CalendarDisplayModeEnum.MICRO
-                      )
-                        return item;
-                    });
+                      {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
 
-                    const regularEvents: Event[] = events.filter(item => {
-                      const eventStartDate = new Date(item.start);
-                      const eventStartDay = new Date(
-                        eventStartDate.getFullYear(),
-                        eventStartDate.getMonth(),
-                        eventStartDate.getDate()
-                      );
+                      {allDayEvents.length > 0 &&
+                        allDayEvents.map((allDayEvent, allDayEventIndex) => (
+                          <AlldayEvent event={allDayEvent} key={allDayEventIndex} />
+                        ))}
 
-                      if (
-                        eventStartDay.getTime() === iDay.getTime() &&
-                        item.allday === false &&
-                        item.calendar.display_mode != CalendarDisplayModeEnum.ONELINE &&
-                        item.calendar.display_mode != CalendarDisplayModeEnum.MICRO
-                      )
-                        return item;
-                    });
-
-                    return (
-                      <CalendarDaySection day={iDay}>
-                        {microEvents.length > 0 &&
-                          microEvents.map(event => <MicroEvent event={event} />)}
-
-                        {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
-
-                        {allDayEvents.length > 0 &&
-                          allDayEvents.map(event => <AlldayEvent event={event} />)}
-
-                        {regularEvents.length > 0 &&
-                          regularEvents.map(event => (
-                            <>
-                              {event.calendar.display_mode == 'mini' && <MiniEvent event={event} />}
-                              {event.calendar.display_mode != 'mini' && (
-                                <EventTeaser event={event} />
-                              )}
-                            </>
-                          ))}
-                      </CalendarDaySection>
-                    );
-                  })}
-                </CalendarMonthSection>
-              </div>
+                      {regularEvents.length > 0 &&
+                        regularEvents.map((regularEvent, regularEventIndex) => (
+                          <>
+                            {regularEvent.calendar.display_mode == 'mini' && (
+                              <MiniEvent event={regularEvent} key={regularEventIndex} />
+                            )}
+                            {regularEvent.calendar.display_mode != 'mini' && (
+                              <EventTeaser event={regularEvent} key={regularEventIndex} />
+                            )}
+                          </>
+                        ))}
+                    </CalendarDaySection>
+                  );
+                })}
+              </CalendarMonthSection>
             );
           })}
         </div>
