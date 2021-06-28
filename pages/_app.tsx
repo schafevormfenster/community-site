@@ -1,8 +1,11 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app';
 import '../src/styles/tailwind.css';
+import 'moment/locale/de';
+import moment from 'moment';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  moment.locale('de');
   return <Component {...pageProps} />;
 }
 
