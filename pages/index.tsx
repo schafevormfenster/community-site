@@ -12,7 +12,6 @@ import ReactMarkdown from 'react-markdown';
 
 export interface IHomepageProps {
   communities: Community[];
-  news: News[];
   meta: { canonicalUrl: string };
   content: { welcome: any };
 }
@@ -52,7 +51,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
     });
 
   const welcomeMd = await require(`../content/homepage/welcome.md`);
-  const welcomeJson = { text: welcomeMd };
+  const welcomeJson = JSON.stringify(welcomeMd);
 
   return {
     props: {
@@ -60,7 +59,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
         canonicalUrl: canonicalUrl,
       },
       content: {
-        welcome: JSON.stringify(welcomeJson),
+        welcome: welcomeJson,
       },
       communities: communityList,
     },
@@ -72,7 +71,7 @@ export default function Homepage(props: IHomepageProps) {
   const meta = props.meta;
   const communities = props.communities;
   const content = props.content;
-  const welcomeText = JSON.parse(content.welcome);
+  const welcomeText = JSON.parse(content.welcome).default;
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -108,7 +107,7 @@ export default function Homepage(props: IHomepageProps) {
       </header>
 
       <article className="prose prose-lg px-4 pb-12">
-        {content?.welcome && <ReactMarkdown>{welcomeText.text.default}</ReactMarkdown>}
+        {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
       </article>
       <main className="p-0">
         <div className="community-search h-80 overflow-y-hidden">
