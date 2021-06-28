@@ -216,7 +216,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   /**
-   * fetch community data incl. image and municipality
+   * fetch all communities to create static pathes
    */
   const communityListQuery = `*[_type == "community" && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
   let communityList: Community[] = new Array();

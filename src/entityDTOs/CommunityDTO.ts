@@ -1,6 +1,7 @@
 import {
   MunicipalityCoreDTO,
   MunicipalityDTO,
+  MunicipalityDTOcoreQueryFields,
   MunicipalityDTOdetailQueryFields,
   MunicipalityDTOteaserQueryFields,
 } from './MunicipalityDTO';
@@ -23,7 +24,7 @@ export interface CommunityDTO {
   twitter_user?: string;
 }
 
-export const CommunityDTOcoreQueryFields = '_id, slug, name';
+export const CommunityDTOcoreQueryFields = `_id, slug, name, municipality->{ ${MunicipalityDTOcoreQueryFields} }`;
 
 export const CommunityDTOteaserQueryFields = `_id, slug, name, municipality->{ ${MunicipalityDTOteaserQueryFields} }`;
 
