@@ -26,11 +26,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   return (
     <main>
       {myCalenderSheet.years.map(year => (
-        <>
-          {year.months.map(month => {
+        <div key={year.year}>
+          {year.months.map((month, monthIndex) => {
             return (
-              <CalendarMonthSection month={new Date(month.year, month.month)}>
-                {month.days.map(day => {
+              <CalendarMonthSection
+                month={new Date(month.year, month.month)}
+                key={`monthSection${monthIndex}`}
+              >
+                {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
                   const allDayEvents: Event[] = events.filter(item => {
@@ -90,20 +93,28 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   });
 
                   return (
-                    <CalendarDaySection day={iDay}>
+                    <CalendarDaySection day={iDay} key={`daySection${dayIndex}`}>
                       {microEvents.length > 0 &&
-                        microEvents.map(event => <MicroEvent event={event} />)}
+                        microEvents.map((microEvent, microEventIndex) => (
+                          <MicroEvent event={microEvent} key={microEventIndex} />
+                        ))}
 
                       {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
 
                       {allDayEvents.length > 0 &&
-                        allDayEvents.map(event => <AlldayEvent event={event} />)}
+                        allDayEvents.map((allDayEvent, allDayEventIndex) => (
+                          <AlldayEvent event={allDayEvent} key={allDayEventIndex} />
+                        ))}
 
                       {regularEvents.length > 0 &&
-                        regularEvents.map(event => (
+                        regularEvents.map((regularEvent, regularEventIndex) => (
                           <>
-                            {event.calendar.display_mode == 'mini' && <MiniEvent event={event} />}
-                            {event.calendar.display_mode != 'mini' && <EventTeaser event={event} />}
+                            {regularEvent.calendar.display_mode == 'mini' && (
+                              <MiniEvent event={regularEvent} key={regularEventIndex} />
+                            )}
+                            {regularEvent.calendar.display_mode != 'mini' && (
+                              <EventTeaser event={regularEvent} key={regularEventIndex} />
+                            )}
                           </>
                         ))}
                     </CalendarDaySection>
@@ -112,7 +123,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
               </CalendarMonthSection>
             );
           })}
-        </>
+        </div>
       ))}
     </main>
   );

@@ -226,7 +226,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
         communityList = communityDtoList.map(communitytDto => {
-          //communityList.push(communityByDTO(communitytDto));
           return communityByDTO(communitytDto);
         });
     })
@@ -288,7 +287,7 @@ export default function Page(props: IPageProps) {
                 <CommunityIntroAsNewsTeaserFormat community={community} />
               )}
               {news.map((newsItem, index) => (
-                <NewsTeaser newsItem={newsItem} key={index} />
+                <NewsTeaser newsItem={newsItem} key={`news${index}`} />
               ))}
             </NewsArrangement>
           ) : (
@@ -297,8 +296,8 @@ export default function Page(props: IPageProps) {
         </div>
         <div className="col-span-1 lg:col-span-2">
           <Calendar
-            start={new Date(2021, 5, 21)}
-            end={new Date(2021, 9, 0)}
+            start={new Date()}
+            end={new Date(new Date().setDate(new Date().getDate() + 90))}
             events={events}
           ></Calendar>
         </div>
