@@ -40,6 +40,7 @@ export interface IPageProps {
   community: Community;
   events: Event[];
   news: News[];
+  meta: { canonicalUrl: string };
 }
 
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
@@ -76,6 +77,11 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .catch(err => {
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
     });
+
+  const canonicalUrl =
+    process.env.HTTPS == 'false'
+      ? `http://${process.env.VERCEL_URL}/${community.slug}`
+      : `https://${process.env.VERCEL_URL}/${community.slug}`;
 
   /**
    * fetch news for the municipality
@@ -197,6 +203,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 
   return {
     props: {
+      meta: {
+        canonicalUrl: canonicalUrl,
+      },
       community: community,
       events: events,
       news: news,
@@ -218,6 +227,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export default function Page(props: IPageProps) {
   // TODO: Dummy data, integrate with API
   const community: Community = props.community;
+  const meta = props.meta;
 
   if (!community) return <>404 no community</>;
 
@@ -231,6 +241,24 @@ export default function Page(props: IPageProps) {
         <title>
           {community.name} (Gemeinde {community.municipality.name})
         </title>
+        <meta
+          name="description"
+          content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
+        />
+        <meta
+          name="keywords"
+          content={`${community.name}, ${community.municipality.name}, Events, Termine, News, Veranstaltung, Lebensmittel, Müll, Bus`}
+        />
+        {community?.wikimediaCommonsImages?.length > 0 && (
+          <meta property="og:image" content={community.wikimediaCommonsImages[0]} />
+        )}
+        <meta name="geo.region" content="DE-MV" />
+        <meta
+          name="geo.placename"
+          content={`${community.name}, Gemeinde ${community.municipality.name}`}
+        />
+        <link rel="canonical" href={`${meta.canonicalUrl}`} />
+        <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">
