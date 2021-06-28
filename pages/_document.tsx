@@ -20,10 +20,6 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="theme-color" content="#ffffff" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no,"
-          />
           <meta http-equiv="refresh" content="14400" />
           <meta http-equiv="expires" content="14400" />
           <meta name="locale" content="de_DE" />

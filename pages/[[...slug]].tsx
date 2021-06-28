@@ -19,7 +19,7 @@ import {
 import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
 import Calendar from '../src/components/EventDisplay/Calendar';
-import { NewsDTO, NewsDTOteaserQueryFields, NewsDTOtypeName } from '../src/entityDTOs/NewsDTO';
+import { NewsDTO, NewsDTOteaserQueryFields } from '../src/entityDTOs/NewsDTO';
 import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
@@ -43,19 +43,20 @@ export interface IPageProps {
   meta: { canonicalUrl: string };
 }
 
+// use a cdn client for fetching data
+// put it outside to be used in staticProps and staticPaths
+const cdnClient = SanityClientConstructor({
+  apiVersion: process.env.SANITY_APIVERSION,
+  projectId: process.env.SANITY_PROJECTID,
+  dataset: process.env.SANITY_DATASET,
+  token: process.env.SANITY_TOKEN,
+  useCdn: true,
+});
+
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
   const slug = join(params!.slug, '/');
 
   // const { slug } = params as IParams;
-
-  // use a cdn client for fetching data
-  const cdnClient = SanityClientConstructor({
-    apiVersion: process.env.SANITY_APIVERSION,
-    projectId: process.env.SANITY_PROJECTID,
-    dataset: process.env.SANITY_DATASET,
-    token: process.env.SANITY_TOKEN,
-    useCdn: true,
-  });
 
   /**
    * fetch community data incl. image and municipality
@@ -214,14 +215,32 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const arr: string[] = ['schlatkow', 'schmatzin', 'wolfradshof']
-  // let paths = [];
-  //  paths = arr.map((slug) => {
+  /**
+   * fetch community data incl. image and municipality
+   */
+  const communityListQuery = `*[_type == "community" && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
+  let communityList: Community[] = new Array();
+  await cdnClient
+    .fetch(communityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityDtoList.map(communitytDto => {
+          //communityList.push(communityByDTO(communitytDto));
+          return communityByDTO(communitytDto);
+        });
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
 
-  //     return { params: { slug: slug } };
-  // })
-  // return { paths: paths, fallback: true };
-  return { paths: [], fallback: true };
+  let paths = [];
+  if (communityList)
+    paths = communityList.map(community => {
+      if (community.slug) return { params: { slug: [community.slug] } };
+    });
+  return { paths: paths, fallback: true };
+  //return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
