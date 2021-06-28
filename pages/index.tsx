@@ -9,13 +9,12 @@ import { CommunityDTO, CommunityDTOcoreQueryFields } from '../src/entityDTOs/Com
 import Link from 'next/link';
 import SvFLogo from '../src/components/Images/SvFLogo';
 import ReactMarkdown from 'react-markdown';
-import markdownJson from 'markdown-json';
 
 export interface IHomepageProps {
   communities: Community[];
   news: News[];
   meta: { canonicalUrl: string };
-  content: { welcome: string };
+  content: { welcome: any };
 }
 
 // use a cdn client for fetching data
