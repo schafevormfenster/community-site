@@ -24,7 +24,7 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
           {event.place?.localname}
         </span>
       </p>
-      <h6 className="mb-2 font-semibold text-xl">{event.summary}</h6>
+      <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
     </div>
   );
 };
