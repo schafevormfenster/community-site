@@ -162,11 +162,12 @@ export default function Homepage(props: IHomepageProps) {
       <article className="prose prose-lg px-4 py-8 md:px-8">
         {explainText && <ReactMarkdown>{explainText}</ReactMarkdown>}
       </article>
-      <aside className="pb-8 px-4 md:px-8">
+      <aside className="pb-8 px-4 md:px-8" id="kontakt">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 prose prose-lg ">
-          <p className="col-span-1 md:col-span-2">
-            Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.
-          </p>
+          <div className="col-span-1 md:col-span-2">
+            <h2>Sprich uns an</h2>
+            <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
+          </div>
           <div className="col-span-1 pb-8 text-center">
             <img className="rounded-full h-40 w-40 m-auto mb-4" src="/team/christian.jpg" />
             <h4>Christian Sauer</h4>
@@ -202,11 +203,11 @@ export default function Homepage(props: IHomepageProps) {
       </aside>
 
       {
-        <footer className="bg-gray-100 text-white text-xs px-8 py-4">
-          <aside className="prose prose-sm px-4 py-8 md:px-8">
+        <footer className="bg-gray-100  px-8 py-4">
+          <aside className="prose prose-sm px-4 py-8 md:px-8" id="impressum">
             {imprintText && <ReactMarkdown>{imprintText}</ReactMarkdown>}
           </aside>
-          <aside className="prose prose-sm px-4 py-8 md:px-8">
+          <aside className="prose prose-sm px-4 py-8 md:px-8" id="datenschutz">
             {privacyText && <ReactMarkdown>{privacyText}</ReactMarkdown>}
           </aside>
         </footer>
