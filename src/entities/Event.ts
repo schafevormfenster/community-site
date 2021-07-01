@@ -16,7 +16,11 @@ export interface Event {
   end?: string; // TODO: change to Date and add to mapper
   allday?: boolean;
   status?: 'confirmed' | 'cancelled';
-  attachments?: string[];
+  attachment?: {
+    fileUrl: string;
+    title: string;
+    mimeType?: string;
+  };
   // metadata
   created?: string; // TODO: change to Date and add to mapper
   updated?: string; // TODO: change to Date and add to mapper

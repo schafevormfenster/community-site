@@ -62,6 +62,14 @@ module.exports = {
               marginTop: '0',
               marginBottom: theme('space.2'),
             },
+            ul: {
+              marginTop: '0',
+            },
+            li: {
+              p: {
+                lineHeight: theme('lineHeight.tight'),
+              },
+            },
           },
         },
         lg: {
