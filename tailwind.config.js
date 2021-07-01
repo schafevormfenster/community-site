@@ -49,6 +49,48 @@ module.exports = {
         '80/screen': '80vw',
         '90/screen': '90vw',
       },
+      typography: theme => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.gray.900'),
+            maxWidth: 'initial',
+            a: {
+              color: theme('colors.secondary'),
+              textDecoration: 'no-underline',
+            },
+            p: {
+              marginTop: '0',
+              marginBottom: theme('space.2'),
+            },
+            ul: {
+              marginTop: '0',
+            },
+            li: {
+              p: {
+                lineHeight: theme('lineHeight.tight'),
+              },
+            },
+          },
+        },
+        lg: {
+          css: {
+            color: theme('colors.gray.900'),
+            maxWidth: 'initial',
+            a: {
+              color: theme('colors.secondary'),
+              textDecoration: 'no-underline',
+            },
+            p: {
+              marginTop: '0',
+              marginBottom: theme('space.2'),
+            },
+            h2: {
+              marginTop: theme('space.4'),
+              marginBottom: theme('space.4'),
+            },
+          },
+        },
+      }),
     },
   },
   variants: {

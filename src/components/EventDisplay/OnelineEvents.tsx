@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
+import { ClockIcon } from '@heroicons/react/outline';
 
 export interface OnelineEventsProps {
   events: Event[];
@@ -14,6 +15,7 @@ const OnelineEvents: FC<OnelineEventsProps> = ({ events }) => {
     <div className="pb-2 whitespace-nowrap overflow-x-scroll">
       {events.map((event, index) => (
         <span className="mr-2" key={index}>
+          <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           {moment(event.start).format('HH:mm')} {event.summary}
         </span>
       ))}

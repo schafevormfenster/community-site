@@ -2,7 +2,12 @@ import Interweave from 'interweave';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { LocationMarkerIcon, ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
+import {
+  LocationMarkerIcon,
+  ClockIcon,
+  SpeakerphoneIcon,
+  PaperClipIcon,
+} from '@heroicons/react/outline';
 
 export interface EventTeaserProps {
   event: Event;
@@ -25,12 +30,20 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       </p>
       <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
       {event.description && (
-        <div className="pb-2">
+        <div className="prose max-h-60 overflow-y-scroll">
           <Interweave content={event.description} />
         </div>
       )}
+      {event?.attachment?.fileUrl && (
+        <p className="mt-2 mb-2 text-gray-700 leading-none">
+          <a href={event.attachment.fileUrl} download target="_blank">
+            <PaperClipIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+            {event.attachment.title}
+          </a>
+        </p>
+      )}
       {event.calendar?.organizer?.name && (
-        <p className="mb-2 text-gray-700 leading-none">
+        <p className="mt-2 mb-2 text-gray-700 leading-none">
           <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           {event.calendar?.organizer?.name}
         </p>

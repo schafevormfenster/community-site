@@ -13,7 +13,7 @@ import ReactMarkdown from 'react-markdown';
 export interface IHomepageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
-  content: { welcome: any };
+  content: { welcome: any; explain: any; imprint: any; privacy: any };
 }
 
 // use a cdn client for fetching data
@@ -53,6 +53,15 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   const welcomeMd = await require(`../content/homepage/welcome.md`);
   const welcomeJson = JSON.stringify(welcomeMd);
 
+  const explainMd = await require(`../content/homepage/explain.md`);
+  const explainJson = JSON.stringify(explainMd);
+
+  const imprintMd = await require(`../content/homepage/imprint.md`);
+  const imprintJson = JSON.stringify(imprintMd);
+
+  const privacyMd = await require(`../content/homepage/privacy.md`);
+  const privacyJson = JSON.stringify(privacyMd);
+
   return {
     props: {
       meta: {
@@ -60,9 +69,13 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
       },
       content: {
         welcome: welcomeJson,
+        explain: explainJson,
+        imprint: imprintJson,
+        privacy: privacyJson,
       },
       communities: communityList,
     },
+    revalidate: false,
   };
 };
 
@@ -72,6 +85,9 @@ export default function Homepage(props: IHomepageProps) {
   const communities = props.communities;
   const content = props.content;
   const welcomeText = JSON.parse(content.welcome).default;
+  const explainText = JSON.parse(content.explain).default;
+  const imprintText = JSON.parse(content.imprint).default;
+  const privacyText = JSON.parse(content.privacy).default;
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -89,9 +105,9 @@ export default function Homepage(props: IHomepageProps) {
   }, [searchTerm]);
 
   return (
-    <>
+    <div className="max-w-screen-md m-auto bg-white">
       <Head>
-        <title> Schafe vorm Fenster</title>
+        <title>Schafe vorm Fenster</title>
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <meta property="og:image" content="" />
@@ -106,12 +122,12 @@ export default function Homepage(props: IHomepageProps) {
         <p className="font-title text-lg  text-gray-600">Schafe vorm Fenster</p>
       </header>
 
-      <article className="prose prose-lg px-4 pb-12">
+      <article className="prose prose-lg px-4 py-8 md:px-8">
         {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
       </article>
       <main className="p-0">
         <div className="community-search h-80 overflow-y-hidden">
-          <div className="h-16 px-4 py-2">
+          <div className="h-16 px-4 md:px-8 py-2">
             <input
               type="text"
               placeholder="Finde dein Dorf ..."
@@ -144,55 +160,59 @@ export default function Homepage(props: IHomepageProps) {
           </div>
         </div>
       </main>
-      <aside className="pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          <p className="col-span-1 md:col-span-2 text-center py-8 text-lg">
-            Kontaktiere uns gerne direkt. Wir beißen nicht.
-          </p>
-          <div className="col-span-1 px-12 pb-8 text-center">
-            <img className="rounded-full max-h-64 m-auto pb-4" src="/team/christian.jpg" />
-            <h4 className="pb-2 text-2xl">Christian Sauer</h4>
+      <article className="prose prose-lg px-4 py-8 md:px-8">
+        {explainText && <ReactMarkdown>{explainText}</ReactMarkdown>}
+      </article>
+      <aside className="pb-8 px-4 md:px-8" id="kontakt">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 prose prose-lg ">
+          <div className="col-span-1 md:col-span-2">
+            <h2>Sprich uns an</h2>
+            <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
+          </div>
+          <div className="col-span-1 pb-8 text-center">
+            <img className="rounded-full h-40 w-40 m-auto mb-4" src="/team/christian.jpg" />
+            <h4>Christian Sauer</h4>
             <p>
               Projektkoordinator
               <br />
-              <a
-                className="text-secondary"
-                href="mailto:christian@schafe-vorm-fenster.de?cc=jan@schafe-vorm-fenster.de&amp;subject=Hallo Christian.&amp;body=Hallo Christian, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ..."
-              >
+              <a href="mailto:christian@schafe-vorm-fenster.de?cc=jan@schafe-vorm-fenster.de&amp;subject=Hallo Christian.&amp;body=Hallo Christian, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ...">
                 christian@schafe-vorm-fenster.de
               </a>
               <br />
-              <a className="text-secondary" href="tel:++4915678689704‬">
-                +49 156 78689704‬
-              </a>
+              <a href="tel:++4915678689704‬">+49 156 78689704‬</a>
             </p>
           </div>
-          <div className="col-span-1 px-12 text-center">
-            <img className="rounded-full max-h-64 m-auto pb-4" src="/team/jan.jpg" />
-            <h4 className="pb-2 text-2xl">Jan-Henrik Hempel</h4>
+          <div className="col-span-1 text-center">
+            <img className="rounded-full h-40 w-40 m-auto mb-4" src="/team/jan.jpg" />
+            <h4>Jan-Henrik Hempel</h4>
             <p>
               Technischer Leiter
               <br />
-              <a
-                className="text-secondary"
-                href="mailto:jan@schafe-vorm-fenster.de?cc=christian@schafe-vorm-fenster.de&amp;subject=Hallo Jan.&amp;body=Hallo Jan, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ..."
-              >
+              <a href="mailto:jan@schafe-vorm-fenster.de?cc=christian@schafe-vorm-fenster.de&amp;subject=Hallo Jan.&amp;body=Hallo Jan, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ...">
                 jan@schafe-vorm-fenster.de
               </a>
               <br />
-              <a className="text-secondary" href="tel:++491751661003">
-                +49 175 1661003
-              </a>
+              <a href="tel:++491751661003">+49 175 1661003</a>
             </p>
           </div>
         </div>
       </aside>
+      <aside className="pb-8 text-center">
+        <hr />
+        <p className="text-sm mt-8 mb-4">Gefördert von der Europäischen Union.</p>
+        <img className="m-auto max-w-sm" src="/ESF-Logo_2021-SvF.jpg" />
+      </aside>
 
       {
-        <footer className="bg-gray-700 text-white text-xs px-8 py-4">
-          <hr className="my-4" />
+        <footer className="bg-gray-100  px-8 py-4">
+          <aside className="prose prose-sm px-4 py-8 md:px-8" id="impressum">
+            {imprintText && <ReactMarkdown>{imprintText}</ReactMarkdown>}
+          </aside>
+          <aside className="prose prose-sm px-4 py-8 md:px-8" id="datenschutz">
+            {privacyText && <ReactMarkdown>{privacyText}</ReactMarkdown>}
+          </aside>
         </footer>
       }
-    </>
+    </div>
   );
 }

@@ -23,6 +23,7 @@ import { NewsDTO, NewsDTOteaserQueryFields } from '../src/entityDTOs/NewsDTO';
 import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
+import Link from 'next/link';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -211,6 +212,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       events: events,
       news: news,
     },
+    revalidate: 14400,
   };
 };
 
@@ -254,7 +256,7 @@ export default function Page(props: IPageProps) {
   const news: News[] = props.news;
 
   return (
-    <>
+    <div className="bg-white">
       <Head>
         <title>
           {community.name} (Gemeinde {community.municipality.name})
@@ -277,6 +279,8 @@ export default function Page(props: IPageProps) {
         />
         <link rel="canonical" href={`${meta.canonicalUrl}`} />
         <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
+        <meta httpEquiv="refresh" content="14400" />
+        <meta httpEquiv="expires" content="14400" />
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">
@@ -302,10 +306,23 @@ export default function Page(props: IPageProps) {
           ></Calendar>
         </div>
       </main>
-      {/*<footer className="bg-gray-700 text-white text-xs px-8 py-4">
-        <pre>{JSON.stringify(community, undefined, 2)}</pre>
-        <hr className="my-4" />
-          </footer>*/}
-    </>
+      <footer className="text-center px-8 py-4">
+        <aside className="prose prose-sm px-4 py-8 md:px-8">
+          <div>
+            <Link href={`/#kontakt`}>
+              <a className="inline-block px-4 py-2">Kontakt</a>
+            </Link>
+            <Link href={`/#impressum`}>
+              <a className="inline-block px-4 py-2">Impressum</a>
+            </Link>
+            <Link href={`/#datenschutz`}>
+              <a className="inline-block px-4 py-2">Datenschutzerklärung</a>
+            </Link>
+          </div>
+          <p className="mb-4">Gefördert von der Europäischen Union.</p>
+          <img className="m-auto w-full max-w-sm" src="/ESF-Logo_2021-SvF.jpg" />
+        </aside>
+      </footer>
+    </div>
   );
 }

@@ -48,6 +48,17 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
           name: eventDto?.place ? eventDto.place.name : null,
           localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
         },
+        attachment: {
+          fileUrl: eventDto?.googleeventattachment[0]?.fileUrl
+            ? eventDto.googleeventattachment[0].fileUrl
+            : null,
+          mimeType: eventDto?.googleeventattachment[0]?.mimeType
+            ? eventDto.googleeventattachment[0].mimeType
+            : null,
+          title: eventDto?.googleeventattachment[0]?.title
+            ? eventDto.googleeventattachment[0].title
+            : null,
+        },
       }
     : undefined;
 };
