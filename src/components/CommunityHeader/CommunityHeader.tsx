@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Community } from '../../entities/Community';
 import SvFLogo from '../Images/SvFLogo';
+import Link from 'next/link';
 
 export interface CommunityHeaderProps {
   community: Community;
@@ -21,7 +22,11 @@ const CommunityHeader: FC<CommunityHeaderProps> = props => {
     <header>
       <div className="text-center">
         <div className="relative w-12 h-12 ml-2 my-2 -mb-4 z-10 lg:m-4">
-          <SvFLogo />
+          <Link href={`/`}>
+            <a title="zu den Terminlisten anderer Dörfer">
+              <SvFLogo />
+            </a>
+          </Link>
         </div>
         <div className="absolute top-2 left-16 pt-0.5 pl-1 lg:pt-5 lg:pl-4 font-title text-sm lg:text-base text-gray-600">
           Schafe vorm Fenster

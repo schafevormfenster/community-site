@@ -254,7 +254,7 @@ export default function Page(props: IPageProps) {
   const news: News[] = props.news;
 
   return (
-    <>
+    <div className="bg-white">
       <Head>
         <title>
           {community.name} (Gemeinde {community.municipality.name})
@@ -306,6 +306,6 @@ export default function Page(props: IPageProps) {
         <pre>{JSON.stringify(community, undefined, 2)}</pre>
         <hr className="my-4" />
           </footer>*/}
-    </>
+    </div>
   );
 }

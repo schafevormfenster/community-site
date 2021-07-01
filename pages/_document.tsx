@@ -29,7 +29,7 @@ class MyDocument extends Document {
           <meta name="twitter:site" content="@schafeamfenster" />
           <meta name="twitter:creator" content="@schafeamfenster" />
         </Head>
-        <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base leading-normal">
+        <body className="w-screen m-0 p-0 bg-gray-200 text-black font-body font-normal text-base leading-normal">
           <Main />
           <NextScript />
         </body>
