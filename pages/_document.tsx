@@ -20,8 +20,6 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="theme-color" content="#ffffff" />
-          <meta httpEquiv="refresh" content="14400" />
-          <meta httpEquiv="expires" content="14400" />
           <meta name="locale" content="de_DE" />
           <meta name="robots" content="all" />
           <meta name="author" content="Schafe vorm Fenster UG" />

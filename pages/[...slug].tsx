@@ -212,6 +212,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       events: events,
       news: news,
     },
+    revalidate: 14400,
   };
 };
 
@@ -278,6 +279,8 @@ export default function Page(props: IPageProps) {
         />
         <link rel="canonical" href={`${meta.canonicalUrl}`} />
         <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
+        <meta httpEquiv="refresh" content="14400" />
+        <meta httpEquiv="expires" content="14400" />
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">

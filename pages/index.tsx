@@ -75,6 +75,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
       },
       communities: communityList,
     },
+    revalidate: false,
   };
 };
 

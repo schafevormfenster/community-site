@@ -21,8 +21,6 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  console.log(eventDto?.googleeventattachment);
-
   return eventDto
     ? {
         _id: eventDto._id,
