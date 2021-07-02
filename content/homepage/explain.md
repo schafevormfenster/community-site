@@ -1,13 +1,60 @@
-## Erfahren wann wer wo in deinem Dorf ist - einfach per Smartphone.
+## Du bist ein kommerzieller Händler?
 
-Das klingt einfach und es wundert, dass auch im Jahr 2019 keine Chance besteht, solche Informationen
-im Internet - und auch sonst nirgendwo - zu finden. Deshalb entsteht hier ein Online-Kalender für
-dein Dorf.
+Kommuniziere dein Angebot kostenlos in unserer Region.
 
-Für mehrere Dörfer der Peeneregion gibt es bereits Dorfkalender.
+Deine Vorteile:
 
-## Du wohnst in einem Dorf?
+- vergrößere deine Reichweite, auch überregional
+- finde neue Absatzmöglichkeiten
+- informiere deine Kunden über Neuerungen in deinem Sortiment
+- treffe andere Händler und Anbieter
+- bewirb gezielt deine (neuen) Produkte
+- beliefere neue Kunden, die durch Corona vermehrt mobile Angebote nutzen möchten
+- veröffentliche deinen Routen-Zeitplan bzw. deine Öffnungszeiten auf unserer Plattform, um mehr
+  Kunden zu erreichen
+- lerne die Chancen der Digitalisierung zu nutzen
 
-Also kennst dich besser aus als wir. Wir würden uns freuen, wenn Du uns sagen könntest, welche
-Händler, Dienste oder Termine es in deinem Dorf gibt. Danach übernehmen wir, recherchieren und
-telefonieren und bringen die Termine online.
+## Du bist ein regionaler Akteur?
+
+Kommuniziere dein Angebot kostenlos in unserer Region.
+
+Deine Vorteile:
+
+- vergrößere deine Reichweite
+- bleibe mit deinen Nachbarn in Kontakt auch bei Kontakt-Beschränkungen
+- sorge für mehr Bescuher deiner Veranstaltungen
+- finde neue Freunde
+- stimme dich mit Nachbarn ab, die ähnliche Veranstaltungen wie Du planen
+- teile deine Neuigkeiten mit deinen Nachbarn
+- egal, ob Chorprobe, Bürgermeistersprechstunde, Müllabfuhr oder Sommerfest, alle
+  gemeinwohlorientierten Aktivitäten, die zur Vielfalt des Dorflebens beitragen, können auf Schafe
+  vorm Fenster veröffentlicht werden
+
+## Wie funktioniert unser Dienst?
+
+Kurzgesagt funktioniert das so:
+
+- du legst in deinem Google Kalender einen Kalender für dein Unternehmen oder deinen Verein an,
+- machst den Kalender öffentlich und
+- teilst ihn mit [Jan](mailto:jan@schafe-vorm-fenster.de) oder
+  [Christian](christian@schafe-vorm-fenster.de)
+
+Wir sorgen dann dafür, dass die Termine in diesem Kalender am eingetragenen Ort erscheinen.
+
+Benötigst Du eine Anleitung?
+
+- Das Kulturlandbüro Uecker-Randow hat diese sehr
+  [ausführliche Anleitung](https://drive.google.com/file/d/1zgpBS41osGJiYB5VD-228xpseAYZqbZ1/view?usp=sharing)
+  erstell.
+- Alternativ kannst Dir [unsere Videoanleitung](https://www.youtube.com/watch?v=0GCd42S4sZQ)
+  ansehen.
+
+## FAQs
+
+- **Ist euer Dienst kostenlos?** Unser Basisangebot ist und bleibt kostenlos. Darüber hinaus wird es
+  kostenpflichtige Funktionen geben.
+- **Kann jeder mitmachen?** Ja, wir freuen uns über jeden der mitmacht und unsere Region nach vorne
+  bringt.
+- **Brauche ich einen Google Kalender?** Ja, derzeit arbeiten wir nur mit Google Kalkendern, weil
+  diese für alle am einfachsten und kostenlos zu nutzen sind. Später werden wir voraussichtlich auch
+  andere Kalenderformate unterstützen.

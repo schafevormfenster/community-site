@@ -122,7 +122,7 @@ export default function Homepage(props: IHomepageProps) {
         <p className="font-title text-lg  text-gray-600">Schafe vorm Fenster</p>
       </header>
 
-      <article className="prose prose-lg px-4 py-8 md:px-8">
+      <article className="prose prose-lg px-4 py-8 md:px-8 text-center">
         {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
       </article>
       <main className="p-0">
@@ -166,7 +166,7 @@ export default function Homepage(props: IHomepageProps) {
       <aside className="pb-8 px-4 md:px-8" id="kontakt">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 prose prose-lg ">
           <div className="col-span-1 md:col-span-2">
-            <h2>Sprich uns an</h2>
+            <h2>Sprich uns an!</h2>
             <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
           </div>
           <div className="col-span-1 pb-8 text-center">

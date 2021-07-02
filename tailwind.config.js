@@ -84,9 +84,28 @@ module.exports = {
               marginTop: '0',
               marginBottom: theme('space.2'),
             },
-            h2: {
-              marginTop: theme('space.4'),
+            h1: {
+              fontWeight: theme('fontWeight.light'),
+              lineHeight: theme('lineHeight.tight'),
+              marginTop: theme('space.8'),
               marginBottom: theme('space.4'),
+            },
+            h2: {
+              fontWeight: theme('fontWeight.light'),
+              lineHeight: theme('lineHeight.tight'),
+              marginTop: theme('space.8'),
+              marginBottom: theme('space.4'),
+            },
+            ul: {
+              marginTop: '0',
+            },
+            li: {
+              marginTop: '0',
+              marginBottom: theme('space.2'),
+              lineHeight: theme('lineHeight.normal'),
+              p: {
+                lineHeight: theme('lineHeight.normal'),
+              },
             },
           },
         },
