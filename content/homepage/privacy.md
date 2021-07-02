@@ -2,7 +2,10 @@
 
 Diese Erklärung informiert Sie über den Schutz und die Nutzug ihrer personenbezogenen Daten beim
 Aufruf der Internetseite(n) der Schafe vorm Fenster UG sowie bei der Kontaktaufnahme per E-Mail.
-Grundsätzlich legen wir Wert darauf, möglichst wenige Daten von zu erfassen.
+
+## Datenvermeidung und Datensparsamkeit
+
+Grundsätzlich legen wir Wert darauf, möglichst wenige Daten zu erfassen.
 
 ### Verschlüsselung
 
@@ -17,16 +20,30 @@ bspw. die Art des Webbrowsers, das verwendete Betriebssystem, den Domainnamen ih
 Providers und Ähnliches beinhalten. Hierbei handelt es sich ausschließlich um Informationen, welche
 keine Rückschlüsse auf Ihre Person zulassen. Diese Informationen sind technisch notwendig, um von
 Ihnen angeforderte Inhalte von Webseiten korrekt auszuliefern und fallen bei Nutzung des Internets
-zwingend an. Das Hosting der Website wird von Netlify übernommen. Weitere Details finden Sie im der
-Datenschutzerklärung von Netlify.
+zwingend an. Das Hosting der Website wird von [Vercel](https://vercel.com/legal/privacy-policy)
+übernommen. Weitere Details finden Sie im der Datenschutzerklärung von
+[Vercel](https://vercel.com/legal/privacy-policy).
 
 ### Keine externen Dienste
 
 Unsere Internetseite nutzt derzeit keine externen Dienste, bei welchen Zugriff von Ihrem Browser auf
 andere Webseiten erfolgen.
 
+### Kein Web-Tracking
+
 Entsprechend erfolgen derzeit auch keine statitische Auswertung und es wird noch kein Web-Tracking
 eingesetzt.
+
+### Externe Ressourcen
+
+Im Sinne der Content Curation nutzen wir Inhalte von externen Plattformen und laden diese direkt von
+Dort in die Website. Dies erfolgt in folgenden Fällen:
+
+- Die Dorfbilder werden von [Wikimedia Commons](https://commons.wikimedia.org/wiki/Hauptseite)
+  geladen.
+- Sollten News dargestellt werden, werden die Bilder von [twitter](https://twitter.com/) geladen.
+- Sollten Anbieter Termine mit Bildern oder Downloads einstellen, werden diese ggf. auch von
+  externen Servern geladen.
 
 ### Keine Cookies
 
@@ -41,16 +58,6 @@ für diesen Zweck genutzt.
 
 Wir geben Ihre Daten nicht an Dritte weiter und nutzen die auch nicht für andere Zwecke.
 
-### Google Forms Formulare
-
-Wir verwenden Formulare auf Basis von Google Forms, ein Dienst der Firma Google Inc., 1600
-Amphitheatre Parkway, Mountain View, CA 94043, USA („Google“). Google Forms stellt beim Besuch
-unserer Webseite eine Verbindung zu einem Server von Google her. Google erfährt damit Ihre
-IP-Adresse sowie die Seite, die Sie besucht haben. Geben Sie Daten in ein solches Formular ein,
-werden diese erst zu Google übertragen, wenn Sie das Formular mit einem entsprechenden Button
-absenden. Weitere Informationen zur Datenerhebung finden Sie bei Google, ebenso
-Einstellmöglichkeiten zur Privatsphäre.
-
 ### Löschung bzw. Sperrung der Daten
 
 Wir halten uns an die Grundsätze der Datenvermeidung und Datensparsamkeit. Wir speichern Ihre
@@ -64,10 +71,11 @@ routinemäßig und entsprechend den gesetzlichen Vorschriften gesperrt oder gel�
 Sie haben das Recht, jederzeit Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten zu
 erhalten. Ebenso haben Sie das Recht auf Berichtigung, Sperrung oder, abgesehen von der
 vorgeschriebenen Datenspeicherung zur Geschäftsabwicklung, Löschung Ihrer personenbezogenen Daten.
-Bitte wenden Sie sich dazu an unseren Datenschutzbeauftragten. Die Kontaktdaten finden Sie ganz
-unten.
+Bitte wenden Sie sich dazu an unseren Datenschutzbeauftragten unter
+[datenschutz@schafe-vorm-fenster.de](mailto:datenschutz@schafe-vorm-fenster.de).
 
 ### Fragen zum Datenschutz
 
 Wenn Sie Fragen zum Datenschutz haben, wenden Sie sich bitte direkt per E-Mail an unseren
-Datenschutzbeauftragten unter datenschutz@schafe-vorm-fesnter.de.
+Datenschutzbeauftragten unter
+[datenschutz@schafe-vorm-fenster.de](mailto:datenschutz@schafe-vorm-fenster.de).
