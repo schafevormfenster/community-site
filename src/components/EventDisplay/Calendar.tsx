@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import moment from 'moment';
 import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
 import { CalendarDisplayModeEnum } from '../../entities/Calendar';
@@ -24,14 +23,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
   return (
-    <main>
+    <main key="CalendarMain">
       {myCalenderSheet.years.map(year => (
-        <div key={year.year}>
+        <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
             return (
               <CalendarMonthSection
                 month={new Date(month.year, month.month)}
-                key={`monthSection${monthIndex}`}
+                key={`monthSection${year.year}${monthIndex}`}
               >
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
@@ -93,29 +92,32 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   });
 
                   return (
-                    <CalendarDaySection day={iDay} key={`daySection${dayIndex}`}>
+                    <CalendarDaySection
+                      day={iDay}
+                      key={`daySection${year.year}${monthIndex}${dayIndex}`}
+                    >
                       {microEvents.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
-                          <MicroEvent event={microEvent} key={microEventIndex} />
+                          <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
 
                       {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
 
                       {allDayEvents.length > 0 &&
                         allDayEvents.map((allDayEvent, allDayEventIndex) => (
-                          <AlldayEvent event={allDayEvent} key={allDayEventIndex} />
+                          <AlldayEvent event={allDayEvent} key={allDayEvent._id} />
                         ))}
 
                       {regularEvents.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
-                          <>
+                          <div key={regularEvent._id}>
                             {regularEvent.calendar.display_mode == 'mini' && (
-                              <MiniEvent event={regularEvent} key={regularEventIndex} />
+                              <MiniEvent event={regularEvent} key={regularEvent._id} />
                             )}
                             {regularEvent.calendar.display_mode != 'mini' && (
-                              <EventTeaser event={regularEvent} key={regularEventIndex} />
+                              <EventTeaser event={regularEvent} key={regularEvent._id} />
                             )}
-                          </>
+                          </div>
                         ))}
                     </CalendarDaySection>
                   );

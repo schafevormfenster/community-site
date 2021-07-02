@@ -298,19 +298,19 @@ export default function Page(props: IPageProps) {
         />
       </Head>
       <CommunityHeader community={community} />
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">
+      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
         <div className="col-span-1">
           {news.length > 0 ? (
             <NewsArrangement>
               {community?.wikimediaCommonsImages?.length > 0 && (
-                <CommunityIntroAsNewsTeaserFormat community={community} />
+                <CommunityIntroAsNewsTeaserFormat community={community} key="communitySlide" />
               )}
               {news.map((newsItem, index) => (
                 <NewsTeaser newsItem={newsItem} key={`news${index}`} />
               ))}
             </NewsArrangement>
           ) : (
-            <CommunityIntroWithoutNews community={community}></CommunityIntroWithoutNews>
+            <CommunityIntroWithoutNews community={community} key="communitySlide" />
           )}
         </div>
         <div className="col-span-1 lg:col-span-2">
@@ -318,7 +318,8 @@ export default function Page(props: IPageProps) {
             start={new Date()}
             end={new Date(new Date().setDate(new Date().getDate() + 90))}
             events={events}
-          ></Calendar>
+            key="eventList"
+          />
         </div>
       </main>
       <footer className="text-center px-8 py-4">
