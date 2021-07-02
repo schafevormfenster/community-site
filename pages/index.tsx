@@ -113,7 +113,22 @@ export default function Homepage(props: IHomepageProps) {
         <meta property="og:image" content="" />
         <meta name="geo.region" content="DE-MV" />
         <link rel="canonical" href={`${meta.canonicalUrl}`} />
-        <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
+        <meta property="og:url" content={`${meta.canonicalUrl}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if(typeof(_etracker) === "object") {
+                et_eC_Wrapper({
+                  et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
+                  et_pagename: 'Homepage',
+                  et_areas: 'About',
+                   _etr: { eoBlocked:true },
+
+                });
+              }
+            `,
+          }}
+        />
       </Head>
       <header className="text-center py-4">
         <div className="inline-block w-20 h-20 m-auto">
