@@ -281,6 +281,21 @@ export default function Page(props: IPageProps) {
         <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
         <meta httpEquiv="refresh" content="14400" />
         <meta httpEquiv="expires" content="14400" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if(typeof(_etracker) === "object") {
+                et_eC_Wrapper({
+                  et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
+                  et_pagename: '${community.name}',
+                  et_areas: 'Community',
+                   _etr: { eoBlocked:true },
+
+                });
+              }
+            `,
+          }}
+        />
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4">

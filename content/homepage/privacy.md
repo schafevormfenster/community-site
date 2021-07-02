@@ -29,10 +29,30 @@ zwingend an. Das Hosting der Website wird von [Vercel](https://vercel.com/legal/
 Unsere Internetseite nutzt derzeit keine externen Dienste, bei welchen Zugriff von Ihrem Browser auf
 andere Webseiten erfolgen.
 
-### Kein Web-Tracking
+### Web-Tracking
 
-Entsprechend erfolgen derzeit auch keine statitische Auswertung und es wird noch kein Web-Tracking
-eingesetzt.
+Wir nutzen ein Webtracking der [etracker GmbH](https://www.etracker.com) aus Hamburg zur Analyse von
+Nutzungsdaten. Wir verwenden keine Cookies für die Web-Analyse.
+
+Die mit etracker erzeugten Daten werden von etracker ausschließlich in Deutschland verarbeitet und
+gespeichert und unterliegen damit den strengen deutschen und europäischen Datenschutzgesetzen und
+-standards. etracker wurde diesbezüglich unabhängig geprüft, zertifiziert und mit dem
+[Datenschutz-Gütesiegel ePrivacyseal](https://www.eprivacy.eu/kunden/vergebene-siegel/firma/etracker-gmbh/)
+ausgezeichnet.
+
+Die Datenverarbeitung erfolgt auf Basis der gesetzlichen Bestimmungen des Art. 6 Abs. 1 lit. f
+(berechtigtes Interesse) der Datenschutzgrundverordnung (DSGVO). Unser Anliegen im Sinne der DSGVO
+(berechtigtes Interesse) ist die Optimierung unseres Online-Angebotes und unseres Webauftritts. Da
+uns die Privatsphäre unserer Besucher wichtig ist, werden die Daten, die möglicherweise einen Bezug
+zu einer einzelnen Person zulassen, wie die IP-Adresse, Anmelde- oder Gerätekennungen,
+frühestmöglich anonymisiert oder pseudonymisiert. Eine andere Verwendung, Zusammenführung mit
+anderen Daten oder eine Weitergabe an Dritte erfolgt nicht.
+
+Sie können der vorbeschriebenen Datenverarbeitung jederzeit widersprechen. Der Widerspruch hat keine
+nachteiligen Folgen.
+
+Weitere Informationen zum Datenschutz bei etracker finden Sie
+[hier](https://www.etracker.com/datenschutz/).
 
 ### Externe Ressourcen
 
@@ -79,3 +99,7 @@ Bitte wenden Sie sich dazu an unseren Datenschutzbeauftragten unter
 Wenn Sie Fragen zum Datenschutz haben, wenden Sie sich bitte direkt per E-Mail an unseren
 Datenschutzbeauftragten unter
 [datenschutz@schafe-vorm-fenster.de](mailto:datenschutz@schafe-vorm-fenster.de).
+
+```
+
+```

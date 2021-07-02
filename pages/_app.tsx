@@ -14,22 +14,20 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no,"
         />
+        <script
+          id="_etLoader"
+          type="text/javascript"
+          charSet="UTF-8"
+          data-block-cookies="true"
+          data-respect-dnt="true"
+          data-secure-code={process.env.NEXT_PUBLIC_ETRACKER_CODE}
+          src="//code.etracker.com/code/e.js"
+          async
+        ></script>
       </Head>
       <Component {...pageProps} />
     </>
   );
 }
-
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
-
-//   return { ...appProps }
-// }
 
 export default MyApp;
