@@ -10,6 +10,10 @@ import Link from 'next/link';
 import SvFLogo from '../src/components/Images/SvFLogo';
 import ReactMarkdown from 'react-markdown';
 
+const ReactComment = ({ text }) => {
+  return <div dangerouslySetInnerHTML={{ __html: `<!--${text}-->` }} />;
+};
+
 export interface IHomepageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
@@ -140,7 +144,7 @@ export default function Homepage(props: IHomepageProps) {
       <article className="prose prose-lg px-4 py-8 md:px-8 text-center">
         {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
       </article>
-      <main className="p-0">
+      <main className="p-0" id="dorfsuche">
         <div className="community-search h-80 overflow-y-hidden">
           <div className="h-16 px-4 md:px-8 py-2">
             <input
@@ -218,8 +222,33 @@ export default function Homepage(props: IHomepageProps) {
         <img className="m-auto max-w-sm" src="/ESF-Logo_2021-SvF.jpg" />
       </aside>
 
+      <nav className="pb-8 text-center text-base px-4 md:px-8">
+        <hr className="mb-8" />
+        <h2 className="text-2xl mb-4">Alle Dörfer</h2>
+        <p className="mb-4">
+          Hier findest Du eine Liste aller Dörfer in Vorpommern-Greifswald. <br />
+          Einfacher{' '}
+          <Link href={`/#dorfsuche`}>
+            <a className="text-secondary">findest Du dein Dorf</a>
+          </Link>{' '}
+          über die Suche weiter oben.
+        </p>
+        <ul>
+          {communities.map(c => (
+            <li key={c._id}>
+              <Link href={`/${c.slug}`}>
+                <a>
+                  {c.name}, Gemeinde {c.municipality.name}
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {
         <footer className="bg-gray-100  px-8 py-4">
+          <ReactComment text={'googleoff: index'} />
           <aside className="prose prose-sm px-4 py-8 md:px-8" id="impressum">
             {imprintText && <ReactMarkdown>{imprintText}</ReactMarkdown>}
           </aside>

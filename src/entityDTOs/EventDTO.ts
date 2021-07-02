@@ -33,6 +33,6 @@ export interface EventDTO {
 
 export const EventDTOcoreQueryFields = '_id, name, start';
 
-export const EventDTOteaserQueryFields = `_id, name, start, end, allday, googleeventattachment, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOteaserQueryFields} }, place->{ ${PlaceDTOcoreQueryFields} }`;
+export const EventDTOteaserQueryFields = `_id, name, start, end, allday, location, googleeventattachment, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOteaserQueryFields} }, place->{ ${PlaceDTOcoreQueryFields} }`;
 
-export const EventDTOdetailQueryFields = `cancelled, location, description, ${EventDTOteaserQueryFields}`;
+export const EventDTOdetailQueryFields = `cancelled, description, ${EventDTOteaserQueryFields}`;

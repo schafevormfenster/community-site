@@ -99,7 +99,3 @@ Bitte wenden Sie sich dazu an unseren Datenschutzbeauftragten unter
 Wenn Sie Fragen zum Datenschutz haben, wenden Sie sich bitte direkt per E-Mail an unseren
 Datenschutzbeauftragten unter
 [datenschutz@schafe-vorm-fenster.de](mailto:datenschutz@schafe-vorm-fenster.de).
-
-```
-
-```

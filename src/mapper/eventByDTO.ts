@@ -47,6 +47,7 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
           _id: eventDto?.place ? eventDto.place._id : null,
           name: eventDto?.place ? eventDto.place.name : null,
           localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
+          address: eventDto?.place?.address ? eventDto.place.address : null,
         },
         attachment: {
           fileUrl: eventDto?.googleeventattachment[0]?.fileUrl
