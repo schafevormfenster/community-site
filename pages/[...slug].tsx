@@ -80,10 +80,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
     });
 
-  const canonicalUrl =
-    process.env.HTTPS == 'false'
-      ? `http://${process.env.VERCEL_URL}/${community.slug}`
-      : `https://${process.env.VERCEL_URL}/${community.slug}`;
+  const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
+    : `https://${process.env.VERCEL_URL}/${community.slug}`;
 
   /**
    * fetch news for the municipality

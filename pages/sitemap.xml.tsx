@@ -17,10 +17,9 @@ const cdnClient = SanityClientConstructor({
 const Sitemap: React.FC = () => null;
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const baseUrl =
-    process.env.HTTPS == 'false'
-      ? `http://${process.env.VERCEL_URL}/`
-      : `https://${process.env.VERCEL_URL}/`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
+    : `https://${process.env.VERCEL_URL}/`;
 
   /**
    * fetch all communities to create static pathes

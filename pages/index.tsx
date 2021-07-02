@@ -31,10 +31,9 @@ const cdnClient = SanityClientConstructor({
 });
 
 export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
-  const canonicalUrl =
-    process.env.HTTPS == 'false'
-      ? `http://${process.env.VERCEL_URL}/`
-      : `https://${process.env.VERCEL_URL}/`;
+  const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
+    : `https://${process.env.VERCEL_URL}/`;
 
   /**
    * fetch all communities to create static pathes
