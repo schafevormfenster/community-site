@@ -21,7 +21,7 @@ Kommuniziere dein Angebot kostenlos in unserer Region.
 Deine Vorteile:
 
 - vergrößere deine Reichweite
-- bleibe mit deinen Nachbarn in Kontakt auch bei Kontakt-Beschränkungen
+- bleibe mit deinen Nachbarn in Kontakt auch bei Kontaktbeschränkungen
 - sorge für mehr Bescuher deiner Veranstaltungen
 - finde neue Freunde
 - stimme dich mit Nachbarn ab, die ähnliche Veranstaltungen wie Du planen
