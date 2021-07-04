@@ -46,7 +46,7 @@ Benötigst du eine Anleitung?
 - Das Kulturlandbüro Uecker-Randow hat diese sehr
   [ausführliche Anleitung](https://drive.google.com/file/d/1zgpBS41osGJiYB5VD-228xpseAYZqbZ1/view?usp=sharing)
   erstellt.
-- Alternativ kannst dir [unsere Videoanleitung](https://www.youtube.com/watch?v=usCKCY1-05A)
+- Alternativ kannst du dir [unsere Videoanleitung](https://www.youtube.com/watch?v=usCKCY1-05A)
   ansehen.
 
 ## FAQs
