@@ -42,7 +42,11 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       eventStartDate.getMonth(),
                       eventStartDate.getDate()
                     );
-                    if (eventStartDay.getTime() === iDay.getTime() && item.allday === true)
+                    if (
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.allday === true &&
+                      item.calendar.display_mode !== CalendarDisplayModeEnum.MICRO
+                    )
                       return item;
                   });
 
@@ -100,7 +104,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
-
                       {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
 
                       {allDayEvents.length > 0 &&
