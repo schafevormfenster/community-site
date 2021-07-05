@@ -4,8 +4,10 @@ import { EventDTO } from '../entityDTOs/EventDTO';
 import { communityExcerptByDTO } from './communityByDTO';
 
 export const eventByDTO = (eventDto: EventDTO): Event => {
-  const displayMode = (display_mode: string): CalendarDisplayMode => {
-    switch (eventDto.calendar.display_mode) {
+  if (!eventDto) return undefined;
+
+  const displayMode = (display_mode: string | undefined): CalendarDisplayMode => {
+    switch (eventDto?.calendar?.display_mode) {
       case '0':
         return CalendarDisplayModeEnum.MICRO;
       case '1':
@@ -21,47 +23,58 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  return eventDto
-    ? {
-        _id: eventDto._id,
-        summary: eventDto.name,
-        description: eventDto.description ? eventDto.description : null,
-        start: eventDto.start,
-        end: eventDto.end,
-        allday: eventDto.allday,
-        location: eventDto.location ? eventDto.location : null,
-        community: communityExcerptByDTO(eventDto.community),
-        calendar: {
-          _id: eventDto.calendar._id,
-          name: eventDto.calendar.name,
-          display_mode: displayMode(eventDto.calendar.display_mode),
-          organizer: {
-            _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
-            name: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer.name : null,
-            longname: eventDto?.calendar?.organizer?.longname
-              ? eventDto.calendar?.organizer.longname
-              : eventDto.calendar?.organizer.name,
-          },
-        },
-        place: {
-          _id: eventDto?.place ? eventDto.place._id : null,
-          name: eventDto?.place ? eventDto.place.name : null,
-          localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
-          address: eventDto?.place?.address ? eventDto.place.address : null,
-        },
-        attachment: {
-          fileUrl: eventDto?.googleeventattachment[0]?.fileUrl
-            ? eventDto.googleeventattachment[0].fileUrl
-            : null,
-          mimeType: eventDto?.googleeventattachment[0]?.mimeType
-            ? eventDto.googleeventattachment[0].mimeType
-            : null,
-          title: eventDto?.googleeventattachment[0]?.title
-            ? eventDto.googleeventattachment[0].title
-            : null,
-        },
-      }
-    : undefined;
+  let event: Event = {
+    _id: eventDto._id,
+    summary: eventDto.name,
+    description: eventDto.description ? eventDto.description : null,
+    start: eventDto.start,
+    end: eventDto.end,
+    allday: eventDto?.allday ? eventDto.allday : false,
+    location: eventDto.location ? eventDto.location : null,
+    community: communityExcerptByDTO(eventDto.community),
+  };
+
+  if (eventDto.calendar) {
+    event.calendar = {
+      _id: eventDto.calendar._id,
+      name: eventDto.calendar.name,
+      display_mode: displayMode(
+        eventDto?.calendar?.display_mode ? eventDto.calendar.display_mode : undefined
+      ),
+      organizer: {
+        _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
+        name: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer.name : null,
+        longname: eventDto?.calendar?.organizer?.longname
+          ? eventDto.calendar?.organizer.longname
+          : eventDto.calendar?.organizer.name,
+      },
+    };
+  }
+
+  if (eventDto.place) {
+    event.place = {
+      _id: eventDto?.place ? eventDto.place._id : null,
+      name: eventDto?.place ? eventDto.place.name : null,
+      localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
+      address: eventDto?.place?.address ? eventDto.place.address : null,
+    };
+  }
+
+  if (eventDto.googleeventattachment && eventDto.googleeventattachment[0]) {
+    event.attachment = {
+      fileUrl: eventDto?.googleeventattachment[0]?.fileUrl
+        ? eventDto.googleeventattachment[0].fileUrl
+        : null,
+      mimeType: eventDto?.googleeventattachment[0]?.mimeType
+        ? eventDto.googleeventattachment[0].mimeType
+        : null,
+      title: eventDto?.googleeventattachment[0]?.title
+        ? eventDto.googleeventattachment[0].title
+        : null,
+    };
+  }
+
+  return event;
 };
 
 /*

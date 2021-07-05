@@ -111,7 +111,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
    * fetch all events for the given community incl. organizer and place
    */
   let events: Event[] = []; // init events array with proper type
-  const eventQuery = `*[_type == "event" && references($communityId) && !cancelled]{ ${EventDTOdetailQueryFields} }`;
+  const eventQuery = `*[_type == "event" && references($communityId) && !cancelled] | order(start asc){ ${EventDTOdetailQueryFields} }`;
   const eventQueryParams = {
     communityId: community._id,
   };
