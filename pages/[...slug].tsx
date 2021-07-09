@@ -253,13 +253,12 @@ export default function Page(props: IPageProps) {
   // const events: Event[] = props.events;
   const events: Event[] = props.events;
   const news: News[] = props.news;
+  const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;
 
   return (
     <div className="bg-white">
       <Head>
-        <title>
-          {community.name} (Gemeinde {community.municipality.name})
-        </title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
@@ -286,10 +285,10 @@ export default function Page(props: IPageProps) {
               if(typeof(_etracker) === "object") {
                 et_eC_Wrapper({
                   et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
-                  et_pagename: '${community.name}',
+                  et_pagename: '${pageTitle}',
                   et_areas: 'Community',
-                   _etr: { eoBlocked:true },
-
+                  et_seg1: '${community.municipality.name}',
+                  _etr: { eoBlocked:true },
                 });
               }
             `,
