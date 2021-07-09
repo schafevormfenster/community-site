@@ -11,7 +11,7 @@ export interface CommunityIntroWithoutNewsProps {
 const CommunityIntroWithoutNews: FC<CommunityIntroWithoutNewsProps> = ({ community }) => {
   return (
     <div className="relative w-screen lg:w-full lg:mb-4 h-80 bg-yellow-200 overflow-hidden">
-      {community?.wikimediaCommonsImages[0] && (
+      {community?.wikimediaCommonsImages && community?.wikimediaCommonsImages[0] && (
         <img
           className="absolute w-full h-full object-cover object-center"
           src={community?.wikimediaCommonsImages[0]}
