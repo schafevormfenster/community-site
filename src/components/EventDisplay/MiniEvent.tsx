@@ -23,8 +23,8 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
     endDate: event.end,
     location: {
       '@type': 'Place',
-      name: event.place.name,
-      address: event.location,
+      name: event?.place?.name ? event.place.name : '',
+      address: event?.location ? event.location : '',
     },
     organizer: event.calendar.organizer.longname
       ? event.calendar.organizer.longname
