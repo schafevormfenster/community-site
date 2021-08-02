@@ -17,9 +17,13 @@ export interface Event {
   allday?: boolean;
   status?: 'confirmed' | 'cancelled';
   attachment?: {
+    type: 'image' | 'download';
     fileUrl: string;
+    url?: string;
     title: string;
-    mimeType?: string;
+    mimeType: string;
+    fileId: string;
+    fileExt: string;
   };
   // metadata
   created?: string; // TODO: change to Date and add to mapper

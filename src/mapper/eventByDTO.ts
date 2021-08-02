@@ -3,6 +3,20 @@ import { Event } from '../entities/Event';
 import { EventDTO } from '../entityDTOs/EventDTO';
 import { communityExcerptByDTO } from './communityByDTO';
 
+const imageMimeTypes = [
+  'image/jpg',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/svg',
+  'image/webp',
+  'image/tif',
+  'image/tiff',
+];
+
+const googleImageBaseUrl = 'https://drive.google.com/uc?export=view&id=';
+const googleDownloadBaseUrl = 'https://drive.google.com/uc?export=download&id=';
+
 export const eventByDTO = (eventDto: EventDTO): Event => {
   if (!eventDto) return undefined;
 
@@ -71,7 +85,25 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
       title: eventDto?.googleeventattachment[0]?.title
         ? eventDto.googleeventattachment[0].title
         : null,
+
+      fileId: eventDto?.googleeventattachment[0]?.fileId
+        ? eventDto.googleeventattachment[0].fileId
+        : null,
+
+      fileExt: eventDto?.googleeventattachment[0]?.fileExt
+        ? eventDto.googleeventattachment[0].fileExt
+        : null,
+
+      type: imageMimeTypes.includes(eventDto.googleeventattachment[0].mimeType)
+        ? 'image'
+        : 'download',
     };
+    if (event.attachment.type === 'image') {
+      event.attachment.url = googleImageBaseUrl + event.attachment.fileId;
+    }
+    if (event.attachment.type === 'download') {
+      event.attachment.url = googleDownloadBaseUrl + event.attachment.fileId;
+    }
   }
 
   return event;
