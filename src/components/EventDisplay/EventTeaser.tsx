@@ -47,23 +47,30 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         />
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
-        <p className="mb-1 text-gray-700 leading-none">
-          <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-          {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
-        </p>
+        {event.allday !== true && (
+          <p className="mb-1 text-gray-700 leading-none">
+            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+            {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
+          </p>
+        )}
         <p className="mb-2 text-gray-700 leading-none">
           <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           {event.place?.localname}
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
+        {event?.attachment?.type === 'image' && (
+          <p className="mt-2 mb-2 text-gray-700 leading-none">
+            <img src={event.attachment.url} alt={event.attachment.title} />
+          </p>
+        )}
         {event.description && (
           <div className="prose max-h-60 overflow-y-scroll">
-            <Interweave content={event.description} />
+            <Interweave content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')} />
           </div>
         )}
-        {event?.attachment?.fileUrl && (
+        {event?.attachment?.type === 'download' && (
           <p className="mt-2 mb-2 text-gray-700 leading-none">
-            <a href={event.attachment.fileUrl} download target="_blank">
+            <a href={event.attachment.url} download target="_blank">
               <PaperClipIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
               {event.attachment.title}
             </a>
