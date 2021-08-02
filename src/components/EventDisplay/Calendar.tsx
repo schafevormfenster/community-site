@@ -6,7 +6,6 @@ import CalendarDaySection from './CalendarDaySection';
 import CalendarMonthSection from './CalendarMonthSection';
 import OnelineEvents from './OnelineEvents';
 import MicroEvent from './MicroEvent';
-import AlldayEvent from './AlldayEvent';
 import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
 
@@ -34,21 +33,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
               >
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
-
-                  const allDayEvents: Event[] = events.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
-                    if (
-                      eventStartDay.getTime() === iDay.getTime() &&
-                      item.allday === true &&
-                      item.calendar.display_mode !== CalendarDisplayModeEnum.MICRO
-                    )
-                      return item;
-                  });
 
                   const onelineEvents: Event[] = events.filter(item => {
                     const eventStartDate = new Date(item.start);
@@ -88,7 +72,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                     if (
                       eventStartDay.getTime() === iDay.getTime() &&
-                      item.allday === false &&
                       item.calendar.display_mode != CalendarDisplayModeEnum.ONELINE &&
                       item.calendar.display_mode != CalendarDisplayModeEnum.MICRO
                     )
@@ -105,11 +88,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
                       {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
-
-                      {allDayEvents.length > 0 &&
-                        allDayEvents.map((allDayEvent, allDayEventIndex) => (
-                          <AlldayEvent event={allDayEvent} key={allDayEvent._id} />
-                        ))}
 
                       {regularEvents.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
