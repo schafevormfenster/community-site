@@ -9,6 +9,7 @@ import { CommunityDTO, CommunityDTOcoreQueryFields } from '../src/entityDTOs/Com
 import Link from 'next/link';
 import SvFLogo from '../src/components/Images/SvFLogo';
 import ReactMarkdown from 'react-markdown';
+import NextGenerationEu from '../src/components/Sponsors/NextGenerationEu';
 
 const ReactComment = ({ text }) => {
   return <div dangerouslySetInnerHTML={{ __html: `<!--${text}-->` }} />;
@@ -216,9 +217,8 @@ export default function Homepage(props: IHomepageProps) {
         </div>
       </aside>
       <aside className="pb-8 text-center">
-        <hr />
-        <p className="text-sm mt-8 mb-4">Gefördert von der Europäischen Union.</p>
-        <img className="m-auto max-w-sm" src="/ESF-Logo_2021-SvF.jpg" />
+        <hr className="mb-8" />
+        <NextGenerationEu />
       </aside>
 
       <nav className="pb-8 text-center text-base px-4 md:px-8">
