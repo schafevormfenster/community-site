@@ -1,5 +1,7 @@
 import React from 'react';
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
+import Link from 'next/link';
+import NextGenerationEu from '../src/components/Sponsors/NextGenerationEu';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -26,8 +28,22 @@ class MyDocument extends Document {
           <meta name="twitter:site" content="@schafeamfenster" />
           <meta name="twitter:creator" content="@schafeamfenster" />
         </Head>
-        <body className="w-screen m-0 p-0 bg-gray-200 text-black font-body font-normal text-base leading-normal">
+        <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base leading-normal">
           <Main />
+          <footer className="text-center px-8 py-4">
+            <div>
+              <Link href={`/impressum/#kontakt`}>
+                <a className="inline-block px-4 py-2">Kontakt</a>
+              </Link>
+              <Link href={`/impressum/#impressum`}>
+                <a className="inline-block px-4 py-2">Impressum</a>
+              </Link>
+              <Link href={`/impressum/#datenschutz`}>
+                <a className="inline-block px-4 py-2">Datenschutzerklärung</a>
+              </Link>
+            </div>
+            <NextGenerationEu />
+          </footer>
           <NextScript />
         </body>
       </Html>

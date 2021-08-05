@@ -9,6 +9,7 @@ import { CommunityDTO, CommunityDTOcoreQueryFields } from '../src/entityDTOs/Com
 import Link from 'next/link';
 import SvFLogo from '../src/components/Images/SvFLogo';
 import ReactMarkdown from 'react-markdown';
+import NextGenerationEu from '../src/components/Sponsors/NextGenerationEu';
 
 const ReactComment = ({ text }) => {
   return <div dangerouslySetInnerHTML={{ __html: `<!--${text}-->` }} />;
@@ -17,7 +18,7 @@ const ReactComment = ({ text }) => {
 export interface IHomepageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
-  content: { welcome: any; explain: any; imprint: any; privacy: any };
+  content: { welcome: any; explain: any };
 }
 
 // use a cdn client for fetching data
@@ -59,12 +60,6 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   const explainMd = await require(`../content/homepage/explain.md`);
   const explainJson = JSON.stringify(explainMd);
 
-  const imprintMd = await require(`../content/homepage/imprint.md`);
-  const imprintJson = JSON.stringify(imprintMd);
-
-  const privacyMd = await require(`../content/homepage/privacy.md`);
-  const privacyJson = JSON.stringify(privacyMd);
-
   return {
     props: {
       meta: {
@@ -73,8 +68,6 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
       content: {
         welcome: welcomeJson,
         explain: explainJson,
-        imprint: imprintJson,
-        privacy: privacyJson,
       },
       communities: communityList,
     },
@@ -89,8 +82,6 @@ export default function Homepage(props: IHomepageProps) {
   const content = props.content;
   const welcomeText = JSON.parse(content.welcome).default;
   const explainText = JSON.parse(content.explain).default;
-  const imprintText = JSON.parse(content.imprint).default;
-  const privacyText = JSON.parse(content.privacy).default;
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -144,7 +135,7 @@ export default function Homepage(props: IHomepageProps) {
         {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
       </article>
       <main className="p-0" id="dorfsuche">
-        <div className="community-search h-80 overflow-y-hidden">
+        <div className="community-search ">
           <div className="h-16 px-4 md:px-8 py-2">
             <input
               type="text"
@@ -154,9 +145,9 @@ export default function Homepage(props: IHomepageProps) {
               className="w-full p-2 border border-secondary rounded"
             />
           </div>
-          <div className="h-full px-4 pb-4 bg-gradient-to-b from-white to-gray-400">
-            {searchTerm.length > 0 ? (
-              <ul className="h-full px-4 pb-4 ">
+          <div className="relative h-full px-4 pb-8">
+            {searchTerm.length > 0 && (
+              <ul className="absolute left-4 right-4 md:left-8 md:right-8 bg-secondary px-4 py-2 z-50">
                 {searchResults.map(item => (
                   <li key={item._id}>
                     <Link href={`/${item.slug}`}>
@@ -167,29 +158,30 @@ export default function Homepage(props: IHomepageProps) {
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="px-4 py-8 text-center text-2xl leading-relaxed text-gray-600">
-                Finde
-                <br /> dein Dorf <br />
-                hier in <br />
-                Vorpommern-Greifswald.
-              </p>
             )}
           </div>
         </div>
+        <hr />
       </main>
       <article className="prose prose-lg px-4 py-8 md:px-8">
         {explainText && <ReactMarkdown>{explainText}</ReactMarkdown>}
       </article>
-      <aside className="pb-8 px-4 md:px-8" id="kontakt">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 prose prose-lg ">
-          <div className="col-span-1 md:col-span-2">
+      <aside className="px-4 md:px-8 pb-8" id="kontakt">
+        <hr />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 prose prose-lg ">
+          <div className="col-span-1 sm:col-span-2 text-center">
             <h2>Sprich uns an!</h2>
             <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
           </div>
-          <div className="col-span-1 pb-8 text-center">
-            <img className="rounded-full h-40 w-40 m-auto mb-4" src="/team/christian.jpg" />
-            <h4>Christian Sauer</h4>
+          <div className="col-span-1 text-center leading-tight">
+            <img
+              className="rounded-full h-40 w-40 m-auto mb-6"
+              src="/team/christian.jpg"
+              alt="Christian Sauer"
+            />
+            <p>
+              <strong>Christian Sauer</strong>
+            </p>
             <p>
               Projektkoordinator
               <br />
@@ -200,9 +192,15 @@ export default function Homepage(props: IHomepageProps) {
               <a href="tel:++4915678689704‬">+49 156 78689704‬</a>
             </p>
           </div>
-          <div className="col-span-1 text-center">
-            <img className="rounded-full h-40 w-40 m-auto mb-4" src="/team/jan.jpg" />
-            <h4>Jan-Henrik Hempel</h4>
+          <div className="col-span-1 text-center leading-tight">
+            <img
+              className="rounded-full h-40 w-40 m-auto mb-6"
+              src="/team/jan.jpg"
+              alt="Jan-Henrik Hempel"
+            />
+            <p>
+              <strong>Jan-Henrik Hempel</strong>
+            </p>
             <p>
               Technischer Leiter
               <br />
@@ -215,12 +213,8 @@ export default function Homepage(props: IHomepageProps) {
           </div>
         </div>
       </aside>
-      <aside className="pb-8 text-center">
-        <hr />
-        <p className="text-sm mt-8 mb-4">Gefördert von der Europäischen Union.</p>
-        <img className="m-auto max-w-sm" src="/ESF-Logo_2021-SvF.jpg" />
-      </aside>
 
+      {/*
       <nav className="pb-8 text-center text-base px-4 md:px-8">
         <hr className="mb-8" />
         <h2 className="text-2xl mb-4">Alle Dörfer</h2>
@@ -232,9 +226,9 @@ export default function Homepage(props: IHomepageProps) {
           </Link>{' '}
           über die Suche weiter oben.
         </p>
-        <ul>
+        <ul className="text-sm">
           {communities.map(c => (
-            <li key={c._id}>
+            <li className="inline-block px-2" key={c._id}>
               <Link href={`/${c.slug}`}>
                 <a>
                   {c.name}, Gemeinde {c.municipality.name}
@@ -244,18 +238,7 @@ export default function Homepage(props: IHomepageProps) {
           ))}
         </ul>
       </nav>
-
-      {
-        <footer className="bg-gray-100  px-8 py-4">
-          <ReactComment text={'googleoff: index'} />
-          <aside className="prose prose-sm px-4 py-8 md:px-8" id="impressum">
-            {imprintText && <ReactMarkdown>{imprintText}</ReactMarkdown>}
-          </aside>
-          <aside className="prose prose-sm px-4 py-8 md:px-8" id="datenschutz">
-            {privacyText && <ReactMarkdown>{privacyText}</ReactMarkdown>}
-          </aside>
-        </footer>
-      }
+      */}
     </div>
   );
 }
