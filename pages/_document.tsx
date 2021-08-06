@@ -30,19 +30,27 @@ class MyDocument extends Document {
         </Head>
         <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base leading-normal">
           <Main />
-          <footer className="text-center px-8 py-4">
-            <div>
+          <footer className="px-4 py-4">
+            <div className="flex mb-4">
               <Link href={`/impressum/#kontakt`}>
-                <a className="inline-block px-4 py-2">Kontakt</a>
+                <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
+                  Kontakt
+                </a>
               </Link>
               <Link href={`/impressum/#impressum`}>
-                <a className="inline-block px-4 py-2">Impressum</a>
+                <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
+                  Impressum
+                </a>
               </Link>
               <Link href={`/impressum/#datenschutz`}>
-                <a className="inline-block px-4 py-2">Datenschutzerklärung</a>
+                <a className="flex-auto border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
+                  Datenschutzerklärung
+                </a>
               </Link>
             </div>
-            <NextGenerationEu />
+            <div className="pr-24">
+              <NextGenerationEu />
+            </div>
           </footer>
           <NextScript />
         </body>
@@ -52,24 +60,3 @@ class MyDocument extends Document {
 }
 
 export default MyDocument;
-
-/*
-
-
-<!-- Copyright (c) 2000-2021 etracker GmbH. All rights reserved. -->
-<!-- This material may not be reproduced, displayed, modified or distributed -->
-<!-- without the express prior written permission of the copyright holder. -->
-<!-- etracker tracklet 5.0 -->
-<script type="text/javascript">
-// var et_pagename = "";
-// var et_areas = "";
-// var et_tval = 0;
-// var et_tsale = 0;
-// var et_tonr = "";
-// var et_basket = "";
-</script>
-<script id="_etLoader" type="text/javascript" charset="UTF-8" data-block-cookies="true" data-respect-dnt="true" data-secure-code="i9strK" src="//code.etracker.com/code/e.js" async></script>
-<!-- etracker tracklet 5.0 end -->
-
-
-*/

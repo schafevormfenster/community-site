@@ -25,6 +25,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           src="//code.etracker.com/code/e.js"
           async
         ></script>
+        <script
+          id="ze-snippet"
+          src={'//static.zdassets.com/ekr/snippet.js?key=' + process.env.NEXT_PUBLIC_ZENDESK_KEY}
+        ></script>
       </Head>
       <Component {...pageProps} />
     </>

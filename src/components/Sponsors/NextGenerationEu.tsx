@@ -6,9 +6,9 @@ import { FC } from 'react';
  */
 const NextGenerationEu: FC = props => {
   return (
-    <div className="m-auto max-w-md text-center">
+    <div className="m-auto w-full max-w-md">
       <img
-        className="m-auto max-w-sm mb-2"
+        className="m-auto w-full max-w-sm mb-2 -ml-1.5"
         src="/NextGenerationEu.svg"
         alt="Finanziert von der Europäsichen Union / NextGenerationEU"
       />
