@@ -72,7 +72,14 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event.description && (
           <div className="prose max-h-60 overflow-y-scroll">
-            <Interweave content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')} />
+            <Interweave
+              content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')}
+              transform={(node, children) => {
+                if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName.toLowerCase())) {
+                  return <strong>{children}</strong>;
+                }
+              }}
+            />
           </div>
         )}
         {event?.attachment?.type === 'download' && (
