@@ -16,6 +16,10 @@ export interface CommunityDTO {
   description?: string;
   wikimediaCommonsImages?: string[];
   googlePlaceId?: string;
+  geolocation?: {
+    lat: number;
+    lng: number;
+  };
   wikidataId?: string;
   wikimedia_commons_imagelinks?: string[];
   place_id?: string;
@@ -28,4 +32,4 @@ export const CommunityDTOcoreQueryFields = `_id, slug, name, municipality->{ ${M
 
 export const CommunityDTOteaserQueryFields = `_id, slug, name, municipality->{ ${MunicipalityDTOteaserQueryFields} }`;
 
-export const CommunityDTOdetailQueryFields = `_id, slug, name, place_id, wikidata_id, wikimedia_commons_imagelinks, municipality->{ ${MunicipalityDTOdetailQueryFields} }`;
+export const CommunityDTOdetailQueryFields = `_id, slug, name, place_id, wikidata_id, wikimedia_commons_imagelinks, municipality->{ ${MunicipalityDTOdetailQueryFields} }, geolocation`;

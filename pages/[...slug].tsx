@@ -66,6 +66,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     slug: slug,
   };
 
+  let communitiesInMunicipalityIdList = [];
+  let communitiesInNearbySurroundingIdList = [];
+
   let community: Community = undefined;
 
   // TODO: move fetching into a separate function
@@ -73,6 +76,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .fetch(query, queryParams)
     .then(response => {
       const communityDto: CommunityDTO = first(response);
+      communitiesInMunicipalityIdList.push(communityDto._id);
       community = communityByDTO(communityDto);
     })
     .catch(err => {
@@ -144,6 +148,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const communityDtoList: CommunityDTO[] = response;
       communitiesOfMunicipality = communityDtoList
         ? communityDtoList.map(communityDto => {
+            communitiesInMunicipalityIdList.push(communityDto._id);
             return communityExcerptByDTO(communityDto);
           })
         : undefined;
@@ -155,7 +160,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     });
 
   /**
-   * Fetch events of all these other communities with a scope higher than for the own community.
+   * Fetch events of all communities of the municipality with a scope higher than for the own community.
    */
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
@@ -181,20 +186,59 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   );
 
   /**
-   * TODO: Prio 2: fetch all events of communities nearby the current community but only with region scope
-   * Option 1: add geopint to all events and directly lookup events
-   *  - cons: depending on the distance some events of one community could be includes, others not which is not the intended result
-   * Option 2: search for all communities within a specific geodistance and fetch all events of that communities
-   *  - pros:
-   *      - always includes all events of a village if its nearby
-   *      - communities already have a geopint (at least in the base data, has to be added to sanity schema and imported)
-   * https://www.sanity.io/docs/query-cheat-sheet#5a9dcaf4e63e
+   * Fetch communities nearby by geosearch, exclude the communities of the municipality
    */
+  const communitiesExcludeQueryPart = communitiesInMunicipalityIdList
+    .map(function (cid) {
+      return ` && _id != "${cid}"`;
+    })
+    .join('');
+  let communitiesNearby: CommunityExcerpt[] = undefined;
+  const communitiesNearbyQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 6000 ${communitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesNearbyQueryParams = {
+    municipalityId: community.municipality._id,
+    currentCommuinityId: community._id,
+    currentCommunityGeopoint: community.geoLocation.point,
+  };
+  await cdnClient
+    .fetch(communitiesNearbyQuery, communitiesNearbyQueryParams)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      communitiesNearby = communityDtoList
+        ? communityDtoList.map(communityDto => {
+            communitiesInNearbySurroundingIdList.push(communityDto._id);
+            return communityExcerptByDTO(communityDto);
+          })
+        : undefined;
+    })
+    .catch(err => {
+      console.warn(`The query to lookup communities nearby '${community.name}' at sanity failed:`);
+    });
 
   /**
-   * TODO: union the events array
+   * Fetch events of all nearby communities with a scope adressing the surrounding or region.
    */
-  // events = unionBy(events, '_id');
+  const communitiesMatchQueryPart = communitiesInNearbySurroundingIdList
+    .map(function (cid) {
+      return `references("${cid}")`;
+    })
+    .join(' || ');
+  const nearbyEventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
+  const nearbyEventsQueryParams = {};
+  await cdnClient
+    .fetch(nearbyEventsQuery, nearbyEventsQueryParams)
+    .then(response => {
+      const nearbyEventDtoList: EventDTO[] = response;
+      if (nearbyEventDtoList)
+        nearbyEventDtoList.map(eventDto => {
+          return events.push(eventByDTO(eventDto));
+        });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`
+      );
+    });
 
   /**
    * Sort all collected events by start date.
