@@ -7,6 +7,7 @@ import {
   ClockIcon,
   SpeakerphoneIcon,
   PaperClipIcon,
+  RssIcon,
 } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
@@ -55,7 +56,13 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         <p className="mb-2 text-gray-700 leading-none">
           <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+          {(event.distance === 'surrounding' || event.distance === 'region') && (
+            <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+          )}
           {event.place?.localname}
+          {(event.distance === 'surrounding' || event.distance === 'region') && (
+            <span> in {event.community.name}</span>
+          )}
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
         {event?.attachment?.type === 'image' && (

@@ -66,8 +66,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     slug: slug,
   };
 
-  let communitiesInMunicipalityIdList = [];
-  let communitiesInNearbySurroundingIdList = [];
+  let communitiesInMunicipality = [];
+  let communitiesInNearbySurrounding = [];
 
   let community: Community = undefined;
 
@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .fetch(query, queryParams)
     .then(response => {
       const communityDto: CommunityDTO = first(response);
-      communitiesInMunicipalityIdList.push(communityDto._id);
+      communitiesInMunicipality.push(communityDto._id);
       community = communityByDTO(communityDto);
     })
     .catch(err => {
@@ -148,7 +148,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const communityDtoList: CommunityDTO[] = response;
       communitiesOfMunicipality = communityDtoList
         ? communityDtoList.map(communityDto => {
-            communitiesInMunicipalityIdList.push(communityDto._id);
+            communitiesInMunicipality.push(communityDto._id);
             return communityExcerptByDTO(communityDto);
           })
         : undefined;
@@ -174,7 +174,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
           const municipalityEventDtoList: EventDTO[] = response;
           if (municipalityEventDtoList)
             municipalityEventDtoList.map(eventDto => {
-              return events.push(eventByDTO(eventDto));
+              let municipalityEvent = eventByDTO(eventDto);
+              municipalityEvent.distance = 'municipality';
+              return events.push(municipalityEvent);
             });
         })
         .catch(err => {
@@ -188,7 +190,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   /**
    * Fetch communities nearby by geosearch, exclude the communities of the municipality
    */
-  const communitiesExcludeQueryPart = communitiesInMunicipalityIdList
+  const communitiesExcludeQueryPart = communitiesInMunicipality
     .map(function (cid) {
       return ` && _id != "${cid}"`;
     })
@@ -206,7 +208,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const communityDtoList: CommunityDTO[] = response;
       communitiesNearby = communityDtoList
         ? communityDtoList.map(communityDto => {
-            communitiesInNearbySurroundingIdList.push(communityDto._id);
+            communitiesInNearbySurrounding.push(communityDto._id);
             return communityExcerptByDTO(communityDto);
           })
         : undefined;
@@ -218,7 +220,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   /**
    * Fetch events of all nearby communities with a scope adressing the surrounding or region.
    */
-  const communitiesMatchQueryPart = communitiesInNearbySurroundingIdList
+  const communitiesMatchQueryPart = communitiesInNearbySurrounding
     .map(function (cid) {
       return `references("${cid}")`;
     })
@@ -231,7 +233,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       const nearbyEventDtoList: EventDTO[] = response;
       if (nearbyEventDtoList)
         nearbyEventDtoList.map(eventDto => {
-          return events.push(eventByDTO(eventDto));
+          let surroundingEvent = eventByDTO(eventDto);
+          surroundingEvent.distance = 'surrounding';
+          return events.push(surroundingEvent);
         });
     })
     .catch(err => {
