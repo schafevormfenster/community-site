@@ -225,7 +225,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       return `references("${cid}")`;
     })
     .join(' || ');
-  const nearbyEventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
+  const communitiesMatchQueryPartWrapped =
+    communitiesMatchQueryPart.trim().length > 0 ? '&& (' + communitiesMatchQueryPart + ')' : '';
+  const nearbyEventsQuery = `*[_type == "event" ${communitiesMatchQueryPartWrapped} && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
   const nearbyEventsQueryParams = {};
   await cdnClient
     .fetch(nearbyEventsQuery, nearbyEventsQueryParams)
@@ -240,7 +242,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     })
     .catch(err => {
       console.warn(
-        `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`
+        `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`,
+        nearbyEventsQuery
       );
     });
 
