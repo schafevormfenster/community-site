@@ -53,5 +53,12 @@ export const communityByDTO = (communityDto: CommunityDTO): Community => {
         : null,
     };
   }
+  if (communityDto?.geolocation?.lat && communityDto?.geolocation?.lng) {
+    community.geoLocation.point = {
+      lat: communityDto.geolocation.lat,
+      lng: communityDto.geolocation.lng,
+    };
+  }
+
   return community;
 };

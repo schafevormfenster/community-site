@@ -35,6 +35,7 @@ export interface Event {
   calendar?: Calendar;
   place?: PlaceDTO;
   community: CommunityExcerpt;
+  distance?: 'community' | 'municipality' | 'surrounding' | 'region';
 }
 
 /*
