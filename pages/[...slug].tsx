@@ -261,7 +261,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       events: events,
       news: news,
     },
-    revalidate: 14400,
+    revalidate: 1800,
   };
 };
 
