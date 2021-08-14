@@ -21,7 +21,12 @@ export interface EventTeaserProps {
  */
 const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   if (!event) return <></>;
-
+  if (
+    event.distance === 'municipality' ||
+    event.distance === 'surrounding' ||
+    event.distance === 'region'
+  )
+    return <></>;
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
     '@type': 'SocialEvent',
@@ -42,10 +47,12 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   return (
     <>
       <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
         {event.allday !== true ? (
