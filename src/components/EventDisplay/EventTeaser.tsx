@@ -54,7 +54,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
             {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
           </p>
         )}
-        <p className="mb-2 text-gray-700 leading-none">
+        <p className="mb-2 text-gray-700 leading-none" title={event.location}>
           <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           {(event.distance === 'surrounding' || event.distance === 'region') && (
             <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
