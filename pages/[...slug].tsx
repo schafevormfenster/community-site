@@ -325,6 +325,18 @@ export default function Page(props: IPageProps) {
           name="geo.placename"
           content={`${community.name}, Gemeinde ${community.municipality.name}`}
         />
+        {community?.geoLocation?.point?.lat && community?.geoLocation?.point?.lng && (
+          <>
+            <meta
+              name="geo.position"
+              content={`${community.geoLocation.point.lat};${community.geoLocation.point.lng}`}
+            />
+            <meta
+              name="ICBM"
+              content={`${community.geoLocation.point.lat},${community.geoLocation.point.lng}`}
+            />
+          </>
+        )}
         <link rel="canonical" href={`${meta.canonicalUrl}`} />
         <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
         <meta httpEquiv="refresh" content="14400" />
