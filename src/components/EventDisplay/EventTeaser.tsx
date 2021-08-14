@@ -60,9 +60,9 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
             <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           )}
           {event.place?.localname}
-          {(event.distance === 'surrounding' || event.distance === 'region') && (
-            <span> in {event.community.name}</span>
-          )}
+          {(event.distance === 'municipality' ||
+            event.distance === 'surrounding' ||
+            event.distance === 'region') && <span> in {event.community.name}</span>}
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
         {event?.attachment?.type === 'image' && (
