@@ -196,7 +196,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     })
     .join('');
   let communitiesNearby: CommunityExcerpt[] = undefined;
-  const communitiesNearbyQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 6000 ${communitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesNearbyQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 7500 ${communitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
   const communitiesNearbyQueryParams = {
     municipalityId: community.municipality._id,
     currentCommuinityId: community._id,
@@ -220,32 +220,34 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   /**
    * Fetch events of all nearby communities with a scope adressing the surrounding or region.
    */
-  const communitiesMatchQueryPart = communitiesInNearbySurrounding
-    .map(function (cid) {
-      return `references("${cid}")`;
-    })
-    .join(' || ');
-  const communitiesMatchQueryPartWrapped =
-    communitiesMatchQueryPart.trim().length > 0 ? '&& (' + communitiesMatchQueryPart + ')' : '';
-  const nearbyEventsQuery = `*[_type == "event" ${communitiesMatchQueryPartWrapped} && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
-  const nearbyEventsQueryParams = {};
-  await cdnClient
-    .fetch(nearbyEventsQuery, nearbyEventsQueryParams)
-    .then(response => {
-      const nearbyEventDtoList: EventDTO[] = response;
-      if (nearbyEventDtoList)
-        nearbyEventDtoList.map(eventDto => {
-          let surroundingEvent = eventByDTO(eventDto);
-          surroundingEvent.distance = 'surrounding';
-          return events.push(surroundingEvent);
-        });
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`,
-        nearbyEventsQuery
-      );
-    });
+  if (communitiesNearby?.length > 0) {
+    const communitiesMatchQueryPart = communitiesInNearbySurrounding
+      .map(function (cid) {
+        return `references("${cid}")`;
+      })
+      .join(' || ');
+    const communitiesMatchQueryPartWrapped =
+      communitiesMatchQueryPart.trim().length > 0 ? '&& (' + communitiesMatchQueryPart + ')' : '';
+    const nearbyEventsQuery = `*[_type == "event" ${communitiesMatchQueryPartWrapped} && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
+    const nearbyEventsQueryParams = {};
+    await cdnClient
+      .fetch(nearbyEventsQuery, nearbyEventsQueryParams)
+      .then(response => {
+        const nearbyEventDtoList: EventDTO[] = response;
+        if (nearbyEventDtoList)
+          nearbyEventDtoList.map(eventDto => {
+            let surroundingEvent = eventByDTO(eventDto);
+            surroundingEvent.distance = 'surrounding';
+            return events.push(surroundingEvent);
+          });
+      })
+      .catch(err => {
+        console.warn(
+          `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`,
+          nearbyEventsQuery
+        );
+      });
+  }
 
   /**
    * Sort all collected events by start date.
