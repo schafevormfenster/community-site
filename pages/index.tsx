@@ -108,6 +108,7 @@ export default function Homepage(props: IHomepageProps) {
         <meta name="geo.region" content="DE-MV" />
         <link rel="canonical" href={`${meta.canonicalUrl}`} />
         <meta property="og:url" content={`${meta.canonicalUrl}`} />
+        <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -168,7 +169,7 @@ export default function Homepage(props: IHomepageProps) {
       </article>
       <aside className="px-4 md:px-8 pb-8" id="kontakt">
         <hr />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 prose prose-lg ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 prose prose-lg">
           <div className="col-span-1 sm:col-span-2 text-center">
             <h2>Sprich uns an!</h2>
             <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
@@ -213,7 +214,18 @@ export default function Homepage(props: IHomepageProps) {
           </div>
         </div>
       </aside>
-
+      <aside className="px-4 md:px-8 pb-8 prose prose-lg" id="news">
+        <hr />
+        <a
+          className="twitter-timeline"
+          data-lang="de"
+          data-height="800"
+          data-theme="light"
+          href="https://twitter.com/schafeamfenster?ref_src=twsrc%5Etfw"
+        >
+          Neuigkeiten
+        </a>
+      </aside>
       {/*
       <nav className="pb-8 text-center text-base px-4 md:px-8">
         <hr className="mb-8" />
