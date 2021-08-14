@@ -20,6 +20,7 @@ body {
   src: local('Catamaran ExtraLight'), local('Catamaran-ExtraLight'),
     url(/fonts/catamaran/catamaran-v4-latin-200.woff2) format('woff2'),
     url(/fonts/catamaran/catamaran-v4-latin-200.woff) format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: Catamaran;
@@ -28,6 +29,7 @@ body {
   src: local('Catamaran ExtraLight'), local('Catamaran-ExtraLight'),
     url(/fonts/catamaran/catamaran-v4-latin-200.woff2) format('woff2'),
     url(/fonts/catamaran/catamaran-v4-latin-200.woff) format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: Catamaran;
@@ -36,6 +38,7 @@ body {
   src: local('Catamaran SemiBold'), local('Catamaran-SemiBold'),
     url(/fonts/catamaran/catamaran-v4-latin-600.woff2) format('woff2'),
     url(/fonts/catamaran/catamaran-v4-latin-600.woff) format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: Catamaran;
@@ -44,6 +47,7 @@ body {
   src: local('Catamaran ExtraBold'), local('Catamaran-ExtraBold'),
     url(/fonts/catamaran/catamaran-v4-latin-800.woff2) format('woff2'),
     url(/fonts/catamaran/catamaran-v4-latin-800.woff) format('woff');
+  font-display: swap;
 }
 
 .text-vertical {
