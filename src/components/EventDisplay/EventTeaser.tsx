@@ -48,21 +48,42 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         />
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
-        {event.allday !== true && (
+        {event.allday !== true ? (
           <p className="mb-1 text-gray-700 leading-none">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-            {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
+            {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') ? (
+              <>
+                {moment(event.start).format('DD.MM.YYYY HH:mm')} Uhr bis{' '}
+                {moment(event.end).format('DD.MM.YYYY HH:mm')} Uhr
+              </>
+            ) : (
+              <>
+                {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
+              </>
+            )}
           </p>
+        ) : (
+          <>
+            {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') && (
+              <p className="mb-1 text-gray-700 leading-none">
+                <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+                <>
+                  {moment(event.start).format('DD.MM.YYYY')} bis{' '}
+                  {moment(event.end).format('DD.MM.YYYY')}
+                </>
+              </p>
+            )}
+          </>
         )}
-        <p className="mb-2 text-gray-700 leading-none">
+        <p className="mb-2 text-gray-700 leading-none" title={event.location}>
           <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           {(event.distance === 'surrounding' || event.distance === 'region') && (
             <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           )}
           {event.place?.localname}
-          {(event.distance === 'surrounding' || event.distance === 'region') && (
-            <span> in {event.community.name}</span>
-          )}
+          {(event.distance === 'municipality' ||
+            event.distance === 'surrounding' ||
+            event.distance === 'region') && <span> in {event.community.name}</span>}
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
         {event?.attachment?.type === 'image' && (
