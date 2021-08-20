@@ -61,7 +61,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     )
                       return item;
                   });
-
                   const regularEvents: Event[] = events.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
@@ -74,8 +73,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       eventStartDay.getTime() === iDay.getTime() &&
                       item.calendar.display_mode != CalendarDisplayModeEnum.ONELINE &&
                       item.calendar.display_mode != CalendarDisplayModeEnum.MICRO
-                    )
+                    ) {
                       return item;
+                    }
                   });
 
                   return (

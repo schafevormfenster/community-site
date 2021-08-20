@@ -21,7 +21,6 @@ export interface EventTeaserProps {
  */
 const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   if (!event) return <></>;
-  if (['municipality', 'surrounding', 'region'].includes(event.distance)) return <></>;
 
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
