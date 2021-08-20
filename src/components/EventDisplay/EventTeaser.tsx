@@ -82,7 +82,8 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           {['surrounding', 'region'].includes(event.distance) && (
             <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
           )}
-          {event.place?.localname}
+          {event.place?.localname || event.community.name}
+          <pre>{JSON.stringify(event.place, null, 2)}</pre>
           {['municipality', 'surrounding', 'region'].includes(event.distance) && (
             <span> in {event.community.name}</span>
           )}
