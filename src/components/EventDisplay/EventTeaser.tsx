@@ -2,15 +2,10 @@ import Interweave from 'interweave';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import {
-  LocationMarkerIcon,
-  ClockIcon,
-  SpeakerphoneIcon,
-  PaperClipIcon,
-  RssIcon,
-} from '@heroicons/react/outline';
+import { ClockIcon, SpeakerphoneIcon, PaperClipIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
+import LocationDisplay from './Elements/LocationDisplay';
 
 export interface EventTeaserProps {
   event: Event;
@@ -78,14 +73,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </>
         )}
         <p className="mb-2 text-gray-700 leading-none" title={event.location}>
-          <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-          {['surrounding', 'region'].includes(event.distance) && (
-            <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-          )}
-          {event.place?.localname || event.community.name}
-          {['municipality', 'surrounding', 'region'].includes(event.distance) && (
-            <span> in {event.community.name}</span>
-          )}
+          <LocationDisplay event={event} />
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
         {event?.attachment?.type === 'image' && (

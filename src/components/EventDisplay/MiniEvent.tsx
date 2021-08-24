@@ -1,9 +1,10 @@
 import moment from 'moment';
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { LocationMarkerIcon, ClockIcon } from '@heroicons/react/outline';
+import { ClockIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
+import LocationDisplay from './Elements/LocationDisplay';
 
 export interface MiniEventProps {
   event: Event;
@@ -46,8 +47,7 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
             {moment(event.start).format('HH:mm')} Uhr
           </span>
           <span className="mr-4">
-            <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-            {event.place?.localname}
+            <LocationDisplay event={event} />
           </span>
         </p>
         <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
