@@ -1,13 +1,14 @@
 import { FC } from 'react';
 import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
-import { CalendarDisplayModeEnum } from '../../entities/Calendar';
+import { CalendarDisplayMode } from '../../entities/Calendar';
 import CalendarDaySection from './CalendarDaySection';
 import CalendarMonthSection from './CalendarMonthSection';
 import OnelineEvents from './OnelineEvents';
 import MicroEvent from './MicroEvent';
 import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
+import OnelineCombinedEvents from './OnelineCombinedEvents';
 
 export interface CalendarProps {
   start: Date;
@@ -43,7 +44,21 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     );
                     if (
                       eventStartDay.getTime() === iDay.getTime() &&
-                      item.calendar.display_mode === CalendarDisplayModeEnum.ONELINE
+                      item.calendar.display_mode === CalendarDisplayMode.ONELINE
+                    )
+                      return item;
+                  });
+
+                  const onelineCombinedEvents: Event[] = events.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
+                    );
+                    if (
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED
                     )
                       return item;
                   });
@@ -57,7 +72,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     );
                     if (
                       eventStartDay.getTime() === iDay.getTime() &&
-                      item.calendar.display_mode === CalendarDisplayModeEnum.MICRO
+                      item.calendar.display_mode === CalendarDisplayMode.MICRO
                     )
                       return item;
                   });
@@ -71,8 +86,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                     if (
                       eventStartDay.getTime() === iDay.getTime() &&
-                      item.calendar.display_mode != CalendarDisplayModeEnum.ONELINE &&
-                      item.calendar.display_mode != CalendarDisplayModeEnum.MICRO
+                      item.calendar.display_mode != CalendarDisplayMode.ONELINE &&
+                      item.calendar.display_mode != CalendarDisplayMode.ONELINECOMBINED &&
+                      item.calendar.display_mode != CalendarDisplayMode.MICRO
                     ) {
                       return item;
                     }
@@ -88,6 +104,10 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
                       {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
+
+                      {onelineCombinedEvents.length > 0 && (
+                        <OnelineCombinedEvents events={onelineCombinedEvents} />
+                      )}
 
                       {regularEvents.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
