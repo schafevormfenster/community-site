@@ -3,15 +3,19 @@ import { Organizer } from './Organizer';
 /**
  * Calendar.
  */
-
-export type CalendarDisplayMode = 'micro' | 'mini' | 'oneline' | 'default' | 'extended';
-
-export enum CalendarDisplayModeEnum {
+export enum CalendarDisplayMode {
   MICRO = 'micro',
   MINI = 'mini',
   ONELINE = 'oneline',
+  ONELINECOMBINED = 'onelinecombined',
   DEFAULT = 'default',
   EXTENDED = 'extended',
+}
+
+export enum CalendarTimeDisplayMode {
+  NoTime = 0,
+  StartTimeOnly = 1,
+  StartAndEndTime = 2,
 }
 
 export interface Calendar {
@@ -22,4 +26,5 @@ export interface Calendar {
   scope?: 'Community' | 'Municipality' | 'Surrounding' | 'Region';
   publication_status?: '0' | '1';
   display_mode?: CalendarDisplayMode;
+  time_display_mode?: CalendarTimeDisplayMode;
 }

@@ -1,4 +1,4 @@
-import { CalendarDisplayMode, CalendarDisplayModeEnum } from '../entities/Calendar';
+import { CalendarDisplayMode, CalendarTimeDisplayMode } from '../entities/Calendar';
 import { Event } from '../entities/Event';
 import { EventDTO } from '../entityDTOs/EventDTO';
 import { communityExcerptByDTO } from './communityByDTO';
@@ -23,20 +23,34 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
   const displayMode = (display_mode: string | undefined): CalendarDisplayMode => {
     switch (eventDto?.calendar?.display_mode) {
       case '0':
-        return CalendarDisplayModeEnum.MICRO;
+        return CalendarDisplayMode.MICRO;
       case '1':
-        return CalendarDisplayModeEnum.MINI;
+        return CalendarDisplayMode.MINI;
       case '2':
-        return CalendarDisplayModeEnum.DEFAULT;
+        return CalendarDisplayMode.DEFAULT;
       case '3':
-        return CalendarDisplayModeEnum.EXTENDED;
+        return CalendarDisplayMode.EXTENDED;
       case '4':
-        return CalendarDisplayModeEnum.ONELINE;
+        return CalendarDisplayMode.ONELINE;
+      case '5':
+        return CalendarDisplayMode.ONELINECOMBINED;
       default:
-        return CalendarDisplayModeEnum.DEFAULT;
+        return CalendarDisplayMode.DEFAULT;
     }
   };
 
+  const timeDisplayMode = (display_mode: string | undefined): CalendarTimeDisplayMode => {
+    switch (eventDto?.calendar?.time_display_mode) {
+      case '0':
+        return CalendarTimeDisplayMode.NoTime;
+      case '1':
+        return CalendarTimeDisplayMode.StartTimeOnly;
+      case '2':
+        return CalendarTimeDisplayMode.StartAndEndTime;
+      default:
+        return CalendarTimeDisplayMode.StartAndEndTime;
+    }
+  };
   let event: Event = {
     _id: eventDto._id,
     summary: eventDto.name,
@@ -54,6 +68,9 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
       name: eventDto.calendar.name,
       display_mode: displayMode(
         eventDto?.calendar?.display_mode ? eventDto.calendar.display_mode : undefined
+      ),
+      time_display_mode: timeDisplayMode(
+        eventDto?.calendar?.time_display_mode ? eventDto.calendar.time_display_mode : undefined
       ),
       organizer: {
         _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
