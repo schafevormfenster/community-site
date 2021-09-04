@@ -1,7 +1,7 @@
-import { PlaceDTO } from '../entityDTOs/PlaceDTO';
 import { Calendar } from './Calendar';
 import { CommunityExcerpt } from './Community';
 import { Organizer } from './Organizer';
+import { Place } from './Place';
 
 /**
  * Event item.
@@ -33,7 +33,7 @@ export interface Event {
   iCalUID?: string;
   //references
   calendar?: Calendar;
-  place?: PlaceDTO;
+  place?: Place;
   community: CommunityExcerpt;
   distance?: 'community' | 'municipality' | 'surrounding' | 'region';
 }

@@ -27,7 +27,15 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
     location: {
       '@type': 'Place',
       name: event?.place?.name ? event.place.name : '',
-      address: event?.location ? event.location : '',
+      address: event?.place?.geoLocation?.address?.address
+        ? event.place.geoLocation.address.address
+        : event?.location,
+      latitude: event?.place?.geoLocation?.point?.lat
+        ? event.place.geoLocation.point.lat
+        : undefined,
+      longitude: event?.place?.geoLocation?.point?.lng
+        ? event.place.geoLocation.point.lng
+        : undefined,
     },
     organizer: event.calendar.organizer.longname
       ? event.calendar.organizer.longname
@@ -45,6 +53,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
+        <pre>{JSON.stringify(event.place, null, 2)}</pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 leading-none">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
