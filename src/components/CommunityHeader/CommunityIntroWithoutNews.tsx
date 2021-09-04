@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Community } from '../../entities/Community';
+import CommunityPhoto from './CommunityPhoto';
 
 export interface CommunityIntroWithoutNewsProps {
   community: Community;
@@ -11,12 +12,7 @@ export interface CommunityIntroWithoutNewsProps {
 const CommunityIntroWithoutNews: FC<CommunityIntroWithoutNewsProps> = ({ community }) => {
   return (
     <div className="relative w-screen lg:w-full lg:mb-4 h-80 bg-yellow-200 overflow-hidden">
-      {community?.wikimediaCommonsImages && community?.wikimediaCommonsImages[0] && (
-        <img
-          className="absolute w-full h-full object-cover object-center"
-          src={community?.wikimediaCommonsImages[0]}
-        />
-      )}
+      <CommunityPhoto community={community} />
       <div className="absolute bottom-0 w-full text-center bg-gradient-to-t from-black to-transparent p-4 text-white">
         <h1 className="text-3xl">{community.name}</h1>
         <p className="text-xs">Gemeinde {community.municipality.name}</p>
