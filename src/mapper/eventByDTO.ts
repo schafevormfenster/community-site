@@ -87,7 +87,17 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
       _id: eventDto?.place ? eventDto.place._id : null,
       name: eventDto?.place ? eventDto.place.name : null,
       localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
-      address: eventDto?.place?.address ? eventDto.place.address : null,
+      geoLocation: {
+        identifiers: {
+          geonamesId: null,
+          googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
+        },
+        address: { address: eventDto?.place?.address ? eventDto.place.address : null },
+        point: {
+          lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
+          lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
+        },
+      },
     };
   }
 

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { FC } from 'react';
 import { News } from '../../entities/News';
 import { ClockIcon } from '@heroicons/react/outline';
-
+import { FaTwitter } from 'react-icons/fa';
 export interface NewsTeaserProps {
   newsItem: News;
 }
@@ -23,6 +23,9 @@ const NewsTeaserContent: FC<News> = props => {
  * Shows a micronews item.
  */
 const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
+  let title = newsItem.title;
+  title = title.replace(/https?:\/\/t\.co\/([a-zA-Z0-9_]+)$/, '').trim(); // remove twitter link from the visible text
+
   return (
     <>
       {newsItem?.link ? (
@@ -41,7 +44,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
               <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
               {moment(newsItem.date).format('D. MMM')}
             </span>
-            {newsItem.title}
+            {title} <FaTwitter size="1rem" className="inline-block ml-2" />
           </p>
         </a>
       ) : (
@@ -51,7 +54,7 @@ const NewsTeaser: FC<NewsTeaserProps> = ({ newsItem }) => {
               <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
               {moment(newsItem.date).format('D. MMM')}
             </span>
-            {newsItem.title}
+            {title} <FaTwitter size="1rem" className="inline-block ml-2" />
           </p>
         </div>
       )}

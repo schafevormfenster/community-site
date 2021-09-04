@@ -1,4 +1,4 @@
-import Interweave from 'interweave';
+import Interweave, { Markup } from 'interweave';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
@@ -27,7 +27,15 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
     location: {
       '@type': 'Place',
       name: event?.place?.name ? event.place.name : '',
-      address: event?.location ? event.location : '',
+      address: event?.place?.geoLocation?.address?.address
+        ? event.place.geoLocation.address.address
+        : event?.location,
+      latitude: event?.place?.geoLocation?.point?.lat
+        ? event.place.geoLocation.point.lat
+        : undefined,
+      longitude: event?.place?.geoLocation?.point?.lng
+        ? event.place.geoLocation.point.lng
+        : undefined,
     },
     organizer: event.calendar.organizer.longname
       ? event.calendar.organizer.longname
@@ -75,10 +83,12 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         <p className="mb-2 text-gray-700 leading-none" title={event.location}>
           <LocationDisplay event={event} />
         </p>
-        <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
+        <h4 className="mb-2 font-semibold text-xl">
+          <Markup content={event.summary} noWrap />
+        </h4>
         {event?.attachment?.type === 'image' && (
           <p className="mt-2 mb-2 text-gray-700 leading-none">
-            <img src={event.attachment.url} alt={event.attachment.title} />
+            <img className="w-full h-auto" src={event.attachment.url} alt={event.summary} />
           </p>
         )}
         {event.description && (
@@ -97,14 +107,14 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           <p className="mt-2 mb-2 text-gray-700 leading-none">
             <a href={event.attachment.url} download target="_blank">
               <PaperClipIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-              {event.attachment.title}
+              <Markup content={event.attachment.title} noWrap />
             </a>
           </p>
         )}
         {event.calendar?.organizer?.name && (
           <p className="mt-2 mb-2 text-gray-700 leading-none">
             <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-            {event.calendar?.organizer?.name}
+            <Markup content={event.calendar?.organizer?.name} noWrap />
           </p>
         )}
       </div>
