@@ -53,7 +53,6 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
-        <pre>{JSON.stringify(event.place, null, 2)}</pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 leading-none">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
