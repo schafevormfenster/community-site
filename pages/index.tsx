@@ -115,10 +115,9 @@ export default function Homepage(props: IHomepageProps) {
               if(typeof(_etracker) === "object") {
                 et_eC_Wrapper({
                   et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
-                  et_pagename: 'Homepage',
+                  et_pagename: 'Schafe vorm Fenster',
                   et_areas: 'About',
                    _etr: { eoBlocked:true },
-
                 });
               }
             `,
