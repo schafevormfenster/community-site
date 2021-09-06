@@ -13,6 +13,9 @@ module.exports = {
       xxl: '1300px',
     },
     extend: {
+      screens: {
+        print: { raw: 'print' },
+      },
       colors: {
         primary: '#001e60', // dark blue text color
         secondary: '#4196d0',
