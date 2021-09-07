@@ -16,6 +16,9 @@ module.exports = {
       screens: {
         print: { raw: 'print' },
       },
+      zIndex: {
+        overhelpdesk: '9999999',
+      },
       colors: {
         primary: '#001e60', // dark blue text color
         secondary: '#4196d0',
@@ -122,5 +125,6 @@ module.exports = {
     require('@tailwindcss/line-clamp'),
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
+    require('tailwindcss-hyphens'),
   ],
 };

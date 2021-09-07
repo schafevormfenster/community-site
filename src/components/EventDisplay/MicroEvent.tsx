@@ -1,3 +1,4 @@
+import { Markup } from 'interweave';
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
 
@@ -12,7 +13,9 @@ const MicroEvent: FC<MicroEventProps> = ({ event }) => {
   if (!event) return <></>;
   return (
     <div className="pb-2">
-      <span title={event.description}>{event.summary}</span>
+      <span title={event.description}>
+        <Markup content={event.summary} noWrap />
+      </span>
     </div>
   );
 };

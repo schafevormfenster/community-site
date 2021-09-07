@@ -1,7 +1,6 @@
 import React from 'react';
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
-import Link from 'next/link';
-import NextGenerationEu from '../src/components/Sponsors/NextGenerationEu';
+import Footer from '../src/components/Footer/Footer';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -28,30 +27,9 @@ class MyDocument extends Document {
           <meta name="twitter:site" content="@schafeamfenster" />
           <meta name="twitter:creator" content="@schafeamfenster" />
         </Head>
-        <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base leading-normal">
+        <body className="w-screen m-0 p-0 bg-white text-black font-body font-normal text-base print:h-full print:overflow-hidden print:text-sm leading-normal hyphens-auto">
           <Main />
-          <footer className="px-4 py-4">
-            <div className="flex mb-4">
-              <Link href={`/impressum/#kontakt`}>
-                <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-                  Kontakt
-                </a>
-              </Link>
-              <Link href={`/impressum/#impressum`}>
-                <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-                  Impressum
-                </a>
-              </Link>
-              <Link href={`/impressum/#datenschutz`}>
-                <a className="flex-auto border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-                  Datenschutzerklärung
-                </a>
-              </Link>
-            </div>
-            <div className="pr-24">
-              <NextGenerationEu />
-            </div>
-          </footer>
+          <Footer />
           <NextScript />
         </body>
       </Html>
