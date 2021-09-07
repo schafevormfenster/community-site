@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!=''] | order(municipality->name asc) { ${CommunityDTOcoreQueryFields} }`;
+  const communityListQuery = `*[_type == "community" && slug.current!='' && !(_id in path('drafts.**'))] | order(municipality->name asc) { ${CommunityDTOcoreQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
     .fetch(communityListQuery)
@@ -71,7 +71,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
       },
       communities: communityList,
     },
-    revalidate: false,
+    revalidate: 14400,
   };
 };
 
