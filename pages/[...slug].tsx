@@ -361,7 +361,7 @@ export default function Page(props: IPageProps) {
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
-        <div className="col-span-1">
+        <div className="col-span-1 print:h-60mm print:overflow-hidden">
           {news.length > 0 ? (
             <NewsArrangement>
               {community?.wikimediaCommonsImages?.length > 0 && (

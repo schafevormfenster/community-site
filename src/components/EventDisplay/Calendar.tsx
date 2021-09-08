@@ -23,7 +23,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
   return (
-    <main key="CalendarMain" className="print:h-3/4">
+    <main key="CalendarMain" className="print:h-200mm print:overflow-hidden print:px-4">
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {

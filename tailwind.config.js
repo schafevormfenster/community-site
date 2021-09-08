@@ -40,6 +40,11 @@ module.exports = {
       fontSize: {
         '2xs': '.6rem',
       },
+      height: {
+        '297mm': '297mm',
+        '200mm': '200mm',
+        '60mm': '60mm',
+      },
       width: {
         '2/1': '180%',
         '3/1': '270%',
@@ -54,6 +59,7 @@ module.exports = {
         '12/1': '1080%',
         '80/screen': '80vw',
         '90/screen': '90vw',
+        '210mm': '210mm',
       },
       typography: theme => ({
         DEFAULT: {
