@@ -23,6 +23,7 @@ import { NewsDTO, NewsDTOteaserQueryFields } from '../src/entityDTOs/NewsDTO';
 import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
+import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';
 
 export const DotButton = ({ selected, onClick }) => (
   <button
@@ -361,7 +362,10 @@ export default function Page(props: IPageProps) {
       </Head>
       <CommunityHeader community={community} />
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
-        <div className="col-span-1">
+        <div className="hidden print:block">
+          <CommunityIntroPrint community={community} />
+        </div>
+        <div className="col-span-1 print:hidden">
           {news.length > 0 ? (
             <NewsArrangement>
               {community?.wikimediaCommonsImages?.length > 0 && (

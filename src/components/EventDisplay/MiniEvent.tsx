@@ -5,6 +5,7 @@ import { ClockIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
+import { Markup } from 'interweave';
 
 export interface MiniEventProps {
   event: Event;
@@ -40,17 +41,19 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </Head>
-      <div className="pb-2 pt-2 border-t border-solid border-gray-200">
-        <p className="mb-1 text-gray-700 leading-none">
+      <div className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0">
+        <p className="mb-1 text-gray-700 print:text-black leading-none">
           <span className="mr-4">
-            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {moment(event.start).format('HH:mm')} Uhr
           </span>
           <span className="mr-4">
             <LocationDisplay event={event} />
           </span>
         </p>
-        <h4 className="mb-2 font-semibold text-xl">{event.summary}</h4>
+        <h4 className="mb-2 font-semibold text-xl print:text-base print:mb-0">
+          <Markup content={event.summary} noWrap />
+        </h4>
       </div>
     </>
   );

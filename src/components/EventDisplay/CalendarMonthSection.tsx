@@ -12,7 +12,7 @@ export interface CalendarMonthSectionProps {
 const CalendarMonthSection: FC<CalendarMonthSectionProps> = ({ month, children }) => {
   return (
     <section className="relative">
-      <div className="absolute top-0 bottom-0 w-8 bg-secondary bg-gradient-to-b from-secondary to-secondaryDark">
+      <div className="absolute top-0 bottom-0 w-8 bg-secondary bg-gradient-to-b from-secondary to-secondaryDark print:bg-white print:from-transparent print:to-transparent">
         <div className="sticky top-0 w-8 pt-20 mb-8">
           <i className="inline-block py-1 pl-1 w-8 text-vertical text-right transform rotate-180 text-white text-sm not-italic print:hidden">
             {moment([month.getFullYear(), month.getMonth(), month.getDate(), 12]).format(
@@ -21,7 +21,7 @@ const CalendarMonthSection: FC<CalendarMonthSectionProps> = ({ month, children }
           </i>
         </div>
       </div>
-      <div className="ml-8">{children}</div>
+      <div className="ml-8 print:ml-0">{children}</div>
     </section>
   );
 };

@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@page {
+  size: A4;
+  margin: 0;
+}
+
 html {
   @apply bg-white;
   @apply w-screen m-0 p-0;
