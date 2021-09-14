@@ -54,8 +54,8 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       </Head>
       <div className="pb-2 pt-2 border-t border-solid border-gray-200">
         {event.allday !== true ? (
-          <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-4">
-            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+          <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
+            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') ? (
               <>
                 {moment(event.start).format('DD.MM.YYYY HH:mm')} Uhr bis{' '}
@@ -71,7 +71,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           <>
             {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') && (
               <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
-                <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+                <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
                 <>
                   {moment(event.start).format('DD.MM.YYYY')} bis{' '}
                   {moment(event.end).format('DD.MM.YYYY')}
@@ -81,16 +81,16 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </>
         )}
         <p
-          className="mb-2 text-gray-700 leading-none print:inline-block print:mb-1"
+          className="mb-2 text-gray-700 print:text-black leading-none print:inline-block print:mb-1"
           title={event.location}
         >
           <LocationDisplay event={event} />
         </p>
-        <h4 className="mb-2 font-semibold text-xl print:text-lg print:mb-0">
+        <h4 className="mb-2 font-semibold text-xl print:text-base print:mb-0">
           <Markup content={event.summary} noWrap />
         </h4>
         {event?.attachment?.type === 'image' && (
-          <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
+          <p className="mt-2 mb-2 text-gray-700 print:text-black leading-none print:hidden">
             <img className="w-full h-auto" src={event.attachment.url} alt={event.summary} />
           </p>
         )}
@@ -116,7 +116,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event.calendar?.organizer?.name && (
           <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
-            <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
+            <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             <Markup content={event.calendar?.organizer?.name} noWrap />
           </p>
         )}

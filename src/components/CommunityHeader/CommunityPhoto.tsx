@@ -17,7 +17,7 @@ const CommunityPhoto: FC<CommunityPhotoProps> = props => {
 
   return (
     <img
-      className="absolute w-full h-full object-cover object-center"
+      className="absolute w-full h-full object-cover object-center print:relative print:h-50mm print:w-full print:object-cover"
       src={community?.wikimediaCommonsImages[0]}
     />
   );

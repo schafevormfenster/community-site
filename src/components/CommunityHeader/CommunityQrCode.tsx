@@ -21,8 +21,8 @@ const CommunityQrCode: FC<CommunityQrCodeProps> = props => {
   const params = campaignParams.map(param => `${param.key}=${param.value}`).join('&');
   const codeUrl = `${baseUrl}${community.slug}?${params}`;
   return (
-    <div className="hidden print:block p-2 bg-white">
-      <QRCode value={codeUrl} size={130} />
+    <div className="hidden print:block bg-white">
+      <QRCode value={codeUrl} size={100} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = props => {
 
   if (!community) return <></>;
   return (
-    <header>
+    <header className="print:hidden">
       <div className="text-center">
         <div className="relative w-12 h-12 ml-2 my-2 -mb-4 z-10 lg:m-4">
           <Link href={`/`}>
