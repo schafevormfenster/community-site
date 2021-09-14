@@ -10,7 +10,7 @@ export interface CalendarSheetIconProps {
  */
 const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
   return (
-    <div className="w-full bg-gray-400 text-white overflow-hidden rounded text-center leading-none print:bg-white print:text-black print:border-1 print:border-black print:rounded">
+    <div className="w-full bg-gray-400 text-white overflow-hidden rounded text-center leading-none print:bg-white print:text-black print:border-0">
       <span className="pt-0.5 block bg-gray-800 print:bg-white text-xs">
         {moment(day).format('ddd')}
       </span>

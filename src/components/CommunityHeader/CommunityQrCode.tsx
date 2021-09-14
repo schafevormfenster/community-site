@@ -22,7 +22,7 @@ const CommunityQrCode: FC<CommunityQrCodeProps> = props => {
   const codeUrl = `${baseUrl}${community.slug}?${params}`;
   return (
     <div className="hidden print:block bg-white">
-      <QRCode value={codeUrl} size={100} />
+      <QRCode value={codeUrl} size={120} />
     </div>
   );
 };

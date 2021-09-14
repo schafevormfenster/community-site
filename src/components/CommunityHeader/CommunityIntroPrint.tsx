@@ -25,7 +25,12 @@ const CommunityIntroPrint: FC<CommunityIntroPrintProps> = ({ community }) => {
           <p>Das ist los in</p>
           <h1 className="text-3xl">{community.name}</h1>
           <p>sowie in der Gemeinde {community.municipality.name} und den umliegenden Dörfern.</p>
-          <p className="mt-1">Immer aktuell auf dem Smartphone unter {url}.</p>
+
+          <p className="mt-1">
+            Scanne den QR-Code und hole dir die aktuellen Infos auf dein Handy. Wenn Termine fehlen,
+            trage diese kostenlos bei uns ein. Auf www.schafe-vorm-fenster.de erfährst du, wie das
+            funktioniert.
+          </p>
         </div>
       </div>
     </div>

@@ -165,7 +165,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['first'],
+    },
   },
   plugins: [
     require('@tailwindcss/line-clamp'),

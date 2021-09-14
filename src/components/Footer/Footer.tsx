@@ -10,7 +10,6 @@ import SchafeVormFenster from '../Sponsors/SchafeVormFenster';
 const Footer: FC = props => {
   return (
     <footer className="px-4 py-4 print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
-      <hr className="hidden print:block mb-2" />
       <div id="legal" className="flex mb-4 print:hidden">
         <Link href={`/impressum/#kontakt`}>
           <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
