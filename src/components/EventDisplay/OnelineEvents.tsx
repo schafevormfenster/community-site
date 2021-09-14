@@ -13,12 +13,10 @@ const OnelineEvents: FC<OnelineEventsProps> = ({ events }) => {
   return (
     <div className="pb-2 whitespace-nowrap overflow-x-scroll">
       {events.map((event, index) => (
-        <>
+        <span key={index}>
           <TimeDisplay event={event} />
-          <span className="mr-2" key={index}>
-            {event.summary}
-          </span>
-        </>
+          <span className="mr-2">{event.summary}</span>
+        </span>
       ))}
     </div>
   );

@@ -16,6 +16,9 @@ module.exports = {
       screens: {
         print: { raw: 'print' },
       },
+      zIndex: {
+        overhelpdesk: '9999999',
+      },
       colors: {
         primary: '#001e60', // dark blue text color
         secondary: '#4196d0',
@@ -37,6 +40,35 @@ module.exports = {
       fontSize: {
         '2xs': '.6rem',
       },
+      spacing: {
+        '5mm': '5mm',
+        '10mm': '10mm',
+        '15mm': '15mm',
+        '20mm': '20mm',
+      },
+      height: {
+        '50mm': '50mm',
+        '60mm': '60mm',
+        '70mm': '70mm',
+        '80mm': '80mm',
+        '90mm': '90mm',
+        '100mm': '100mm',
+        '110mm': '110mm',
+        '120mm': '120mm',
+        '130mm': '130mm',
+        '140mm': '140mm',
+        '150mm': '150mm',
+        '160mm': '160mm',
+        '170mm': '170mm',
+        '180mm': '180mm',
+        '190mm': '190mm',
+        '200mm': '200mm',
+        '210mm': '210mm',
+        '220mm': '220mm',
+        '230mm': '230mm',
+        '240mm': '240mm',
+        '297mm': '297mm',
+      },
       width: {
         '2/1': '180%',
         '3/1': '270%',
@@ -51,6 +83,23 @@ module.exports = {
         '12/1': '1080%',
         '80/screen': '80vw',
         '90/screen': '90vw',
+        '50mm': '50mm',
+        '60mm': '60mm',
+        '70mm': '70mm',
+        '80mm': '80mm',
+        '90mm': '90mm',
+        '100mm': '100mm',
+        '110mm': '110mm',
+        '120mm': '120mm',
+        '130mm': '130mm',
+        '140mm': '140mm',
+        '150mm': '150mm',
+        '160mm': '160mm',
+        '170mm': '170mm',
+        '180mm': '180mm',
+        '190mm': '190mm',
+        '200mm': '200mm',
+        '210mm': '210mm',
       },
       typography: theme => ({
         DEFAULT: {
@@ -116,11 +165,14 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['first'],
+    },
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
+    require('tailwindcss-hyphens'),
   ],
 };

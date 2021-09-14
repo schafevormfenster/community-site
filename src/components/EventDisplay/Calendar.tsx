@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
 import { CalendarDisplayMode } from '../../entities/Calendar';
@@ -23,7 +23,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
   return (
-    <main key="CalendarMain">
+    <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -111,14 +111,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                       {regularEvents.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
-                          <div key={regularEvent._id}>
+                          <Fragment key={regularEventIndex}>
                             {regularEvent.calendar.display_mode == 'mini' && (
                               <MiniEvent event={regularEvent} key={regularEvent._id} />
                             )}
                             {regularEvent.calendar.display_mode != 'mini' && (
                               <EventTeaser event={regularEvent} key={regularEvent._id} />
                             )}
-                          </div>
+                          </Fragment>
                         ))}
                     </CalendarDaySection>
                   );
