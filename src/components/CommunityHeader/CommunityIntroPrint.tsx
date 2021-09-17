@@ -27,9 +27,10 @@ const CommunityIntroPrint: FC<CommunityIntroPrintProps> = ({ community }) => {
           <p>sowie in der Gemeinde {community.municipality.name} und den umliegenden Dörfern.</p>
 
           <p className="mt-1">
-            Scanne den QR-Code und hole dir die aktuellen Infos auf dein Handy. Wenn Termine fehlen,
-            trage diese kostenlos bei uns ein. Auf www.schafe-vorm-fenster.de erfährst du, wie das
-            funktioniert.
+            Scanne den QR-Code und hole dir die ausführlichen und aktuellen Infos auf dein Handy.
+            <br />
+            Trage deine Termine bei uns ein. Auf www.schafe-vorm-fenster.de erfährst du, wie es
+            geht.
           </p>
         </div>
       </div>
