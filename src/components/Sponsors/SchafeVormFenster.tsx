@@ -17,7 +17,10 @@ const SchafeVormFenster: FC = props => {
         <span className="print:hidden">
           Die Digitale Terminliste ist ein Projekt der Schafe vorm Fenster UG.
         </span>
-        <span className="hidden print:inline">Ein Projekt der Schafe vorm Fenster UG.</span>
+        <span className="hidden print:inline">
+          Ein Projekt der <br />
+          Schafe vorm Fenster UG.
+        </span>
       </p>
     </div>
   );
