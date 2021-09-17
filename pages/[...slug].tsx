@@ -1,6 +1,5 @@
 import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { ParsedUrlQuery } from 'querystring';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
 import { Community, CommunityExcerpt } from '../src/entities/Community';
@@ -25,18 +24,6 @@ import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';
 
-export const DotButton = ({ selected, onClick }) => (
-  <button
-    className={`embla__dot ${selected ? 'is-selected' : ''}`}
-    type="button"
-    onClick={onClick}
-  />
-);
-
-interface IParams extends ParsedUrlQuery {
-  slug: string;
-}
-
 export interface IPageProps {
   community: Community;
   events: Event[];
@@ -56,8 +43,6 @@ const cdnClient = SanityClientConstructor({
 
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
   const slug = join(params!.slug, '/');
-
-  // const { slug } = params as IParams;
 
   /**
    * fetch community data incl. image and municipality
@@ -83,6 +68,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .catch(err => {
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
     });
+
+  if (!community) {
+    return {
+      notFound: true, // returns the default 404 page with a status code of 404
+    };
+  }
 
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
@@ -297,13 +288,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export default function Page(props: IPageProps) {
-  // TODO: Dummy data, integrate with API
   const community: Community = props.community;
   const meta = props.meta;
 
   if (!community) return <>404 no community</>;
 
-  // const events: Event[] = props.events;
   const events: Event[] = props.events;
   const news: News[] = props.news;
   const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;

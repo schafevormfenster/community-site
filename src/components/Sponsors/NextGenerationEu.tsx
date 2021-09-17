@@ -19,8 +19,8 @@ const NextGenerationEu: FC = props => {
           COVID-19-Pandemie finanziert.
         </span>
         <span className="hidden print:inline">
-          Finanziert über die REACT-EU Initiative des Europäischen Sozialfonds (ESF) in
-          Mecklenburg-Vorpommern (2021-2027).
+          Finanziert über die REACT-EU Initiative des <br />
+          Europäischen Sozialfonds (ESF) in Mecklenburg-Vorpommern (2021-2027).
         </span>
       </p>
     </div>

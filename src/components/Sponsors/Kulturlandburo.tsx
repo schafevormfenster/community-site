@@ -15,8 +15,8 @@ const Kulturlandburo: FC = props => {
       </div>
       <p className="text-sm print:text-2xs print:leading-tight text-left">
         <span className="print:hidden">
-          Das Kulturlandbüro ist aktiver Kooperatonspartner bei der Entwicklung der ländlichen Räume
-          in der Uecker-Randow Region.
+          Das Kulturlandbüro ist aktiver Kooperationspartner bei der digitalen Entwicklung der
+          ländlichen Räume in der Uecker-Randow Region.
         </span>
         <span className="hidden print:inline">In Kooperation mit dem Kulturlandbro.</span>
       </p>
