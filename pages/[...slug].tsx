@@ -84,6 +84,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
     });
 
+  if (!community) {
+    return {
+      notFound: true, // returns the default 404 page with a status code of 404
+    };
+  }
+
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
