@@ -2,14 +2,12 @@ import React from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Community } from '../src/entities/Community';
-import { News } from '../src/entities/News';
 import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO, CommunityDTOcoreQueryFields } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
 import SvFLogo from '../src/components/Images/SvFLogo';
 import ReactMarkdown from 'react-markdown';
-import NextGenerationEu from '../src/components/Sponsors/NextGenerationEu';
 
 const ReactComment = ({ text }) => {
   return <div dangerouslySetInnerHTML={{ __html: `<!--${text}-->` }} />;
@@ -27,7 +25,6 @@ const cdnClient = SanityClientConstructor({
   apiVersion: process.env.SANITY_APIVERSION,
   projectId: process.env.SANITY_PROJECTID,
   dataset: process.env.SANITY_DATASET,
-  token: process.env.SANITY_TOKEN,
   useCdn: true,
 });
 
