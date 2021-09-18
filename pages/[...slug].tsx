@@ -37,7 +37,6 @@ const cdnClient = SanityClientConstructor({
   apiVersion: process.env.SANITY_APIVERSION,
   projectId: process.env.SANITY_PROJECTID,
   dataset: process.env.SANITY_DATASET,
-  token: process.env.SANITY_TOKEN,
   useCdn: true,
 });
 
@@ -263,7 +262,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!='' && publication_status in ["0", "1"]]{ ${CommunityDTOcoreQueryFields} }`;
+  const communityListQuery = `*[_type == "community" && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
     .fetch(communityListQuery)
