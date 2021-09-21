@@ -58,5 +58,5 @@ Benötigst du eine Anleitung?
 - **Brauche ich einen Google Kalender?** Ja, derzeit arbeiten wir nur mit Google Kalendern, weil
   diese für alle am einfachsten und kostenlos zu nutzen sind. Später werden wir voraussichtlich auch
   andere Kalenderformate unterstützen.
-- **Weitere FAQ findest du [hier](https://schafe-vorm-fenster.zendesk.com/hc/de)
+- **Weitere FAQ findest du** [hier](https://schafe-vorm-fenster.zendesk.com/hc/de)
   
