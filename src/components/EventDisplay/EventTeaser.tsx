@@ -95,7 +95,11 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         )}
         {event.description && (
-          <div className="prose max-h-60 overflow-y-scroll print:hidden">
+          <div
+            className={`prose ${
+              event.distance === 'region' ? 'max-h-60' : 'max-h-60'
+            } overflow-y-scroll print:hidden`}
+          >
             <Interweave
               content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')}
               transform={(node, children) => {

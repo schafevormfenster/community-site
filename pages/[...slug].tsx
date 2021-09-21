@@ -53,6 +53,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
 
   let communitiesInMunicipality = [];
   let communitiesInNearbySurrounding = [];
+  let communitiesInBroaderRegion = [];
 
   let community: Community = undefined;
 
@@ -236,6 +237,72 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         console.warn(
           `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`,
           nearbyEventsQuery
+        );
+      });
+  }
+
+  /**
+   * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
+   */
+  const fetchRegionCommunitiesExcludeQueryPart = communitiesInNearbySurrounding
+    .concat(communitiesInMunicipality)
+    .map(function (cid) {
+      return ` && _id != "${cid}"`;
+    })
+    .join('');
+  let communitiesInRegion: CommunityExcerpt[] = undefined;
+  const communitiesRegionQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 25000 ${fetchRegionCommunitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesRegionQueryParams = {
+    currentCommunityGeopoint: community.geoLocation.point,
+  };
+  await cdnClient
+    .fetch(communitiesRegionQuery, communitiesRegionQueryParams)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      communitiesInRegion = communityDtoList
+        ? communityDtoList.map(communityDto => {
+            communitiesInBroaderRegion.push(communityDto._id);
+            return communityExcerptByDTO(communityDto);
+          })
+        : undefined;
+      console.log(communitiesInRegion);
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup communities in the region '${community.name}' at sanity failed:`
+      );
+    });
+
+  /**
+   * Fetch events in the broader region with a scope adressing region.
+   */
+  if (communitiesNearby?.length > 0) {
+    const communitiesRegionMatchQueryPart = communitiesInBroaderRegion
+      .map(function (cid) {
+        return `references("${cid}")`;
+      })
+      .join(' || ');
+    const communitiesRegionMatchQueryPartWrapped =
+      communitiesRegionMatchQueryPart.trim().length > 0
+        ? '&& (' + communitiesRegionMatchQueryPart + ')'
+        : '';
+    const regionEventsQuery = `*[_type == "event" ${communitiesRegionMatchQueryPartWrapped} && !cancelled && calendar->scope in ["3"]]{ ${EventDTOdetailQueryFields} }`;
+    const regionEventsQueryParams = {};
+    await cdnClient
+      .fetch(regionEventsQuery, regionEventsQueryParams)
+      .then(response => {
+        const regionEventDtoList: EventDTO[] = response;
+        if (regionEventDtoList)
+          regionEventDtoList.map(eventDto => {
+            let regionEvent = eventByDTO(eventDto);
+            regionEvent.distance = 'region';
+            return events.push(regionEvent);
+          });
+      })
+      .catch(err => {
+        console.warn(
+          `The query to lookup eventy in the broader region of the community '${slug}' at sanity failed:`,
+          regionEventsQuery
         );
       });
   }
