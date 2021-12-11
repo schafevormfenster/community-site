@@ -4,19 +4,12 @@ import Head from 'next/head';
 import { Community } from '../src/entities/Community';
 import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
-import { CommunityDTO, CommunityDTOcoreQueryFields } from '../src/entityDTOs/CommunityDTO';
+import { CommunityDTO, CommunityDTOteaserQueryFields } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import SvFLogo from '../src/components/Images/SvFLogo';
-import ReactMarkdown from 'react-markdown';
-
-const ReactComment = ({ text }) => {
-  return <div dangerouslySetInnerHTML={{ __html: `<!--${text}-->` }} />;
-};
 
 export interface IHomepageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
-  content: { welcome: any; explain: any };
 }
 
 // use a cdn client for fetching data
@@ -36,7 +29,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!='' && !(_id in path('drafts.**'))] | order(municipality->name asc) { ${CommunityDTOcoreQueryFields} }`;
+  const communityListQuery = `*[_type == "community" && slug.current!='' && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
     .fetch(communityListQuery)
@@ -51,20 +44,10 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
       console.warn(`The query to lookup all communities at sanity failed:`);
     });
 
-  const welcomeMd = await require(`../content/homepage/welcome.md`);
-  const welcomeJson = JSON.stringify(welcomeMd);
-
-  const explainMd = await require(`../content/homepage/explain.md`);
-  const explainJson = JSON.stringify(explainMd);
-
   return {
     props: {
       meta: {
         canonicalUrl: canonicalUrl,
-      },
-      content: {
-        welcome: welcomeJson,
-        explain: explainJson,
       },
       communities: communityList,
     },
@@ -76,9 +59,6 @@ export default function Homepage(props: IHomepageProps) {
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
-  const content = props.content;
-  const welcomeText = JSON.parse(content.welcome).default;
-  const explainText = JSON.parse(content.explain).default;
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -96,7 +76,7 @@ export default function Homepage(props: IHomepageProps) {
   }, [searchTerm]);
 
   return (
-    <div className="max-w-screen-md m-auto bg-white">
+    <div className="w-full">
       <Head>
         <title>Schafe vorm Fenster</title>
         <meta name="description" content="" />
@@ -121,132 +101,117 @@ export default function Homepage(props: IHomepageProps) {
           }}
         />
       </Head>
-      <header className="text-center py-4">
-        <div className="inline-block w-20 h-20 m-auto">
-          <SvFLogo />
-        </div>
-        <p className="font-title text-lg  text-gray-600">Schafe vorm Fenster</p>
-      </header>
-
-      <article className="prose prose-lg px-4 py-8 md:px-8 text-center">
-        {welcomeText && <ReactMarkdown>{welcomeText}</ReactMarkdown>}
-      </article>
-      <main className="p-0" id="dorfsuche">
-        <div className="community-search ">
-          <div className="h-16 px-4 md:px-8 py-2">
-            <input
-              type="text"
-              placeholder="Finde dein Dorf ..."
-              value={searchTerm}
-              onChange={handleChange}
-              className="w-full p-2 border border-secondary rounded"
-            />
+      <div className="min-h-screen flex flex-col bg-brand">
+        <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
+          <div>
+            <a
+              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-brand hover:border-brand whitespace-nowrap"
+              href="https://www.schafe-vorm-fenster.de/"
+            >
+              Über das Projekt
+            </a>
+            <a
+              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-brand hover:border-brand whitespace-nowrap"
+              href="https://www.schafe-vorm-fenster.de/funktionen"
+            >
+              Alle Funktonen
+            </a>
+            <a
+              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-brand hover:border-brand whitespace-nowrap"
+              href="https://www.schafe-vorm-fenster.de/#tarifmodell"
+            >
+              Tarife
+            </a>
+            <a
+              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-brand hover:border-brand whitespace-nowrap"
+              href="https://schafe-vorm-fenster.zendesk.com/hc/de"
+            >
+              Hilfe und Anleitungen
+            </a>
           </div>
-          <div className="relative h-full px-4 pb-8">
-            {searchTerm.length > 0 && (
-              <ul className="absolute left-4 right-4 md:left-8 md:right-8 bg-secondary px-4 py-2 z-50">
-                {searchResults.map(item => (
-                  <li key={item._id}>
-                    <Link href={`/${item.slug}`}>
-                      <a className="block py-1 px-2">
-                        {item.name} (Gemeinde {item?.municipality?.name})
-                      </a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-        <hr />
-      </main>
-      <article className="prose prose-lg px-4 py-8 md:px-8">
-        {explainText && <ReactMarkdown>{explainText}</ReactMarkdown>}
-      </article>
-      <aside className="px-4 md:px-8 pb-8" id="kontakt">
-        <hr />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 prose prose-lg">
-          <div className="col-span-1 sm:col-span-2 text-center">
-            <h2>Sprich uns an!</h2>
-            <p>Du hast noch Fragen oder Feedback für uns? Kontaktiere uns gerne direkt.</p>
-          </div>
-          <div className="col-span-1 text-center leading-tight">
-            <img
-              className="rounded-full h-40 w-40 m-auto mb-6"
-              src="/team/christian.jpg"
-              alt="Christian Sauer"
-            />
-            <p>
-              <strong>Christian Sauer</strong>
-            </p>
-            <p>
-              Projektkoordinator
-              <br />
-              <a href="mailto:christian@schafe-vorm-fenster.de?cc=jan@schafe-vorm-fenster.de&amp;subject=Hallo Christian.&amp;body=Hallo Christian, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ...">
-                christian@schafe-vorm-fenster.de
-              </a>
-              <br />
-              <a href="tel:++4915678689704‬">+49 156 78689704‬</a>
-            </p>
-          </div>
-          <div className="col-span-1 text-center leading-tight">
-            <img
-              className="rounded-full h-40 w-40 m-auto mb-6"
-              src="/team/jan.jpg"
-              alt="Jan-Henrik Hempel"
-            />
-            <p>
-              <strong>Jan-Henrik Hempel</strong>
-            </p>
-            <p>
-              Technischer Leiter
-              <br />
-              <a href="mailto:jan@schafe-vorm-fenster.de?cc=christian@schafe-vorm-fenster.de&amp;subject=Hallo Jan.&amp;body=Hallo Jan, ich bin ... komme aus ... und finde Euer Projekt ... Dabei interessiere ich mich besonders für ... und würde gerne wissen ...">
-                jan@schafe-vorm-fenster.de
-              </a>
-              <br />
-              <a href="tel:++491751661003">+49 175 1661003</a>
-            </p>
-          </div>
-        </div>
-      </aside>
-      <aside className="px-4 md:px-8 pb-8 prose prose-lg" id="news">
-        <hr />
-        <a
-          className="twitter-timeline"
-          data-lang="de"
-          data-height="800"
-          data-theme="light"
-          href="https://twitter.com/schafeamfenster?ref_src=twsrc%5Etfw"
+        </nav>
+        <main
+          className="max-w-screen-md m-auto flex-auto flex-grow flex items-center p-0"
+          id="dorfsuche"
         >
-          Neuigkeiten
-        </a>
-      </aside>
-      {/*
-      <nav className="pb-8 text-center text-base px-4 md:px-8">
-        <hr className="mb-8" />
-        <h2 className="text-2xl mb-4">Alle Dörfer</h2>
-        <p className="mb-4">
-          Hier findest Du eine Liste aller Dörfer in Vorpommern-Greifswald. <br />
-          Einfacher{' '}
-          <Link href={`/#dorfsuche`}>
-            <a className="text-secondary">findest Du dein Dorf</a>
-          </Link>{' '}
-          über die Suche weiter oben.
-        </p>
-        <ul className="text-sm">
-          {communities.map(c => (
-            <li className="inline-block px-2" key={c._id}>
-              <Link href={`/${c.slug}`}>
-                <a>
-                  {c.name}, Gemeinde {c.municipality.name}
-                </a>
-              </Link>
-            </li>
+          <div className="items-center">
+            <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
+              <h1 className="text-5xl md:text-6xl font-semibold text-white">
+                Deine digitale Terminliste.
+              </h1>
+              <p className="text-2xl">
+                Erfahre was wann wo in deinem Dorf los ist. Einfach per Smartphone.
+              </p>
+            </article>
+            <div className="max-w-screen-sm m-auto community-search ">
+              <div className="h-16 px-4 md:px-8 py-2">
+                <input
+                  type="text"
+                  placeholder="Finde dein Dorf ..."
+                  value={searchTerm}
+                  onChange={handleChange}
+                  className="w-full font-body text-2xl pt-2 pb-1.5 px-4 leading-none border border-gray-400 rounded focus:border-secondary"
+                />
+              </div>
+              <div className="relative h-full px-4 pb-8 mt-2">
+                {searchTerm.length > 0 && (
+                  <ul className="absolute text-lg left-4 right-4 md:left-8 md:right-8 bg-secondary rounded px-4 py-2 z-50">
+                    {searchResults.map(item => (
+                      <li key={item._id}>
+                        <Link href={`/${item.slug}`}>
+                          <a className="block py-1 px-2">
+                            <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
+                            {item?.municipality?.name})
+                          </a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
+        </main>
+        <header className="flex-0 bg-gray-800 text-center py-8 px-4">
+          <div className="inline-block w-auto h-16 m-auto mb-2">
+            <img
+              className="h-full w-auto mx-auto max-w-sm"
+              src="/partner/SchafeVormFenster.svg"
+              alt="Ein Projekt der Schafe vorm Fenster UG"
+            />
+          </div>
+          <p className="font-body text-white text-sm uppercase mb-2">
+            Die digitale Terminliste für dein Dorf
+          </p>
+          <p className="font-body text-3xl font-semibold text-white">
+            aus Schlakow für Vorpommern-Greifswald
+          </p>
+        </header>
+      </div>
+      <aside className="mx-auto px-4 py-12">
+        <h2 className="text-4xl text-center mb-8">
+          alle {communities.length} Dörfer
+          <span className="block text-lg">in Vorpommern-Greifswald</span>
+        </h2>
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
+          {communities.map(community => (
+            <Link href={`/${community.slug}`} key={community.slug + community._id}>
+              <a className="relative block h-44 bg-gray-200">
+                {community?.wikimediaCommonsImages?.length > 0 && (
+                  <img
+                    className="h-full w-full object-cover"
+                    src={community.wikimediaCommonsImages[0]}
+                  />
+                )}
+                <div className="absolute w-full p-2 pt-4 bottom-0 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
+                  <h4 className="text-xl font-normal ">{community.name}</h4>
+                  <p className="text-xs font-light">(Gemeinde {community.municipality.name})</p>
+                </div>
+              </a>
+            </Link>
           ))}
-        </ul>
-      </nav>
-      */}
+        </div>
+      </aside>
     </div>
   );
 }

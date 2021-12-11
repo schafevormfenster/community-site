@@ -6,14 +6,14 @@ import React, { FC } from 'react';
 const Kulturlandburo: FC = props => {
   return (
     <div className="m-auto w-full max-w-md">
-      <div className="h-20 print:h-14 w-auto">
+      <div className="h-16 print:h-14 w-auto text-center mb-3">
         <img
-          className="h-full w-auto max-w-sm mb-2 -ml-2.5 print:-ml-2"
+          className="h-full w-auto mx-auto max-w-sm"
           src="/partner/Kulturlandburo.svg"
           alt="In Koperation mit dem Kulturlandbüro"
         />
       </div>
-      <p className="text-sm print:text-2xs print:leading-tight text-left">
+      <p className="text-xs print:text-2xs print:leading-tight text-center">
         <span className="print:hidden">
           Das Kulturlandbüro ist aktiver Kooperationspartner bei der digitalen Entwicklung der
           ländlichen Räume in der Uecker-Randow Region.

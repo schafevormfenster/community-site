@@ -5,14 +5,14 @@ import React, { FC } from 'react';
 const NextGenerationEu: FC = props => {
   return (
     <div className="m-auto w-full max-w-md">
-      <div className="h-20 print:h-14 w-auto">
+      <div className="h-16 print:h-14 w-auto text-center mb-4">
         <img
-          className="h-full w-auto m-auto max-w-sm mb-2 -ml-1.5 print:-ml-1"
+          className="h-full w-auto max-w-full mx-auto max-w-sm"
           src="/partner/NextGenerationEu.svg"
           alt="Finanziert von der Europäsichen Union / NextGenerationEU"
         />
       </div>
-      <p className="text-sm print:text-2xs print:leading-tight text-left">
+      <p className="text-xs print:text-2xs print:leading-tight text-center">
         <span className="print:hidden">
           Dieses Projekt wird über die REACT-EU Initiative im Rahmen des Europäischen Sozialfonds
           (ESF) in Mecklenburg-Vorpommern (2021-2027) als Teil der Reaktion der Union auf die

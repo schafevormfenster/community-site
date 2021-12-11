@@ -20,6 +20,7 @@ module.exports = {
         overhelpdesk: '9999999',
       },
       colors: {
+        brand: '#b4cf39', // logo green
         primary: '#001e60', // dark blue text color
         secondary: '#4196d0',
         secondaryDark: '#2f6a91', // https://www.sessions.edu/color-calculator/
@@ -145,7 +146,7 @@ module.exports = {
             h2: {
               fontWeight: theme('fontWeight.light'),
               lineHeight: theme('lineHeight.tight'),
-              marginTop: theme('space.8'),
+              marginTop: theme('space.4'),
               marginBottom: theme('space.4'),
             },
             ul: {
