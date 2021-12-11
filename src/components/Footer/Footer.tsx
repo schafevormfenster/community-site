@@ -9,37 +9,46 @@ import SchafeVormFenster from '../Sponsors/SchafeVormFenster';
  */
 const Footer: FC = props => {
   return (
-    <footer className="px-4 py-4 print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
-      <div id="legal" className="flex mb-4 print:hidden">
-        <Link href={`/impressum/#kontakt`}>
-          <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-            Kontakt
-          </a>
-        </Link>
-        <Link href={`/impressum/#impressum`}>
-          <a className="flex-auto mr-4 border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-            Impressum
-          </a>
-        </Link>
-        <Link href={`/impressum/#datenschutz`}>
-          <a className="flex-auto border border-gray-200 hover:bg-gray-200 rounded px-2 pt-2 pb-1 leading-none text-center">
-            Datenschutzerklärung
-          </a>
-        </Link>
-      </div>
-      <div id="partner" className="w-full pr-24 print:pr-0 text-center">
-        <div className="flex m-auto">
-          <div className="hidden md:block print:block flex-auto mr-4">
+    <footer className="print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
+      <div id="partner" className="w-full p-8 print:pr-0 text-center">
+        <div className="flex flex-col md:flex-row m-auto">
+          <div className="hidden md:block print:block flex-auto mb-4 md:mb-0">
             <SchafeVormFenster />
           </div>
-          <div className="flex-auto mr-4">
+          <div className="flex-auto mb-4 md:mb-0">
             <NextGenerationEu />
           </div>
-          <div className="flex-auto">
+          <div className="flex-auto mb-4 md:mb-0">
             <Kulturlandburo />
           </div>
         </div>
       </div>
+
+      <nav
+        id="legal"
+        className="h-24 bg-gray-800 py-4 px-4 pr-28 md:pr-4 text-left md:text-center print:hidden"
+      >
+        <Link href={`https://www.schafe-vorm-fenster.de/impressum`}>
+          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+            Impressum
+          </a>
+        </Link>
+        <Link href={`https://www.schafe-vorm-fenster.de/impressum`}>
+          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+            Datenschutz
+          </a>
+        </Link>
+        <Link href={`https://twitter.com/schafeamfenster`}>
+          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+            Twitter
+          </a>
+        </Link>
+        <Link href={`https://schafe-vorm-fenster.zendesk.com/hc/de`}>
+          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+            Hilfe und Anleitungen
+          </a>
+        </Link>
+      </nav>
     </footer>
   );
 };
