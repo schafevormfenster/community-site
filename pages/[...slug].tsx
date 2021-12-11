@@ -265,7 +265,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
             return communityExcerptByDTO(communityDto);
           })
         : undefined;
-      console.log(communitiesInRegion);
+      // console.log(communitiesInRegion);
     })
     .catch(err => {
       console.warn(

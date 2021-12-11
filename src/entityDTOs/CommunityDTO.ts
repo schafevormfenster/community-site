@@ -1,5 +1,4 @@
 import {
-  MunicipalityCoreDTO,
   MunicipalityDTO,
   MunicipalityDTOcoreQueryFields,
   MunicipalityDTOdetailQueryFields,
@@ -30,6 +29,6 @@ export interface CommunityDTO {
 
 export const CommunityDTOcoreQueryFields = `_id, slug, name, municipality->{ ${MunicipalityDTOcoreQueryFields} }`;
 
-export const CommunityDTOteaserQueryFields = `_id, slug, name, municipality->{ ${MunicipalityDTOteaserQueryFields} }`;
+export const CommunityDTOteaserQueryFields = `_id, slug, name, wikimedia_commons_imagelinks, municipality->{ ${MunicipalityDTOteaserQueryFields} }`;
 
 export const CommunityDTOdetailQueryFields = `_id, slug, name, place_id, wikidata_id, wikimedia_commons_imagelinks, municipality->{ ${MunicipalityDTOdetailQueryFields} }, geolocation`;

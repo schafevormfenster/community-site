@@ -6,16 +6,17 @@ import React, { FC } from 'react';
 const SchafeVormFenster: FC = props => {
   return (
     <div className="m-auto w-full max-w-md">
-      <div className="h-20 print:h-14 w-auto">
+      <div className="h-16 print:h-14 w-auto text-center mb-3">
         <img
-          className="py-2.5 h-full w-auto max-w-sm mb-2"
+          className="h-full w-auto mx-auto max-w-sm"
           src="/partner/SchafeVormFenster.svg"
           alt="Ein Projekt der Schafe vorm Fenster UG"
         />
       </div>
-      <p className="text-sm print:text-2xs print:leading-tight text-left">
+      <p className="text-xs print:text-2xs print:leading-tight text-center">
         <span className="print:hidden">
-          Die Digitale Terminliste ist ein Projekt der Schafe vorm Fenster UG.
+          Die Digitale Terminliste ist ein Projekt der Schafe vorm Fenster UG aus Schlatkow für
+          Vorpommern-Greifswald.
         </span>
         <span className="hidden print:inline">
           Ein Projekt der <br />
