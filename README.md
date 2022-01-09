@@ -1,3 +1,3 @@
 # Schafe vorm Fenster
 
-A great platform to deliver aggregated content with focus on a single community.
+A scalable cloud platform to deliver aggregated content with focus on a single community.
