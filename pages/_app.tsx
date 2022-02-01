@@ -24,10 +24,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           data-secure-code={process.env.NEXT_PUBLIC_ETRACKER_CODE}
           src="//code.etracker.com/code/e.js"
           async
+          defer
         ></script>
         <script
           id="ze-snippet"
           src={'//static.zdassets.com/ekr/snippet.js?key=' + process.env.NEXT_PUBLIC_ZENDESK_KEY}
+          async
+          defer
         ></script>
       </Head>
       <Component {...pageProps} />
