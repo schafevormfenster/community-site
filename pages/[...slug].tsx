@@ -43,6 +43,8 @@ const cdnClient = SanityClientConstructor({
 export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
   const slug = join(params!.slug, '/');
 
+  console.time('dataFetching');
+
   /**
    * fetch community data incl. image and municipality
    */
@@ -325,12 +327,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   console.timeEnd('fetchEventsInRegion');
 
   /**
-   * Sort all collected events by start date.
+   * Structur events in a calendar-kind array.
    */
-  console.time('sortingEvents');
-  events = sortBy(events, ['start', 'allday']);
-  console.timeEnd('sortingEvents');
-
   console.time('calendarizeEvents');
   let calendarizedEvents = new Array();
   events.forEach(event => {
@@ -352,6 +350,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     ].push(event);
   });
   console.timeEnd('calendarizeEvents');
+
+  console.timeEnd('dataFetching');
 
   // TODO: Split up events in day chunky already in server side
 
