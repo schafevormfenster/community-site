@@ -13,7 +13,7 @@ import OnelineCombinedEvents from './OnelineCombinedEvents';
 export interface CalendarProps {
   start: Date;
   end: Date;
-  events: Event[];
+  events: any;
 }
 
 /**
@@ -22,6 +22,7 @@ export interface CalendarProps {
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
+  // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
@@ -35,7 +36,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
-                  const onelineEvents: Event[] = events.filter(item => {
+                  const thisDayEvents: Event[] = events?.[day.year]?.[day.month]?.[day.day];
+
+                  const onelineEvents: Event[] = thisDayEvents?.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
                       eventStartDate.getFullYear(),
@@ -49,7 +52,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                   });
 
-                  const onelineCombinedEvents: Event[] = events.filter(item => {
+                  const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
                       eventStartDate.getFullYear(),
@@ -63,7 +66,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                   });
 
-                  const microEvents: Event[] = events.filter(item => {
+                  const microEvents: Event[] = thisDayEvents?.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
                       eventStartDate.getFullYear(),
@@ -76,7 +79,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     )
                       return item;
                   });
-                  const regularEvents: Event[] = events.filter(item => {
+                  const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
                       eventStartDate.getFullYear(),
@@ -99,17 +102,17 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={iDay}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      {microEvents.length > 0 &&
+                      {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
-                      {onelineEvents.length > 0 && <OnelineEvents events={onelineEvents} />}
+                      {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
 
-                      {onelineCombinedEvents.length > 0 && (
+                      {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
 
-                      {regularEvents.length > 0 &&
+                      {regularEvents?.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
                           <Fragment key={regularEventIndex}>
                             {regularEvent.calendar.display_mode == 'mini' && (

@@ -58,6 +58,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let community: Community = undefined;
 
   // TODO: move fetching into a separate function
+  console.time('fetchCommunity');
   await cdnClient
     .fetch(query, queryParams)
     .then(response => {
@@ -74,14 +75,15 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       notFound: true, // returns the default 404 page with a status code of 404
     };
   }
-
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
+  console.timeEnd('fetchCommunity');
 
   /**
    * fetch news for the municipality
    */
+  console.time('fetchNews');
   let news: News[] = []; // init events array with proper type
   const newsQuery = `*[_type == "news" && references($municipalityId)] | order(date desc) { ${NewsDTOteaserQueryFields}}`;
   const newsQueryParams = {
@@ -101,10 +103,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         `The query to lookup events of the community '${community._id}' at sanity failed:`
       );
     });
+  console.timeEnd('fetchNews');
 
   /**
    * fetch all events for the given community incl. organizer and place
    */
+  console.time('fetchEventsForCommunity');
   let events: Event[] = []; // init events array with proper type
   const eventQuery = `*[_type == "event" && references($communityId) && !cancelled] | order(start asc){ ${EventDTOdetailQueryFields} }`;
   const eventQueryParams = {
@@ -124,10 +128,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         `The query to lookup events of the community '${community._id}' at sanity failed:`
       );
     });
+  console.timeEnd('fetchEventsForCommunity');
 
   /**
    * Fetch all other communities of the same municipality, exclude the current one.
    */
+  console.time('fetchCommunitiesInMunicipality');
   let communitiesOfMunicipality: CommunityExcerpt[] = undefined;
   const communitiesOfMunicipalityQuery = `*[_type == "community" && _id != $currentCommuinityId && references($municipalityId)]{ ${CommunityDTOcoreQueryFields} }`;
   const communitiesOfMunicipalityQueryParams = {
@@ -150,10 +156,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         `The query to lookup communities of the same municipality '${community.municipality._id}' at sanity failed:`
       );
     });
+  console.timeEnd('fetchCommunitiesInMunicipality');
 
   /**
    * Fetch events of all communities of the municipality with a scope higher than for the own community.
    */
+  console.time('fetchEventsForMunicipality');
   await Promise.all(
     communitiesOfMunicipality.map(async c => {
       const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]]{ ${EventDTOdetailQueryFields} }`;
@@ -178,10 +186,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         });
     })
   );
+  console.timeEnd('fetchEventsForMunicipality');
 
   /**
    * Fetch communities nearby by geosearch, exclude the communities of the municipality
    */
+  console.time('fetchCommunitiesNearby');
   const communitiesExcludeQueryPart = communitiesInMunicipality
     .map(function (cid) {
       return ` && _id != "${cid}"`;
@@ -208,10 +218,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     .catch(err => {
       console.warn(`The query to lookup communities nearby '${community.name}' at sanity failed:`);
     });
+  console.timeEnd('fetchCommunitiesNearby');
 
   /**
    * Fetch events of all nearby communities with a scope adressing the surrounding or region.
    */
+  console.time('fetchEventsNearby');
   if (communitiesNearby?.length > 0) {
     const communitiesMatchQueryPart = communitiesInNearbySurrounding
       .map(function (cid) {
@@ -240,10 +252,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         );
       });
   }
+  console.timeEnd('fetchEventsNearby');
 
   /**
    * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
    */
+  console.time('fetchCommunitiesInRegion');
   const fetchRegionCommunitiesExcludeQueryPart = communitiesInNearbySurrounding
     .concat(communitiesInMunicipality)
     .map(function (cid) {
@@ -251,7 +265,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     })
     .join('');
   let communitiesInRegion: CommunityExcerpt[] = undefined;
-  const communitiesRegionQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 25000 ${fetchRegionCommunitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesRegionQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 15000 ${fetchRegionCommunitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
   const communitiesRegionQueryParams = {
     currentCommunityGeopoint: community.geoLocation.point,
   };
@@ -272,10 +286,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         `The query to lookup communities in the region '${community.name}' at sanity failed:`
       );
     });
+  console.timeEnd('fetchCommunitiesInRegion');
 
   /**
    * Fetch events in the broader region with a scope adressing region.
    */
+  console.time('fetchEventsInRegion');
   if (communitiesNearby?.length > 0) {
     const communitiesRegionMatchQueryPart = communitiesInBroaderRegion
       .map(function (cid) {
@@ -306,11 +322,38 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         );
       });
   }
+  console.timeEnd('fetchEventsInRegion');
 
   /**
    * Sort all collected events by start date.
    */
+  console.time('sortingEvents');
   events = sortBy(events, ['start', 'allday']);
+  console.timeEnd('sortingEvents');
+
+  console.time('calendarizeEvents');
+  let calendarizedEvents = new Array();
+  events.forEach(event => {
+    const eventStartDay = new Date(event.start);
+    if (!calendarizedEvents[eventStartDay.getFullYear()])
+      calendarizedEvents[eventStartDay.getFullYear()] = new Array();
+    if (!calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()])
+      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()] = new Array();
+    if (
+      !calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
+        eventStartDay.getDate()
+      ]
+    )
+      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
+        eventStartDay.getDate()
+      ] = new Array();
+    calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
+      eventStartDay.getDate()
+    ].push(event);
+  });
+  console.timeEnd('calendarizeEvents');
+
+  // TODO: Split up events in day chunky already in server side
 
   return {
     props: {
@@ -318,10 +361,10 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         canonicalUrl: canonicalUrl,
       },
       community: community,
-      events: events,
+      events: calendarizedEvents,
       news: news,
     },
-    revalidate: 1800,
+    revalidate: 3600,
   };
 };
 
@@ -359,7 +402,7 @@ export default function Page(props: IPageProps) {
 
   if (!community) return <>404 no community</>;
 
-  const events: Event[] = props.events;
+  const events: any = props.events;
   const news: News[] = props.news;
   const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;
 

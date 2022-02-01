@@ -1,6 +1,5 @@
 import { Calendar } from './Calendar';
 import { CommunityExcerpt } from './Community';
-import { Organizer } from './Organizer';
 import { Place } from './Place';
 
 /**
