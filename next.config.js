@@ -5,6 +5,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfigs = {
   poweredByHeader: false,
+  images: {
+    domains: ['drive.google.com', 'upload.wikimedia.org'],
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.optimization.minimize = true;
     config.plugins.push(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/));

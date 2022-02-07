@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Interweave, { Markup } from 'interweave';
 import moment from 'moment';
 import React, { FC } from 'react';
@@ -38,11 +39,13 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
             target="_blank"
             // onMouseDown={"_etracker.sendEvent(new et_UserDefinedEvent('Links.html', 'Links', 'Click', 'Link'));"}
           >
-            <img
-              className="w-full h-auto"
+            <Image
               src={event.attachment.url}
               alt={event.summary.replace(stripHtmlRegex, '')}
               title={event.description.replace(stripHtmlRegex, '')}
+              width={1200}
+              height={420}
+              layout="responsive"
             />
           </a>
         </p>
