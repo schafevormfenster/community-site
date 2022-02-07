@@ -17,10 +17,14 @@ export interface EventTeaserProps {
 const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   if (!event) return <></>;
 
+  const googleEventSummary: string = `${event.summary} - ${
+    event.place.localname || event.place.name
+  } in ${event.community.name}`;
+
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
     '@type': 'SocialEvent',
-    name: event.summary,
+    name: googleEventSummary,
     description: event.description,
     startDate: event.start,
     endDate: event.end,
