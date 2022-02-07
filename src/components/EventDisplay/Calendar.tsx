@@ -10,6 +10,7 @@ import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
 import { sortBy } from 'lodash';
+import CommercialAdEvent from './CommercialAdEvent';
 
 export interface CalendarProps {
   start: Date;
@@ -83,6 +84,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     )
                       return item;
                   });
+
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     const eventStartDate = new Date(item.start);
                     const eventStartDay = new Date(
@@ -93,10 +95,31 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                     if (
                       eventStartDay.getTime() === iDay.getTime() &&
-                      item.calendar.display_mode != CalendarDisplayMode.ONELINE &&
-                      item.calendar.display_mode != CalendarDisplayMode.ONELINECOMBINED &&
-                      item.calendar.display_mode != CalendarDisplayMode.MICRO
+                      (item.calendar.display_mode === CalendarDisplayMode.MINI ||
+                        item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
+                        item.calendar.display_mode == CalendarDisplayMode.EXTENDED)
                     ) {
+                      return item;
+                    }
+                  });
+
+                  // reduce commercial eventy to one per organizer
+                  let commercialOrganizerCounter = [];
+                  const commercialEvents: Event[] = thisDayEvents?.filter(item => {
+                    const eventStartDate = new Date(item.start);
+                    const eventStartDay = new Date(
+                      eventStartDate.getFullYear(),
+                      eventStartDate.getMonth(),
+                      eventStartDate.getDate()
+                    );
+                    let adKey: string =
+                      iDay.getTime().toString() + '#' + item.calendar.organizer._id;
+                    if (
+                      !(commercialOrganizerCounter?.[adKey] === true) &&
+                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.calendar.display_mode === CalendarDisplayMode.AD
+                    ) {
+                      commercialOrganizerCounter[adKey] = true;
                       return item;
                     }
                   });
@@ -126,6 +149,11 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                               <EventTeaser event={regularEvent} key={regularEvent._id} />
                             )}
                           </Fragment>
+                        ))}
+
+                      {commercialEvents?.length > 0 &&
+                        commercialEvents.map((commercialEvent, regularEventIndex) => (
+                          <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
                         ))}
                     </CalendarDaySection>
                   );

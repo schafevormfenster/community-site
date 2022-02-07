@@ -10,6 +10,7 @@ export enum CalendarDisplayMode {
   ONELINECOMBINED = 'onelinecombined',
   DEFAULT = 'default',
   EXTENDED = 'extended',
+  AD = 'commercialad',
 }
 
 export enum CalendarTimeDisplayMode {

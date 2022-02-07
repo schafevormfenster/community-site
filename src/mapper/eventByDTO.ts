@@ -34,6 +34,8 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
         return CalendarDisplayMode.ONELINE;
       case '5':
         return CalendarDisplayMode.ONELINECOMBINED;
+      case '6':
+        return CalendarDisplayMode.AD;
       default:
         return CalendarDisplayMode.DEFAULT;
     }
