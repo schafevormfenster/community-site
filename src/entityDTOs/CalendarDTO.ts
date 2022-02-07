@@ -11,7 +11,7 @@ export interface CalendarDTO {
   organizer?: OrganizerDTO;
   scope?: '0' | '1' | '2' | '3';
   publication_status?: '0' | '1';
-  display_mode?: '0' | '1' | '2' | '3' | '4' | '5';
+  display_mode?: '0' | '1' | '2' | '3' | '4' | '5' | '6';
   time_display_mode?: '0' | '1' | '2';
 }
 
