@@ -43,7 +43,10 @@ export default function QrCodeOverview() {
         <div className="grid grid-cols-1 prose prose-lg ">
           <div className="col-span-1">
             <h2>QR Codes</h2>
+            <h3>Print / Flyer</h3>
             <QrCode path="" campaign="Flyer" medium="Print" />
+            <h3>Print / Flyer Kurzweg</h3>
+            <QrCode path="" campaign="FlyerKurzweg" medium="Print" />
           </div>
         </div>
       </main>
