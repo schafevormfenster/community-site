@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!='' && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
+  const communityListQuery = `*[_type == "community" && slug.current!='' && county_geoname_id == 8648415 && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
     .fetch(communityListQuery)
