@@ -21,7 +21,7 @@ export const communityByDTO = (communityDto: CommunityDTO): Community => {
       slug: communityDto.slug.current,
       geoLocation: {
         identifiers: {
-          geonamesId: last(split(communityDto._id, '.')),
+          geonamesId: parseInt(last(split(communityDto._id, '.'))),
           googlePlaceId: communityDto.place_id ? communityDto.place_id : null,
           wikidataId: communityDto.wikidata_id ? communityDto.wikidata_id : null,
         },
@@ -33,7 +33,7 @@ export const communityByDTO = (communityDto: CommunityDTO): Community => {
         geoLocation: {
           identifiers: {
             geonamesId: communityDto.municipality
-              ? last(split(communityDto?.municipality._id, '.'))
+              ? parseInt(last(split(communityDto?.municipality._id, '.')))
               : null,
             googlePlaceId: communityDto?.municipality?.place_id
               ? communityDto.municipality.place_id
