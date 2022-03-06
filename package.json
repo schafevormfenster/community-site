@@ -24,6 +24,8 @@
     "not dead"
   ],
   "dependencies": {
+    "@cloudinary/react": "^1.1.0",
+    "@cloudinary/url-gen": "^1.6.0",
     "@fontsource/catamaran": "^4.2.2",
     "@heroicons/react": "^1.0.1",
     "@sanity/client": "^2.11.0",

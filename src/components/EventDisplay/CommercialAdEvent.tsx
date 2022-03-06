@@ -12,6 +12,8 @@ import {
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
+import { CloudConfig, Cloudinary, CloudinaryImage } from '@cloudinary/url-gen';
+import { AdvancedImage } from '@cloudinary/react';
 
 export interface CommercialAdEventProps {
   event: Event;
@@ -30,6 +32,36 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
   // plain text data
   const stripHtmlRegex = /<[^>]+>/g;
 
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: process.env.NEXT_PUBLIC_COUNDINARY_CLOUD_NAME,
+    },
+  });
+
+  const cloud = new CloudConfig({ cloudName: process.env.NEXT_PUBLIC_COUNDINARY_CLOUD_NAME });
+
+  const image1 = new CloudinaryImage(event.attachment.url, cloud).setDeliveryType('fetch');
+
+  const image2 = new CloudinaryImage(
+    'googledrive/uc?export=view&id=13yRuI6FE8jELmktvo-Q8QYjb6XXnk8nA',
+    cloud
+  );
+
+  const image3 = new CloudinaryImage(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Melkerschule_Schlatkow.jpg/800px-Melkerschule_Schlatkow.jpg',
+    cloud
+  ).setDeliveryType('fetch');
+
+  const image4 = new CloudinaryImage(
+    'wikimedia/wikipedia/commons/thumb/d/da/Melkerschule_Schlatkow.jpg/800px-Melkerschule_Schlatkow.jpg',
+    cloud
+  );
+
+  const image5 = new CloudinaryImage(
+    'https://doc-14-bs-docs.googleusercontent.com/docs/securesc/rcc41125177unde8ocpnma3b3pgqr2kb/nbvcvno1or7hr0uhh4rpmcakf51ttn3g/1646394525000/02046118595084422997/02046118595084422997/13yRuI6FE8jELmktvo-Q8QYjb6XXnk8nA?e=view&ax=ACxEAsZuDdjud_RsEXD05F5ErMRYgW61MGaJB5bgXBc-vDXTJSJeA-upGQyVBgi-_ulau1fl55aq44JId5hm-c6ME_Ykg8kSWZ0xx2mAiJDFII7pAvXbWRDikqxSjpwKFpG2AloBZ9cTeRDIia_1SaH8-yYdk91K4OCJ8IYsoC6O1m4XxJwWjTW5XxzMXggb6lw2QTdswVbP1mKAYqphXA2zMyf0f8wgajTW_7UhCoJiCZeyfBigpWec1uXKhguVXiZjGEXTtod9Dnv0vrcZTEUuv2w54703C0PldsB_CzLGHTpJqrNNwK4N9A0jcXgD6ilBwF8qM41bqn-8rpVkdumOb7dYk8ht8FMb4Y7ZFXclWh3mPqK-1kbg7wo2iO1o7VBnX73nbZ0pdh43Zut4Ut5wMi0MDmBA6vnyBJEqHrnC2miOCyL4GLD2FR84q_GV48ipBgqyvfvEyGpVRU7LFnZfI5n_lyNKxaJ9UsXoT295CNLU3laGbRevckeWH3dQ_VeLBVIxVqZjq0-q60Rc5GZZiPrSLTj5HCdiOJjjc3D6RlOxRHIe0guLKSb4YTMc1lxfMGQGKlliFsglQHVPG1IHnnXJlG5zPwVW3zdEBgvK7hSJdSzETCnZB13VtsuI-0PcbvclwY90_vA9_z2Q9xRcEgjJx9YzLMQx66stAs7E&authuser=0&nonce=hkbcroq2obtqe&user=02046118595084422997&hash=6i8lh60923dlmru5a6p3uq8jha6j7he5',
+    cloud
+  ).setDeliveryType('fetch');
+
   return (
     <div className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0">
       {event?.attachment?.type === 'image' && (
@@ -39,6 +71,12 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
             target="_blank"
             // onMouseDown={"_etracker.sendEvent(new et_UserDefinedEvent('Links.html', 'Links', 'Click', 'Link'));"}
           >
+            <AdvancedImage cldImg={image1} />
+            <AdvancedImage cldImg={image2} />
+            <AdvancedImage cldImg={image3} />
+            <AdvancedImage cldImg={image4} />
+            <AdvancedImage cldImg={image5} />
+            <pre>{event.attachment.url}</pre>
             <Image
               src={event.attachment.url}
               alt={event.summary.replace(stripHtmlRegex, '')}
