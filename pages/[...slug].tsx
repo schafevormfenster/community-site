@@ -372,7 +372,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
+  const communityListQuery = `*[_type == "community" && county_geoname_id == 8648415 && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
     .fetch(communityListQuery)
