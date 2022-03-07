@@ -1,25 +1,34 @@
 import Link from 'next/link';
 import React, { FC } from 'react';
+import { LeLeCommunities } from '../../data/LebendigesLehre';
+import { Community } from '../../entities/Community';
 import Kulturlandburo from '../Sponsors/Kulturlandburo';
+import LebendigesLehre from '../Sponsors/LebendigesLehre';
 import NextGenerationEu from '../Sponsors/NextGenerationEu';
 import SchafeVormFenster from '../Sponsors/SchafeVormFenster';
+
+export interface FooterProps {
+  community: Community;
+}
 
 /**
  * Shows a visual header of a single commuity.
  */
-const Footer: FC = props => {
+const Footer: FC<FooterProps> = props => {
+  const { community } = props;
+
   return (
     <footer className="print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
       <div id="partner" className="w-full p-8 print:pr-0 text-center">
         <div className="flex flex-col md:flex-row m-auto">
-          <div className="hidden md:block print:block flex-auto mb-4 md:mb-0">
+          <div className="hidden md:block print:block flex-auto mb-4 md:mb-0 px-2">
             <SchafeVormFenster />
           </div>
-          <div className="flex-auto mb-4 md:mb-0">
+          <div className="flex-auto mb-4 md:mb-0 px-2">
             <NextGenerationEu />
           </div>
-          <div className="flex-auto mb-4 md:mb-0">
-            <Kulturlandburo />
+          <div className="flex-auto mb-4 md:mb-0 px-2">
+            {LeLeCommunities.includes(community._id) ? <LebendigesLehre /> : <Kulturlandburo />}
           </div>
         </div>
       </div>

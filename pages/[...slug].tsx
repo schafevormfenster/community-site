@@ -23,6 +23,9 @@ import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';
+import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
+import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import Footer from '../src/components/Footer/Footer';
 
 export interface IPageProps {
   community: Community;
@@ -372,10 +375,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && county_geoname_id == 8648415 && slug.current!='']{ ${CommunityDTOcoreQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(communityListQuery)
+    .fetch(vorpommernGreifswaldCommunityListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
@@ -392,6 +394,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths = communityList.map(community => {
       if (community.slug) return { params: { slug: [community.slug] } };
     });
+
+  // add LeLe communities
+  await cdnClient
+    .fetch(leLeCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityList.concat(
+          communityDtoList.map(communitytDto => {
+            return communityByDTO(communitytDto);
+          })
+        );
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
+
   return { paths: paths, fallback: true };
   //return { paths: [], fallback: true };
 };
@@ -407,44 +426,45 @@ export default function Page(props: IPageProps) {
   const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;
 
   return (
-    <div className="bg-white">
-      <Head>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
-        />
-        <meta
-          name="keywords"
-          content={`${community.name}, ${community.municipality.name}, Events, Termine, News, Veranstaltung, Lebensmittel, Müll, Bus`}
-        />
-        {community?.wikimediaCommonsImages?.length > 0 && (
-          <meta property="og:image" content={community.wikimediaCommonsImages[0]} />
-        )}
-        <meta name="geo.region" content="DE-MV" />
-        <meta
-          name="geo.placename"
-          content={`${community.name}, Gemeinde ${community.municipality.name}`}
-        />
-        {community?.geoLocation?.point?.lat && community?.geoLocation?.point?.lng && (
-          <>
-            <meta
-              name="geo.position"
-              content={`${community.geoLocation.point.lat};${community.geoLocation.point.lng}`}
-            />
-            <meta
-              name="ICBM"
-              content={`${community.geoLocation.point.lat},${community.geoLocation.point.lng}`}
-            />
-          </>
-        )}
-        <link rel="canonical" href={`${meta.canonicalUrl}`} />
-        <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
-        <meta httpEquiv="refresh" content="14400" />
-        <meta httpEquiv="expires" content="14400" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <>
+      <div className="bg-white">
+        <Head>
+          <title>{pageTitle}</title>
+          <meta
+            name="description"
+            content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
+          />
+          <meta
+            name="keywords"
+            content={`${community.name}, ${community.municipality.name}, Events, Termine, News, Veranstaltung, Lebensmittel, Müll, Bus`}
+          />
+          {community?.wikimediaCommonsImages?.length > 0 && (
+            <meta property="og:image" content={community.wikimediaCommonsImages[0]} />
+          )}
+          <meta name="geo.region" content="DE-MV" />
+          <meta
+            name="geo.placename"
+            content={`${community.name}, Gemeinde ${community.municipality.name}`}
+          />
+          {community?.geoLocation?.point?.lat && community?.geoLocation?.point?.lng && (
+            <>
+              <meta
+                name="geo.position"
+                content={`${community.geoLocation.point.lat};${community.geoLocation.point.lng}`}
+              />
+              <meta
+                name="ICBM"
+                content={`${community.geoLocation.point.lat},${community.geoLocation.point.lng}`}
+              />
+            </>
+          )}
+          <link rel="canonical" href={`${meta.canonicalUrl}`} />
+          <meta property="og:url" content={`${meta.canonicalUrl}`}></meta>
+          <meta httpEquiv="refresh" content="14400" />
+          <meta httpEquiv="expires" content="14400" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
               if(typeof(_etracker) === "object") {
                 et_eC_Wrapper({
                   et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
@@ -455,37 +475,39 @@ export default function Page(props: IPageProps) {
                 });
               }
             `,
-          }}
-        />
-      </Head>
-      <CommunityHeader community={community} />
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
-        <div className="hidden print:block">
-          <CommunityIntroPrint community={community} />
-        </div>
-        <div className="col-span-1 print:hidden">
-          {news.length > 0 ? (
-            <NewsArrangement>
-              {community?.wikimediaCommonsImages?.length > 0 && (
-                <CommunityIntroAsNewsTeaserFormat community={community} key="communitySlide" />
-              )}
-              {news.map((newsItem, index) => (
-                <NewsTeaser newsItem={newsItem} key={`news${index}`} />
-              ))}
-            </NewsArrangement>
-          ) : (
-            <CommunityIntroWithoutNews community={community} key="communitySlide" />
-          )}
-        </div>
-        <div className="col-span-1 lg:col-span-2">
-          <Calendar
-            start={new Date()}
-            end={new Date(new Date().setDate(new Date().getDate() + 90))}
-            events={events}
-            key="eventList"
+            }}
           />
-        </div>
-      </main>
-    </div>
+        </Head>
+        <CommunityHeader community={community} />
+        <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
+          <div className="hidden print:block">
+            <CommunityIntroPrint community={community} />
+          </div>
+          <div className="col-span-1 print:hidden">
+            {news.length > 0 ? (
+              <NewsArrangement>
+                {community?.wikimediaCommonsImages?.length > 0 && (
+                  <CommunityIntroAsNewsTeaserFormat community={community} key="communitySlide" />
+                )}
+                {news.map((newsItem, index) => (
+                  <NewsTeaser newsItem={newsItem} key={`news${index}`} />
+                ))}
+              </NewsArrangement>
+            ) : (
+              <CommunityIntroWithoutNews community={community} key="communitySlide" />
+            )}
+          </div>
+          <div className="col-span-1 lg:col-span-2">
+            <Calendar
+              start={new Date()}
+              end={new Date(new Date().setDate(new Date().getDate() + 90))}
+              events={events}
+              key="eventList"
+            />
+          </div>
+        </main>
+      </div>
+      <Footer community={community} />
+    </>
   );
 }

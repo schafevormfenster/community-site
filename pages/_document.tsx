@@ -1,6 +1,5 @@
 import React from 'react';
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
-import Footer from '../src/components/Footer/Footer';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -31,7 +30,6 @@ class MyDocument extends Document {
           <main className="flex-grow">
             <Main />
           </main>
-          <Footer />
           <NextScript />
         </body>
       </Html>

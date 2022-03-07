@@ -6,9 +6,13 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO, CommunityDTOteaserQueryFields } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import {
+  LeLeCommunities,
+  LeLeCommunitiesAsKeywordList,
+  leLeCommunityListQuery,
+} from '../src/data/LebendigesLehre';
 
-export interface IHomepageProps {
+export interface ILebendigesLehreLandingPageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
 }
@@ -22,7 +26,7 @@ const cdnClient = SanityClientConstructor({
   useCdn: true,
 });
 
-export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
+export const getStaticProps: GetStaticProps<ILebendigesLehreLandingPageProps> = async () => {
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
     : `https://${process.env.VERCEL_URL}/`;
@@ -32,7 +36,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
    */
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(vorpommernGreifswaldCommunityListQuery)
+    .fetch(leLeCommunityListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
@@ -55,7 +59,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   };
 };
 
-export default function Homepage(props: IHomepageProps) {
+export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandingPageProps) {
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
@@ -78,13 +82,13 @@ export default function Homepage(props: IHomepageProps) {
   return (
     <div className="w-full">
       <Head>
-        <title>Schafe vorm Fenster</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
+        <title>Schafe vorm Fenster für die Stiftung Lebendiges Lehre</title>
+        <meta name="description" content={`Wann ist wer wo in ${LeLeCommunitiesAsKeywordList}?`} />
+        <meta name="keywords" content={`${LeLeCommunitiesAsKeywordList}`} />
         <meta property="og:image" content="" />
-        <meta name="geo.region" content="DE-MV" />
-        <link rel="canonical" href={`${meta.canonicalUrl}`} />
-        <meta property="og:url" content={`${meta.canonicalUrl}`} />
+        <meta name="geo.region" content="DE-NI" />
+        <link rel="canonical" href={`${meta.canonicalUrl}lele`} />
+        <meta property="og:url" content={`${meta.canonicalUrl}lele`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -141,6 +145,9 @@ export default function Homepage(props: IHomepageProps) {
         >
           <div className="items-center">
             <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
+              <div className="pb-1">
+                <img className="mx-auto" src="/landingpages/lebendigeslehre/LebendigesLehre.png" />
+              </div>
               <h1 className="text-5xl md:text-6xl font-semibold text-white">
                 Deine digitale Terminliste.
               </h1>
@@ -185,18 +192,15 @@ export default function Homepage(props: IHomepageProps) {
               alt="Ein Projekt der Schafe vorm Fenster UG"
             />
           </div>
-          <p className="font-body text-white text-sm uppercase mb-2">
+          <p className="font-title text-white text-xl mb-2">Schafe vorm Fentser</p>
+          <p className="font-body text-white text-lg uppercase mb-2">
             Die digitale Terminliste für dein Dorf
-          </p>
-          <p className="font-body text-3xl font-semibold text-white">
-            aus Schlakow für Vorpommern-Greifswald
           </p>
         </header>
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          alle {communities.length} Dörfer
-          <span className="block text-lg">in Vorpommern-Greifswald</span>
+          deine {communities.length} Dörfer in und um Lehre
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
