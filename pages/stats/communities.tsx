@@ -59,27 +59,43 @@ export default function Communities(props: ICommunitiesProps) {
         <meta name="keywords" content="" />
       </Head>
       <div className="min-h-screen flex flex-col ">
-        <main className="max-w-screen-md p-0" id="dorfliste">
-          <ul className="text-base">
-            {communities.map(item => (
-              <li key={item._id}>
-                <Link href={`/${item.slug}`}>
-                  <a className="inline-block py-1 px-2">
-                    <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
-                    {item?.municipality?.name})
-                  </a>
-                </Link>
-                {item.geoLocation.identifiers.wikidataId && (
-                  <a
-                    href={`https://www.wikidata.org/wiki/${item.geoLocation.identifiers.wikidataId}`}
-                    className="inline-block px-2"
-                  >
-                    {item.geoLocation.identifiers.wikidataId}
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
+        <main className="p-0 text-base" id="dorfliste">
+          <table>
+            <tbody>
+              {communities.map(item => (
+                <tr>
+                  <th key={item._id} className="text-left">
+                    <Link href={`/${item.slug}`}>
+                      <a className="inline-block py-1 px-2">
+                        <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
+                        {item?.municipality?.name})
+                      </a>
+                    </Link>
+                  </th>
+                  <td>
+                    {item.geoLocation.identifiers.wikidataId && (
+                      <a
+                        href={`https://www.wikidata.org/wiki/${item.geoLocation.identifiers.wikidataId}`}
+                        className="inline-block px-2"
+                      >
+                        {item.geoLocation.identifiers.wikidataId}
+                      </a>
+                    )}
+                  </td>
+                  <td>
+                    {item.wikimediaCommonsImages?.length > 0 && (
+                      <a href={item.wikimediaCommonsImages[0]}>
+                        {item.wikimediaCommonsImages[0].replace(
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/',
+                          '.../'
+                        )}
+                      </a>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </main>
       </div>
     </div>
