@@ -99,7 +99,7 @@ export default function Communities(props: ICommunitiesProps) {
                         className="inline-block whitespace-nowrap px-2"
                         target="_blank"
                       >
-                        Search at Wikidata
+                        <b className="text-red-600">Search</b> at Wikidata
                       </a>
                     )}
                   </td>
@@ -114,6 +114,17 @@ export default function Communities(props: ICommunitiesProps) {
                           'https://upload.wikimedia.org/wikipedia/commons/thumb/',
                           '.../'
                         )}
+                      </a>
+                    )}
+                    {(!item.wikimediaCommonsImages || item.wikimediaCommonsImages?.length <= 0) && (
+                      <a
+                        href={`https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(
+                          item.name
+                        )}`}
+                        className="inline-block whitespace-nowrap px-2"
+                        target="_blank"
+                      >
+                        <b className="text-red-600">Search</b> at Wikimedia Commons
                       </a>
                     )}
                   </td>
