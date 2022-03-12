@@ -11,6 +11,7 @@ import {
   LeLeCommunitiesAsKeywordList,
   leLeCommunityListQuery,
 } from '../src/data/LebendigesLehre';
+import Footer from '../src/components/Footer/Footer';
 
 export interface ILebendigesLehreLandingPageProps {
   communities: Community[];
@@ -146,7 +147,12 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           <div className="items-center">
             <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
               <div className="pb-1">
-                <img className="mx-auto" src="/landingpages/lebendigeslehre/LebendigesLehre.png" />
+                <a href="https://lebendigeslehre.de/" target="_blank">
+                  <img
+                    className="mx-auto"
+                    src="/landingpages/lebendigeslehre/LebendigesLehre.png"
+                  />
+                </a>
               </div>
               <h1 className="text-5xl md:text-6xl font-semibold text-white">
                 Deine digitale Terminliste.
@@ -221,6 +227,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           ))}
         </div>
       </aside>
+      <Footer community={communities[0]} />
     </div>
   );
 }
