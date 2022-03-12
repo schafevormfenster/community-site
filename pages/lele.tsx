@@ -105,7 +105,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           }}
         />
       </Head>
-      <div className="min-h-screen flex flex-col bg-brand">
+      <div className="min-h-screen/cut flex flex-col bg-brand">
         <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
           <div>
             <a
@@ -206,7 +206,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          deine {communities.length} Dörfer in und um Lehre
+          bislang haben wir {communities.length} Dörfer in und um Lehre
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (

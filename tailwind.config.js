@@ -48,6 +48,7 @@ module.exports = {
         '20mm': '20mm',
       },
       height: {
+        'screen/cut': 'calc(100vh - 2rem)',
         '50mm': '50mm',
         '60mm': '60mm',
         '70mm': '70mm',
@@ -69,6 +70,9 @@ module.exports = {
         '230mm': '230mm',
         '240mm': '240mm',
         '297mm': '297mm',
+      },
+      minHeight: {
+        'screen/cut': '83vh',
       },
       width: {
         '2/1': '180%',
