@@ -23,7 +23,11 @@ const GoogleDriveImage: FC<GoogleDriveImageProps> = ({ fileId, fileExt, alt, tit
       className="w-full h-auto"
       src={imageUrl}
       alt={alt.replace(stripHtmlRegex, '').substring(0, 50)}
-      title={title.replace(stripHtmlRegex, '').substring(0, 120)}
+      title={
+        title
+          ? title.replace(stripHtmlRegex, '').substring(0, 120)
+          : alt.replace(stripHtmlRegex, '').substring(0, 50)
+      }
     />
   );
 };
