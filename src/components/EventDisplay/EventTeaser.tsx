@@ -6,6 +6,7 @@ import { ClockIcon, SpeakerphoneIcon, PaperClipIcon } from '@heroicons/react/out
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
+import GoogleDriveImage from '../Images/GoogleDriveImage';
 
 export interface EventTeaserProps {
   event: Event;
@@ -95,7 +96,12 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         </h4>
         {event?.attachment?.type === 'image' && (
           <p className="mt-2 mb-2 text-gray-700 print:text-black leading-none print:hidden">
-            <img className="w-full h-auto" src={event.attachment.url} alt={event.summary} />
+            <GoogleDriveImage
+              fileId={event.attachment.fileId}
+              fileExt={event.attachment.fileExt}
+              alt={event.summary}
+              title={event.description}
+            />
           </p>
         )}
         {event.description && (
