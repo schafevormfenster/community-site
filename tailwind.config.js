@@ -73,6 +73,7 @@ module.exports = {
       },
       minHeight: {
         'screen/cut': '83vh',
+        'screen/half': '60vh',
       },
       width: {
         '2/1': '180%',

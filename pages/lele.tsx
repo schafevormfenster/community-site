@@ -105,7 +105,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           }}
         />
       </Head>
-      <div className="min-h-screen/cut flex flex-col bg-brand">
+      <div className="min-h-screen/cut flex flex-col bg-gradient-to-b bg-brand">
         <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
           <div>
             <a
@@ -146,14 +146,6 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
         >
           <div className="items-center">
             <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
-              <div className="pb-1">
-                <a href="https://lebendigeslehre.de/" target="_blank">
-                  <img
-                    className="mx-auto"
-                    src="/landingpages/lebendigeslehre/LebendigesLehre.png"
-                  />
-                </a>
-              </div>
               <h1 className="text-5xl md:text-6xl font-semibold text-white">
                 Deine digitale Terminliste.
               </h1>
@@ -190,23 +182,23 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-gray-800 text-center py-8 px-4">
-          <div className="inline-block w-auto h-16 m-auto mb-2">
-            <img
-              className="h-full w-auto mx-auto max-w-sm"
-              src="/partner/SchafeVormFenster.svg"
-              alt="Ein Projekt der Schafe vorm Fenster UG"
-            />
+        <header className="flex-0 bg-gray-900 text-center py-8 px-4">
+          <p className=" text-gray-200 text-xl mb-6">in Zusammenarbeit mit</p>
+          <div className="inline-block w-auto h-16 m-auto mb-4">
+            <a href="https://lebendigeslehre.de/" target="_blank">
+              <img
+                className="mx-auto px-4"
+                src="/landingpages/lebendigeslehre/LebendigesLehre.png"
+                alt="Stiftung Lebendiges Lehre"
+              />
+            </a>
           </div>
-          <p className="font-title text-white text-xl mb-2">Schafe vorm Fentser</p>
-          <p className="font-body text-white text-lg uppercase mb-2">
-            Die digitale Terminliste für dein Dorf
-          </p>
         </header>
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          bislang haben wir {communities.length} Dörfer in und um Lehre
+          unsere {communities.length} Dörfer
+          <span className="block text-lg">in und um Lehre</span>
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
