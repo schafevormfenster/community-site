@@ -1,17 +1,8 @@
-import Image from 'next/image';
-import Interweave, { Markup } from 'interweave';
-import moment from 'moment';
+import { Markup } from 'interweave';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import {
-  ClockIcon,
-  SpeakerphoneIcon,
-  PaperClipIcon,
-  PresentationChartLineIcon,
-} from '@heroicons/react/outline';
-import { Event as EventJsonLd, WithContext } from 'schema-dts';
-import Head from 'next/head';
-import LocationDisplay from './Elements/LocationDisplay';
+import { SpeakerphoneIcon, PresentationChartLineIcon } from '@heroicons/react/outline';
+import GoogleDriveImage from '../Images/GoogleDriveImage';
 
 export interface CommercialAdEventProps {
   event: Event;
@@ -27,9 +18,6 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
   const urlRegex = /(https?:\/\/[^ ]*)/;
   const targetUrl = event.description.match(urlRegex)[1];
 
-  // plain text data
-  const stripHtmlRegex = /<[^>]+>/g;
-
   return (
     <div className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0">
       {event?.attachment?.type === 'image' && (
@@ -39,13 +27,11 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
             target="_blank"
             // onMouseDown={"_etracker.sendEvent(new et_UserDefinedEvent('Links.html', 'Links', 'Click', 'Link'));"}
           >
-            <Image
-              src={event.attachment.url}
-              alt={event.summary.replace(stripHtmlRegex, '')}
-              title={event.description.replace(stripHtmlRegex, '')}
-              width={1200}
-              height={420}
-              layout="responsive"
+            <GoogleDriveImage
+              fileId={event.attachment.fileId}
+              fileExt={event.attachment.fileExt}
+              alt={event.summary}
+              title={event.description}
             />
           </a>
         </p>
