@@ -147,17 +147,17 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           <div className="items-center">
             <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
               <h1 className="text-5xl md:text-6xl font-semibold text-white">
-                Deine digitale Terminliste.
+                Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
-                Erfahre was wann wo in deinem Dorf los ist. Einfach per Smartphone.
+                Erfahre was wann wo in deinem Ort los ist. Einfach per Smartphone.
               </p>
             </article>
             <div className="max-w-screen-sm m-auto community-search ">
               <div className="h-16 px-4 md:px-8 py-2">
                 <input
                   type="text"
-                  placeholder="Finde dein Dorf ..."
+                  placeholder="Finde deinen Ort ..."
                   value={searchTerm}
                   onChange={handleChange}
                   className="w-full font-body text-2xl pt-2 pb-1.5 px-4 leading-none border border-gray-400 rounded focus:border-secondary"
@@ -182,12 +182,15 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-gray-900 text-center py-8 px-4">
-          <p className=" text-gray-200 text-xl mb-6">in Zusammenarbeit mit</p>
+        <header className="flex-0 bg-white text-center py-8 px-4">
+          <p className="text-xl mb-8">
+            Die digitale Terminliste für Lehre und Umgebung ist ein Projekt von "Schafe vorm
+            Fenster" in Zusammenarbeit mit der
+          </p>
           <div className="inline-block w-auto h-16 m-auto mb-4">
             <a href="https://lebendigeslehre.de/" target="_blank">
               <img
-                className="mx-auto px-4"
+                className="mx-auto px-4 mb-4"
                 src="/landingpages/lebendigeslehre/LebendigesLehre.png"
                 alt="Stiftung Lebendiges Lehre"
               />
@@ -197,7 +200,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          unsere {communities.length} Dörfer
+          unsere {communities.length} Orte
           <span className="block text-lg">in und um Lehre</span>
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
