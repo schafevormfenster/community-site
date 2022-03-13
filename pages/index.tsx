@@ -100,7 +100,7 @@ export default function Homepage(props: IHomepageProps) {
           }}
         />
       </Head>
-      <div className="min-h-screen flex flex-col bg-brand">
+      <div className="min-h-screen/cut flex flex-col bg-brand">
         <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
           <div>
             <a
@@ -185,9 +185,7 @@ export default function Homepage(props: IHomepageProps) {
               alt="Ein Projekt der Schafe vorm Fenster UG"
             />
           </div>
-          <p className="font-body text-white text-sm uppercase mb-2">
-            Die digitale Terminliste für dein Dorf
-          </p>
+          <p className="font-title text-white text-xl mb-2">Schafe vorm Fentser</p>
           <p className="font-body text-3xl font-semibold text-white">
             aus Schlakow für Vorpommern-Greifswald
           </p>
@@ -195,7 +193,7 @@ export default function Homepage(props: IHomepageProps) {
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          alle {communities.length} Dörfer
+          unsere {communities.length} Dörfer
           <span className="block text-lg">in Vorpommern-Greifswald</span>
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
