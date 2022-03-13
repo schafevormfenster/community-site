@@ -25,6 +25,17 @@ module.exports = {
         secondary: '#4196d0',
         secondaryDark: '#2f6a91', // https://www.sessions.edu/color-calculator/
         twitter: '#1DA1F2',
+        gray: {
+          900: '#111111',
+          800: '#222222',
+          700: '#333333',
+          600: '#666666',
+          500: '#c0c0c0',
+          400: '#d0d0d0',
+          300: '#e0e0e0',
+          200: '#f0f0f0',
+          100: '#f9f9f9',
+        },
       },
       fontFamily: {
         body: ['Catamaran', 'Catamaran ExtraLight', 'Helvetica Neue', 'Arial', 'sans-serif'],

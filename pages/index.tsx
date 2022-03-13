@@ -142,7 +142,7 @@ export default function Homepage(props: IHomepageProps) {
           <div className="items-center">
             <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
               <h1 className="text-5xl md:text-6xl font-semibold text-white">
-                Deine digitale Terminliste.
+                Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
                 Erfahre was wann wo in deinem Dorf los ist. Einfach per Smartphone.
@@ -152,7 +152,7 @@ export default function Homepage(props: IHomepageProps) {
               <div className="h-16 px-4 md:px-8 py-2">
                 <input
                   type="text"
-                  placeholder="Finde dein Dorf ..."
+                  placeholder="Finde deinen Ort ..."
                   value={searchTerm}
                   onChange={handleChange}
                   className="w-full font-body text-2xl pt-2 pb-1.5 px-4 leading-none border border-gray-400 rounded focus:border-secondary"
@@ -177,7 +177,7 @@ export default function Homepage(props: IHomepageProps) {
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-gray-800 text-center py-8 px-4">
+        <header className="flex-0 bg-gray-900 text-center py-8 px-4">
           <div className="inline-block w-auto h-16 m-auto mb-2">
             <img
               className="h-full w-auto mx-auto max-w-sm"
@@ -185,7 +185,7 @@ export default function Homepage(props: IHomepageProps) {
               alt="Ein Projekt der Schafe vorm Fenster UG"
             />
           </div>
-          <p className="font-title text-white text-xl mb-2">Schafe vorm Fentser</p>
+          <p className="font-title text-white text-xl mb-2">Schafe vorm Fenster</p>
           <p className="font-body text-3xl font-semibold text-white">
             aus Schlakow für Vorpommern-Greifswald
           </p>
@@ -193,7 +193,7 @@ export default function Homepage(props: IHomepageProps) {
       </div>
       <aside className="mx-auto px-4 py-12">
         <h2 className="text-4xl text-center mb-8">
-          unsere {communities.length} Dörfer
+          unsere {communities.length} Orte
           <span className="block text-lg">in Vorpommern-Greifswald</span>
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
