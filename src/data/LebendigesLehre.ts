@@ -1,4 +1,7 @@
-import { CommunityDTOteaserQueryFields } from '../entityDTOs/CommunityDTO';
+import {
+  CommunityDTOdetailQueryFields,
+  CommunityDTOteaserQueryFields,
+} from '../entityDTOs/CommunityDTO';
 
 export const LeLeCommunities: string[] = [
   'geoname-2879378', // Lehre
@@ -20,6 +23,12 @@ export const leLeCommunityListQuery = `*[_type == "community" && slug.current!='
 ).join(
   ','
 )}] && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
+
+export const leLeCommunityDetailListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
+  c => `"${c}"`
+).join(
+  ','
+)}] && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOdetailQueryFields} }`;
 
 export const LeLeCommunitiesAsKeywordList: string =
   'Lehre, Wendhausen, Flechtorf, Essenrode,  Essehof,  Beienrode,  Groß Brunsrode, Klein Brunsrode, Cremlingen, Hondelage, Hattorf, Mörse';

@@ -1,11 +1,12 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { Community } from '../../src/entities/Community';
+import { Community } from '../../../src/entities/Community';
 import SanityClientConstructor from '@sanity/client';
-import { communityByDTO } from '../../src/mapper/communityByDTO';
-import { CommunityDTO, CommunityDTOdetailQueryFields } from '../../src/entityDTOs/CommunityDTO';
+import { communityByDTO } from '../../../src/mapper/communityByDTO';
+import { CommunityDTO } from '../../../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
+import { vorpommernGreifswaldCommunityDetailListQuery } from '../../../src/data/VorpommernGreifswald';
 
 export interface ICommunitiesProps {
   communities: Community[];
@@ -24,10 +25,9 @@ export const getStaticProps: GetStaticProps<ICommunitiesProps> = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  const communityListQuery = `*[_type == "community" && slug.current!='' && county_geoname_id == 8648415 && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOdetailQueryFields} }`;
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(communityListQuery)
+    .fetch(vorpommernGreifswaldCommunityDetailListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
