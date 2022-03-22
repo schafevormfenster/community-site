@@ -1,3 +1,8 @@
-import { CommunityDTOteaserQueryFields } from '../entityDTOs/CommunityDTO';
+import {
+  CommunityDTOdetailQueryFields,
+  CommunityDTOteaserQueryFields,
+} from '../entityDTOs/CommunityDTO';
 
 export const vorpommernGreifswaldCommunityListQuery = `*[_type == "community" && slug.current!='' && county_geoname_id == 8648415 && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
+
+export const vorpommernGreifswaldCommunityDetailListQuery = `*[_type == "community" && slug.current!='' && county_geoname_id == 8648415 && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOdetailQueryFields} }`;
