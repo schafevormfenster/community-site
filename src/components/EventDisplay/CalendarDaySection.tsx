@@ -12,7 +12,11 @@ export interface CalendarDaySectionProps {
 const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
   const itemCount = React.Children.toArray(children).length;
   return (
-    <section className="relative pt-4 bg-gradient-to-b to-white from-gray-50 clear-both border-t border-gray-100 print:pt-2 print:bg-white print:from-transparent print:to-transparent">
+    <section
+      className={`relative pt-4 bg-gradient-to-b to-white from-gray-50 clear-both border-t border-gray-100 print:pt-2 print:bg-white print:from-transparent print:to-transparent ${
+        itemCount <= 0 && ' print:hidden'
+      }`}
+    >
       <div className="sticky top-4 w-12 mb-8 -ml-6 print:ml-0 print:mb-1 float-left">
         <CalendarSheetIcon day={day} />
       </div>
