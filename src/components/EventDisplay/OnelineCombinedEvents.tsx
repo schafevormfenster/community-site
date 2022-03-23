@@ -12,7 +12,7 @@ export interface OnelineCombinedEventsProps {
  */
 const OnelineCombinedEvents: FC<OnelineCombinedEventsProps> = ({ events }) => {
   return (
-    <div className="pb-2 whitespace-nowrap overflow-x-scroll">
+    <div className="pb-2 whitespace-nowrap overflow-x-scroll print:overflow-hidden">
       <span className="mr-2">{events[0].summary}</span>
       <LocationDisplay event={events[0]} />
       {events.map((event, index) => (

@@ -20,7 +20,7 @@ const Footer: FC<FooterProps> = props => {
   return (
     <footer className="print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
       <div id="partner" className="w-full p-8 print:pr-0 text-center">
-        <div className="flex flex-col md:flex-row m-auto">
+        <div className="flex flex-col md:flex-row print:flex-row m-auto">
           <div className="hidden md:block print:block flex-auto mb-4 md:mb-0 px-2">
             <SchafeVormFenster />
           </div>
