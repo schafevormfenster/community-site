@@ -21,7 +21,7 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
   return (
     <div className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0">
       {event?.attachment?.type === 'image' && (
-        <p className="mt-2 mb-2 text-gray-700 print:text-black leading-none print:hidden">
+        <p className="mt-2 mb-2 text-gray-700 print:text-black leading-none">
           <a
             href={targetUrl}
             target="_blank"
@@ -37,10 +37,10 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
         </p>
       )}
       {event.calendar?.organizer?.name && (
-        <p className="mt-2 mb-2 text-right text-sm text-gray-600 leading-none print:hidden">
-          <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-gray-500" />
+        <p className="mt-2 mb-2 text-right text-sm text-gray-600 print:text-black leading-none">
+          <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
           <Markup content={event.calendar?.organizer?.name} noWrap />
-          <PresentationChartLineIcon className="h-4 w-4 mb-0.5 inline-block ml-2 mr-1 text-gray-500" />
+          <PresentationChartLineIcon className="h-4 w-4 mb-0.5 inline-block ml-2 mr-1" />
           <span className="mr-1">Anzeige</span>
         </p>
       )}
