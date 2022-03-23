@@ -2,11 +2,12 @@ import Interweave, { Markup } from 'interweave';
 import moment from 'moment';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { ClockIcon, SpeakerphoneIcon, PaperClipIcon } from '@heroicons/react/outline';
+import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
 import GoogleDriveImage from '../Images/GoogleDriveImage';
+import GoogleDriveFile from '../Images/GoogleDriveFile';
 
 export interface EventTeaserProps {
   event: Event;
@@ -122,10 +123,11 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event?.attachment?.type === 'download' && (
           <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
-            <a href={event.attachment.url} download target="_blank">
-              <PaperClipIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
-              <Markup content={event.attachment.title} noWrap />
-            </a>
+            <GoogleDriveFile
+              fileId={event.attachment.fileId}
+              fileExt={event.attachment.fileExt}
+              fileName={event.attachment.title}
+            />
           </p>
         )}
         {event.calendar?.organizer?.name && (
