@@ -24,7 +24,7 @@ const CommunityIntroPrint: FC<CommunityIntroPrintProps> = ({ community }) => {
         <div className="absolute bottom-0 -mb-1">
           <p>Das ist los in</p>
           <h1 className="text-3xl">{community.name}</h1>
-          <p>sowie in der Gemeinde {community.municipality.name} und den umliegenden Dörfern.</p>
+          <p>sowie in der Gemeinde {community.municipality.name} und den umliegenden Orten.</p>
 
           <p className="mt-1">
             Scanne den QR-Code und hole dir die ausführlichen und aktuellen Infos auf dein Handy.

@@ -11,7 +11,7 @@ export interface OnelineEventsProps {
  */
 const OnelineEvents: FC<OnelineEventsProps> = ({ events }) => {
   return (
-    <div className="pb-2 whitespace-nowrap overflow-x-scroll">
+    <div className="pb-2 whitespace-nowrap overflow-x-scroll print:overflow-hidden">
       {events.map((event, index) => (
         <span key={index}>
           <TimeDisplay event={event} />

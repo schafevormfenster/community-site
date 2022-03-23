@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 const SchafeVormFenster: FC = props => {
   return (
     <div className="m-auto w-full max-w-md">
-      <div className="h-16 print:h-14 w-auto text-center mb-3">
+      <div className="h-16 print:h-12 w-auto text-center mb-3 print:mb-2">
         <img
           className="h-full w-auto mx-auto max-w-sm"
           src="/partner/SchafeVormFenster.svg"
