@@ -1,12 +1,10 @@
 import type { AppProps /*, AppContext */ } from 'next/app';
 import Head from 'next/head';
 import '../src/styles/tailwind.css';
-import 'moment/locale/de';
-import moment from 'moment';
 import { polyfill } from 'interweave-ssr';
+import { IntlProvider } from 'react-intl';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  moment.locale('de');
   polyfill();
   return (
     <>
@@ -33,7 +31,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           defer
         ></script>
       </Head>
-      <Component {...pageProps} />
+      <IntlProvider locale="de" defaultLocale="de">
+        <Component {...pageProps} />
+      </IntlProvider>
     </>
   );
 }

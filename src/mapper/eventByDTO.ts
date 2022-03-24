@@ -53,12 +53,30 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
         return CalendarTimeDisplayMode.StartAndEndTime;
     }
   };
+
+  const eventStartDate = new Date(eventDto?.start);
+  const eventStartDay = new Date(
+    eventStartDate.getFullYear(),
+    eventStartDate.getMonth(),
+    eventStartDate.getDate()
+  );
+
+  const eventEndDate = new Date(eventDto?.end);
+  const eventEndDay = new Date(
+    eventEndDate.getFullYear(),
+    eventEndDate.getMonth(),
+    eventEndDate.getDate()
+  );
   let event: Event = {
     _id: eventDto._id,
     summary: eventDto.name,
     description: eventDto.description ? eventDto.description : null,
-    start: eventDto.start,
-    end: eventDto.end,
+    start: eventStartDate.toISOString() || null,
+    startDate: null,
+    startDay: eventStartDay.toISOString() || null,
+    end: eventEndDate.toISOString() || null,
+    endDate: null,
+    endDay: eventEndDay.toISOString() || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
     community: communityExcerptByDTO(eventDto.community),

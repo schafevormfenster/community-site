@@ -7,7 +7,7 @@ import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
-import { first, join, sortBy } from 'lodash';
+import { first, join } from 'lodash';
 import { Event } from '../src/entities/Event';
 import { communityByDTO, communityExcerptByDTO } from '../src/mapper/communityByDTO';
 import {
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       community = communityByDTO(communityDto);
     })
     .catch(err => {
-      console.warn(`The query to lookup the community '${slug}' reference for at sanity failed:`);
+      console.warn(`The query to lookup the community '${slug}' reference for at sanity failed.`);
     });
 
   if (!community) {

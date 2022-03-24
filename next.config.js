@@ -14,7 +14,6 @@ const nextConfigs = {
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.optimization.minimize = true;
-    config.plugins.push(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/));
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
