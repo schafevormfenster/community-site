@@ -280,9 +280,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let communitiesNearby: CommunityExcerpt[] = undefined;
   let communitiesInRegion: CommunityExcerpt[] = undefined;
   [communitiesOfMunicipality, communitiesNearby, communitiesInRegion] = await Promise.all([
-    await fetchCommunitiesInMunicipality(community),
-    await fetchCommunitiesNearby(community),
-    await fetchCommunitiesInRegion(community),
+    fetchCommunitiesInMunicipality(community),
+    fetchCommunitiesNearby(community),
+    fetchCommunitiesInRegion(community),
   ]);
   console.timeEnd('fetchCommunityData');
 
@@ -295,20 +295,20 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let news: News[] = [];
 
   [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
-    await fetchEventsByCommunityList([community._id], 'community'),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList([community._id], 'community'),
+    fetchEventsByCommunityList(
       communitiesOfMunicipality.map(c => c._id),
       'municipality'
     ),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList(
       communitiesNearby.map(c => c._id),
       'surrounding'
     ),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList(
       communitiesInRegion.map(c => c._id),
       'region'
     ),
-    await fetchNews(community.municipality._id),
+    fetchNews(community.municipality._id),
   ]);
   // put everything together
   let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
@@ -320,7 +320,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
 
   /**
-   * Structur events in a calendar-kind array.
+   * Structure events in a calendar-kind array.
    */
   console.time('calendarizeEvents');
   let calendarizedEvents = new Array();
@@ -401,15 +401,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.warn(`The query to lookup all communities at sanity failed:`);
     });
 
-  return { paths: paths, fallback: true };
-  //return { paths: [], fallback: true };
+  // return { paths: paths, fallback: true };
+  return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
   const community: Community = props.community;
   const meta = props.meta;
 
-  if (!community) return <>404 no community</>;
+  if (!community) return <>Dein Dorfterminkalender wird noch geladen ...</>;
 
   const events: any = props.events;
   const news: News[] = props.news;
