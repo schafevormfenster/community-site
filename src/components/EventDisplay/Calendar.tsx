@@ -51,19 +51,23 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     };
                     return mappedEvent;
                   });
+                  console.debug(thisDayEvents);
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
                   });
+                  console.debug(onelineEvents);
 
                   const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
                       return item;
                   });
+                  console.debug(onelineCombinedEvents);
 
                   const microEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
                   });
+                  console.debug(microEvents);
 
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
@@ -74,6 +78,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
+                  console.debug(regularEvents);
 
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
@@ -88,19 +93,36 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
+                  console.debug(commercialEvents);
 
                   return (
                     <CalendarDaySection
                       day={iDay}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
+                      <pre>
+                        thisDayEvents:
+                        {JSON.stringify(thisDayEvents, null, 2)}
+                      </pre>
+                      <pre>
+                        microEvents:
+                        {JSON.stringify(microEvents, null, 2)}
+                      </pre>
                       {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
 
+                      <pre>
+                        onelineEvents:
+                        {JSON.stringify(onelineEvents, null, 2)}
+                      </pre>
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
 
+                      <pre>
+                        onelineCombinedEvents:
+                        {JSON.stringify(onelineCombinedEvents, null, 2)}
+                      </pre>
                       {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
