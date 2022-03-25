@@ -214,7 +214,7 @@ const fetchEventsByCommunityList = async (
   console.time('fetchEventsByCommunityList-' + scope);
   if (communityIdList?.length <= 0) {
     console.error('communityIdList in fetchEventsByCommunityList missing or empty');
-    return null;
+    return [];
   }
 
   // compose a query part to match all given communities
@@ -228,7 +228,7 @@ const fetchEventsByCommunityList = async (
     console.error(
       'could not create a query part based on communityIdList in fetchEventsByCommunityList'
     );
-    return null;
+    return [];
   }
 
   // compose a query part for the correct scopes
@@ -247,13 +247,13 @@ const fetchEventsByCommunityList = async (
       });
     })
     .catch(err => {
-      console.warn(
+      console.error(
         `The query to lookup events based on a community id list '${communityIdList.join(
           ','
         )}' and the scope '${scope}' at sanity failed:`,
         eventsQuery
       );
-      return null;
+      return [];
     });
   console.timeEnd('fetchEventsByCommunityList-' + scope);
   return events;
