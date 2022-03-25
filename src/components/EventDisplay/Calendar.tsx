@@ -26,8 +26,29 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
   // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
+
+  // sample day
+
+  const someDay = new Date(2022, 3, 26);
+  const someDayEvents: Event[] = sortBy(
+    events.filter(e => {
+      if (someDay.toISOString() === e.startDay) return e;
+    }),
+    ['start', 'allday']
+  ).map(item => {
+    const mappedEvent: Event = {
+      ...item,
+      startDate: new Date(item.start),
+      endDate: new Date(item.end),
+    };
+    return mappedEvent;
+  });
+  console.debug(someDayEvents);
+
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
+      Some Day Events:
+      <EventList events={someDayEvents} />
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
