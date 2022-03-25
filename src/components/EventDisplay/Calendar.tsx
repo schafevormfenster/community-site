@@ -9,7 +9,6 @@ import MicroEvent from './MicroEvent';
 import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
-import { sortBy } from 'lodash';
 import CommercialAdEvent from './CommercialAdEvent';
 import EventList from './EventList';
 
@@ -27,30 +26,10 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
   // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
 
-  // sample day
-
-  const someDay = new Date(2022, 3, 26);
-  const someDayEvents: Event[] = sortBy(
-    events.filter(e => {
-      if (someDay.toISOString() === e.startDay) return e;
-    }),
-    ['start', 'allday']
-  ).map(item => {
-    const mappedEvent: Event = {
-      ...item,
-      startDate: new Date(item.start),
-      endDate: new Date(item.end),
-    };
-    return mappedEvent;
-  });
-  console.debug(someDayEvents);
-
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       All Events:
-      <pre>{JSON.stringify(events, null, 2)}</pre>
-      Some Day Events:
-      <EventList events={someDayEvents} />
+      <pre>{events.length} events</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -62,19 +41,18 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
-                  const thisDayEvents: Event[] = sortBy(
-                    events.filter(e => {
+                  const thisDayEvents: Event[] = events
+                    .filter(e => {
                       if (iDay.toISOString() === e.startDay) return e;
-                    }),
-                    ['start', 'allday']
-                  ).map(item => {
-                    const mappedEvent: Event = {
-                      ...item,
-                      startDate: new Date(item.start),
-                      endDate: new Date(item.end),
-                    };
-                    return mappedEvent;
-                  });
+                    })
+                    .map(item => {
+                      const mappedEvent: Event = {
+                        ...item,
+                        startDate: new Date(item.start),
+                        endDate: new Date(item.end),
+                      };
+                      return mappedEvent;
+                    });
                   console.debug(thisDayEvents);
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
