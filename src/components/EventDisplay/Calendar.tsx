@@ -27,6 +27,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
+      <pre>{JSON.stringify(events, null, 2)}</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {

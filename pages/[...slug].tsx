@@ -392,7 +392,7 @@ export default function Page(props: IPageProps) {
   const community: Community = props.community;
   const meta = props.meta;
 
-  if (!community) return <>Dein Dorfterminkalender wird noch geladen ...</>;
+  if (!community) return <>Dein Dorfterminkalender wird gerade geladen ...</>;
 
   const events: any = props.events;
   const news: News[] = props.news;
