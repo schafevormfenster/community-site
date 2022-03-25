@@ -23,9 +23,9 @@ export interface CalendarProps {
  */
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
-  console.time('Calendar');
+
   // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
-  const render = (
+  return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
@@ -42,7 +42,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     events?.[day.year]?.[day.month]?.[day.day],
                     ['start', 'allday']
                   ).map(item => {
-                    const eventStartDate = new Date(item.start);
                     const mappedEvent: Event = {
                       ...item,
                       startDate: new Date(item.start),
@@ -142,8 +141,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
       ))}
     </main>
   );
-  console.timeEnd('Calendar');
-  return render;
 };
 
 export default Calendar;
