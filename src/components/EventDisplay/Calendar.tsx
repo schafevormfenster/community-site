@@ -23,9 +23,9 @@ export interface CalendarProps {
  */
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
-
+  console.time('Calendar');
   // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
-  return (
+  const render = (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
@@ -41,60 +41,43 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const thisDayEvents: Event[] = sortBy(
                     events?.[day.year]?.[day.month]?.[day.day],
                     ['start', 'allday']
-                  );
+                  ).map(item => {
+                    const eventStartDate = new Date(item.start);
+                    const mappedEvent: Event = {
+                      ...item,
+                      startDate: new Date(item.start),
+                      endDate: new Date(item.end),
+                    };
+                    return mappedEvent;
+                  });
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
                     if (
-                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.startDay === iDay.toISOString() &&
                       item.calendar.display_mode === CalendarDisplayMode.ONELINE
                     )
                       return item;
                   });
 
                   const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
                     if (
-                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.startDay === iDay.toISOString() &&
                       item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED
                     )
                       return item;
                   });
 
                   const microEvents: Event[] = thisDayEvents?.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
                     if (
-                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.startDay === iDay.toISOString() &&
                       item.calendar.display_mode === CalendarDisplayMode.MICRO
                     )
                       return item;
                   });
 
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
-
                     if (
-                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.startDay === iDay.toISOString() &&
                       (item.calendar.display_mode === CalendarDisplayMode.MINI ||
                         item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
                         item.calendar.display_mode == CalendarDisplayMode.EXTENDED)
@@ -103,20 +86,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     }
                   });
 
-                  // reduce commercial eventy to one per organizer
+                  // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
                   const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                    const eventStartDate = new Date(item.start);
-                    const eventStartDay = new Date(
-                      eventStartDate.getFullYear(),
-                      eventStartDate.getMonth(),
-                      eventStartDate.getDate()
-                    );
                     let adKey: string =
                       iDay.getTime().toString() + '#' + item.calendar.organizer._id;
                     if (
                       !(commercialOrganizerCounter?.[adKey] === true) &&
-                      eventStartDay.getTime() === iDay.getTime() &&
+                      item.startDay === iDay.toISOString() &&
                       item.calendar.display_mode === CalendarDisplayMode.AD
                     ) {
                       commercialOrganizerCounter[adKey] = true;
@@ -165,6 +142,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
       ))}
     </main>
   );
+  console.timeEnd('Calendar');
+  return render;
 };
 
 export default Calendar;

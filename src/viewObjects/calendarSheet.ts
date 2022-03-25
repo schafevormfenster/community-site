@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 export interface CalendarDay {
   day: number;
   month: number;
@@ -22,7 +20,13 @@ export interface CalendarSheet {
   years: CalendarYear[];
 }
 
+const monthDays = (year: number, month: number): number => {
+  return new Date(year, month + 1, 0).getDate();
+};
+
 export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
+  console.time('calendarSheet');
+
   let sheet: CalendarSheet = { years: [] };
   const startAsDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
   const endAsDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
@@ -47,8 +51,7 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
         let iMonth: CalendarMonth = { month: m, year: y, days: [] };
 
         // iterate days
-        const daysInMonth = moment([y, m]).daysInMonth();
-        for (var d = 1; d <= daysInMonth; d++) {
+        for (var d = 1; d <= monthDays(y, m); d++) {
           const iDate = new Date(y, m, d);
           if (iDate.getTime() >= startAsDay.getTime() && iDate.getTime() < endAsDay.getTime()) {
             const iDay: CalendarDay = { day: d, month: m, year: y };
@@ -61,6 +64,8 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
     }
     sheet.years.push(iYear);
   }
+
+  console.timeEnd('calendarSheet');
 
   return sheet;
 };
