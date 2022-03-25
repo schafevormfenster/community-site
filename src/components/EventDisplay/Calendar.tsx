@@ -41,18 +41,18 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
-                  const thisDayEvents: Event[] = events
-                    .filter(e => {
-                      if (iDay.toISOString() === e.startDay) return e;
-                    })
-                    .map(item => {
-                      const mappedEvent: Event = {
-                        ...item,
-                        startDate: new Date(item.start),
-                        endDate: new Date(item.end),
-                      };
-                      return mappedEvent;
-                    });
+                  const thisDayEvents: Event[] = events;
+                  // .filter(e => {
+                  //   if (iDay.toISOString() === e.startDay) return e;
+                  // })
+                  // .map(item => {
+                  //   const mappedEvent: Event = {
+                  //     ...item,
+                  //     startDate: new Date(item.start),
+                  //     endDate: new Date(item.end),
+                  //   };
+                  //   return mappedEvent;
+                  // });
                   console.debug(thisDayEvents);
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
