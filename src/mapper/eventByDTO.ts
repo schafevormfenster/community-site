@@ -72,10 +72,10 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     summary: eventDto.name,
     description: eventDto.description ? eventDto.description : null,
     start: eventStartDate.toISOString() || null,
-    startDate: null,
+    // startDate: null,
     startDay: eventStartDay.toISOString() || null,
     end: eventEndDate.toISOString() || null,
-    endDate: null,
+    // endDate: null,
     endDay: eventEndDay.toISOString() || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
@@ -84,7 +84,7 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
 
   if (eventDto.calendar) {
     event.calendar = {
-      _id: eventDto.calendar._id,
+      // _id: eventDto.calendar._id,
       name: eventDto.calendar.name,
       display_mode: displayMode(
         eventDto?.calendar?.display_mode ? eventDto.calendar.display_mode : undefined
@@ -93,9 +93,8 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
         eventDto?.calendar?.time_display_mode ? eventDto.calendar.time_display_mode : undefined
       ),
       organizer: {
-        _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
-        name: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer.name : null,
-        longname: eventDto?.calendar?.organizer?.longname
+        // _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
+        name: eventDto?.calendar?.organizer?.longname
           ? eventDto.calendar?.organizer.longname
           : eventDto.calendar?.organizer.name,
       },
@@ -104,20 +103,20 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
 
   if (eventDto.place) {
     event.place = {
-      _id: eventDto?.place ? eventDto.place._id : null,
+      // _id: eventDto?.place ? eventDto.place._id : null,
       name: eventDto?.place ? eventDto.place.name : null,
       localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
-      geoLocation: {
-        identifiers: {
-          geonamesId: null,
-          googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
-        },
-        address: { address: eventDto?.place?.address ? eventDto.place.address : null },
-        point: {
-          lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
-          lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
-        },
-      },
+      // geoLocation: {
+      //   identifiers: {
+      //     geonamesId: null,
+      //     googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
+      //   },
+      //   address: { address: eventDto?.place?.address ? eventDto.place.address : null },
+      //   point: {
+      //     lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
+      //     lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
+      //   },
+      // },
     };
   }
 

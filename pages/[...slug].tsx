@@ -1,4 +1,5 @@
 import React from 'react';
+import { sortBy } from 'lodash';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
@@ -256,6 +257,7 @@ const fetchEventsByCommunityList = async (
       return [];
     });
   console.timeEnd('fetchEventsByCommunityList-' + scope);
+  // console.debug(events);
   return events;
 };
 
@@ -310,8 +312,12 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     ),
     fetchNews(community.municipality._id),
   ]);
+
   // put everything together
-  let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
+  let events: Event[] = sortBy(
+    communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents),
+    ['start', 'allday']
+  );
 
   console.log(`Fetched ${events.length} events for community calendar '${community.slug}'.`);
   console.timeEnd('fetchEventData');
@@ -320,31 +326,6 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
-
-  /**
-   * Structure events in a calendar-kind array.
-   */
-  console.time('calendarizeEvents');
-  let calendarizedEvents = new Array();
-  events.forEach(event => {
-    const eventStartDay = new Date(event.start);
-    if (!calendarizedEvents[eventStartDay.getFullYear()])
-      calendarizedEvents[eventStartDay.getFullYear()] = new Array();
-    if (!calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()])
-      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()] = new Array();
-    if (
-      !calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-        eventStartDay.getDate()
-      ]
-    )
-      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-        eventStartDay.getDate()
-      ] = new Array();
-    calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-      eventStartDay.getDate()
-    ].push(event);
-  });
-  console.timeEnd('calendarizeEvents');
 
   console.timeEnd('dataFetching');
 
@@ -356,7 +337,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         canonicalUrl: canonicalUrl,
       },
       community: community,
-      events: calendarizedEvents,
+      events: events,
       news: news,
     },
     revalidate: 3600,

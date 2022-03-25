@@ -5,7 +5,7 @@ import { Community } from './Community';
  * Place.
  */
 export interface Place {
-  _id: string;
+  _id?: string;
   name: string;
   localname?: string;
   wikidata_id?: string;

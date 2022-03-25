@@ -39,7 +39,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
                   const thisDayEvents: Event[] = sortBy(
-                    events?.[day.year]?.[day.month]?.[day.day],
+                    events.filter(e => {
+                      if (iDay.toISOString() === e.startDay) return e;
+                    }),
                     ['start', 'allday']
                   ).map(item => {
                     const mappedEvent: Event = {

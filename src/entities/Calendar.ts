@@ -20,7 +20,7 @@ export enum CalendarTimeDisplayMode {
 }
 
 export interface Calendar {
-  _id: string;
+  _id?: string;
   name: string;
   description?: string;
   organizer?: Organizer;
