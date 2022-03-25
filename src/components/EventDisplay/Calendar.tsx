@@ -11,6 +11,7 @@ import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
 import { sortBy } from 'lodash';
 import CommercialAdEvent from './CommercialAdEvent';
+import EventList from './EventList';
 
 export interface CalendarProps {
   start: Date;
@@ -100,6 +101,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={iDay}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
+                      <EventList events={thisDayEvents} />
                       <pre>
                         thisDayEvents:
                         {JSON.stringify(thisDayEvents, null, 2)}
@@ -112,13 +114,11 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
-
                       <pre>
                         onelineEvents:
                         {JSON.stringify(onelineEvents, null, 2)}
                       </pre>
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
-
                       <pre>
                         onelineCombinedEvents:
                         {JSON.stringify(onelineCombinedEvents, null, 2)}
@@ -126,7 +126,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
-
                       <pre>
                         regularEvents:
                         {JSON.stringify(regularEvents, null, 2)}
@@ -142,7 +141,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                             )}
                           </Fragment>
                         ))}
-
                       <pre>
                         commercialEvents:
                         {JSON.stringify(commercialEvents, null, 2)}
