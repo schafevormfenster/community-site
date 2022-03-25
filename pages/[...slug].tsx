@@ -312,6 +312,8 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   ]);
   // put everything together
   let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
+
+  console.log(`Fetched ${events.length} events for community calendar '${community.slug}'.`);
   console.timeEnd('fetchEventData');
 
   // generate canonical url
