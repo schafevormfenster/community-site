@@ -189,18 +189,18 @@ const fetchNews = async (municipalityId: string): Promise<News[]> => {
  * @param scope
  * @returns
  */
-const scopeIdList = (scope: 'community' | 'municipality' | 'surrounding' | 'region'): number[] => {
+const scopeId = (scope: 'community' | 'municipality' | 'surrounding' | 'region'): number => {
   switch (scope) {
     case 'community':
-      return [0];
+      return 0;
     case 'municipality':
-      return [1, 2, 3];
+      return 1;
     case 'surrounding':
-      return [2, 3];
+      return 2;
     case 'region':
-      return [3];
+      return 3;
     default:
-      return [1];
+      return 1;
   }
 };
 
@@ -232,16 +232,8 @@ const fetchEventsByCommunityList = async (
   }
 
   // compose a query part for the correct scopes
-  const eventsScopeQueryPart: string =
-    'calendar->scope in [' +
-    scopeIdList(scope)
-      .map(scopeId => {
-        return `"${scopeId.toString()}"`;
-      })
-      .join(', ') +
-    ']';
-
-  const eventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && ${eventsScopeQueryPart}]| order(start asc){ ${EventDTOdetailQueryFields} }`;
+  const eventsScopeQueryPart: string = 'calendar->scope == "' + scopeId(scope).toString() + '"';
+  const eventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && ${eventsScopeQueryPart}]{ ${EventDTOdetailQueryFields} }`;
   const eventsQueryParams = {};
   const events: Event[] = await cdnClient
     .fetch(eventsQuery, eventsQueryParams)
