@@ -41,19 +41,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
-                  const tmpEvents: Event[] = events
-                    .filter(item => {
-                      if (iDay.toISOString() === item.startDay) {
-                        return item;
-                      }
-                    })
+                  const thisDayEvents: Event[] = events
+                    .filter(item => iDay.toISOString() === item.startDay)
                     .map(item => {
                       const mappedEvent: Event = {
                         ...item,
                         startDate: new Date(item.start),
                         endDate: new Date(item.end),
                         debug: {
-                          ...item?.debug,
                           _iDay: iDay.toISOString(),
                           _startDay: item.startDay,
                           _today: iDay.toISOString() === item.startDay ? true : false,
@@ -62,7 +57,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return mappedEvent;
                     });
 
-                  const thisDayEvents: Event[] = tmpEvents;
                   console.debug(thisDayEvents);
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
@@ -112,7 +106,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={iDay}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      <EventList events={thisDayEvents} />
                       <pre>
                         thisDayEvents:
                         {JSON.stringify(thisDayEvents, null, 2)}
