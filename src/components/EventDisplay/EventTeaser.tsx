@@ -1,5 +1,4 @@
 import Interweave, { Markup } from 'interweave';
-import moment from 'moment';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
 import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
@@ -8,6 +7,7 @@ import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
 import GoogleDriveImage from '../Images/GoogleDriveImage';
 import GoogleDriveFile from '../Images/GoogleDriveFile';
+import { useIntl } from 'react-intl';
 
 export interface EventTeaserProps {
   event: Event;
@@ -17,6 +17,7 @@ export interface EventTeaserProps {
  * Shows one event with all relevant data.
  */
 const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
+  const intl = useIntl();
   if (!event) return <></>;
 
   const googleEventSummary: string = `${event.summary} - ${
@@ -62,29 +63,23 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') ? (
-              <>
-                {moment(event.start).format('DD.MM.YYYY HH:mm')} Uhr bis{' '}
-                {moment(event.end).format('DD.MM.YYYY HH:mm')} Uhr
-              </>
-            ) : (
-              <>
-                {moment(event.start).format('HH:mm')} bis {moment(event.end).format('HH:mm')} Uhr
-              </>
-            )}
+            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </p>
         ) : (
-          <>
-            {moment(event.start).format('YYYY.MM.DD') != moment(event.end).format('YYYY.MM.DD') && (
-              <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
-                <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-                <>
-                  {moment(event.start).format('DD.MM.YYYY')} bis{' '}
-                  {moment(event.end).format('DD.MM.YYYY')}
-                </>
-              </p>
-            )}
-          </>
+          <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
+            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
+            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+            })}
+          </p>
         )}
         <p
           className="mb-2 text-gray-700 print:text-black leading-none print:inline-block print:mb-1"

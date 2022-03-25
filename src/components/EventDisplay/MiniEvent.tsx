@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
 import { ClockIcon } from '@heroicons/react/outline';
@@ -6,6 +5,7 @@ import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
 import { Markup } from 'interweave';
+import { useIntl } from 'react-intl';
 
 export interface MiniEventProps {
   event: Event;
@@ -15,12 +15,16 @@ export interface MiniEventProps {
  * Shows one event in one single line with less information.
  */
 const MiniEvent: FC<MiniEventProps> = ({ event }) => {
+  const intl = useIntl();
   if (!event) return <></>;
+
+  const startTime: string =
+    intl.formatTime(event.start, { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
 
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    name: event.summary,
+    name: event.summary + ', ' + startTime,
     startDate: event.start,
     endDate: event.end,
     location: {
@@ -45,7 +49,7 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
         <p className="mb-1 text-gray-700 print:text-black leading-none">
           <span className="mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {moment(event.start).format('HH:mm')} Uhr
+            {intl.formatTime(event.start, { hour: '2-digit', minute: '2-digit' })} Uhr
           </span>
           <span className="mr-4">
             <LocationDisplay event={event} />

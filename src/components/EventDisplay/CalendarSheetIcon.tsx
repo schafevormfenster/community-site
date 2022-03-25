@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import moment from 'moment';
+import { useIntl } from 'react-intl';
 
 export interface CalendarSheetIconProps {
   day: Date;
@@ -9,17 +9,25 @@ export interface CalendarSheetIconProps {
  * Shows a calendar sheet icon of a given date.
  */
 const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
-  return (
+  // console.time('CalendarSheetIcon');
+
+  const intl = useIntl();
+
+  const render = (
     <div className="w-full bg-gray-400 text-white overflow-hidden rounded text-center leading-none print:bg-white print:text-black print:border-0">
       <span className="pt-0.5 block bg-gray-800 print:bg-white text-xs">
-        {moment(day).format('ddd')}
+        {intl.formatDate(day, { weekday: 'short' })}
       </span>
       <span className="block pt-0.5 pb-1 print:pb-0 print:-my-1 text-3xl print:text-2xl font-bold leading-none">
-        {moment(day).format('D')}
+        {day.getDate()}
       </span>
-      <span className="hidden print:inline-block text-xs">{moment(day).format('MMM')}</span>
+      <span className="hidden print:inline-block text-xs">
+        {intl.formatDate(day, { month: 'long' })}
+      </span>
     </div>
   );
+  // console.timeEnd('CalendarSheetIcon');
+  return render;
 };
 
 export default CalendarSheetIcon;
