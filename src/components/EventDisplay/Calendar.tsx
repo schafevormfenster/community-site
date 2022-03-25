@@ -47,6 +47,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
+      All Events:
+      <pre>{JSON.stringify(events, null, 2)}</pre>
       Some Day Events:
       <EventList events={someDayEvents} />
       {myCalenderSheet.years.map(year => (
