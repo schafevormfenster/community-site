@@ -32,6 +32,12 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
       <pre>{events.length} events</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
+          {year.months.map((month, mi) => (
+            <pre key={mi} className="relative  bg-red-600">
+              {JSON.stringify(month.year, null, 2)} {JSON.stringify(month.month, null, 2)}
+            </pre>
+          ))}
+
           {year.months.map((month, monthIndex) => {
             return (
               <CalendarMonthSection
