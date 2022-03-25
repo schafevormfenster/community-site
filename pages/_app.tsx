@@ -4,6 +4,10 @@ import '../src/styles/tailwind.css';
 import { polyfill } from 'interweave-ssr';
 import { IntlProvider } from 'react-intl';
 
+export function reportWebVitals(metric) {
+  console.log(metric);
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   polyfill();
   return (

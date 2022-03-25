@@ -10,7 +10,7 @@ export interface CalendarMonthSectionProps {
  * Shows a section with a special sticky colored display of a month at the left side.
  */
 const CalendarMonthSection: FC<CalendarMonthSectionProps> = ({ month, children }) => {
-  console.time('CalendarMonthSection');
+  // console.time('CalendarMonthSection');
   const intl = useIntl();
   const render = (
     <section className="relative">
@@ -24,7 +24,7 @@ const CalendarMonthSection: FC<CalendarMonthSectionProps> = ({ month, children }
       <div className="ml-8 print:ml-0">{children}</div>
     </section>
   );
-  console.timeEnd('CalendarMonthSection');
+  // console.timeEnd('CalendarMonthSection');
   return render;
 };
 

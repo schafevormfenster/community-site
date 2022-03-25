@@ -9,7 +9,7 @@ export interface CalendarSheetIconProps {
  * Shows a calendar sheet icon of a given date.
  */
 const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
-  console.time('CalendarSheetIcon');
+  // console.time('CalendarSheetIcon');
 
   const intl = useIntl();
 
@@ -26,7 +26,7 @@ const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
       </span>
     </div>
   );
-  console.timeEnd('CalendarSheetIcon');
+  // console.timeEnd('CalendarSheetIcon');
   return render;
 };
 

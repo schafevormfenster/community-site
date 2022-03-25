@@ -10,7 +10,7 @@ export interface CalendarDaySectionProps {
  * Shows a section with a special calendar sheet display at the left side.
  */
 const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
-  console.time('CalendarDaySection');
+  // console.time('CalendarDaySection');
   const itemCount = React.Children.toArray(children).length;
   const render = (
     <section
@@ -26,7 +26,7 @@ const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
       </div>
     </section>
   );
-  console.timeEnd('CalendarDaySection');
+  // console.timeEnd('CalendarDaySection');
   return render;
 };
 

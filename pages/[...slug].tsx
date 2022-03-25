@@ -26,6 +26,7 @@ import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntr
 import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
+import { GeoPoint } from '../src/types/GeoLocation';
 
 export interface IPageProps {
   community: Community;
@@ -43,291 +44,288 @@ const cdnClient = SanityClientConstructor({
   useCdn: true,
 });
 
-export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
-  const slug = join(params!.slug, '/');
+/**
+ * fetch community data incl. image and municipality
+ */
+const fetchCommunity = async (slug: string): Promise<Community> => {
+  console.time('fetchCommunity');
 
-  console.time('dataFetching');
-
-  /**
-   * fetch community data incl. image and municipality
-   */
   const query = `*[_type == "community" && slug.current == $slug]{ ${CommunityDTOdetailQueryFields} }`;
   const queryParams = {
     slug: slug,
   };
 
-  let communitiesInMunicipality = [];
-  let communitiesInNearbySurrounding = [];
-  let communitiesInBroaderRegion = [];
-
-  let community: Community = undefined;
-
-  // TODO: move fetching into a separate function
-  console.time('fetchCommunity');
-  await cdnClient
+  const community: Community = await cdnClient
     .fetch(query, queryParams)
     .then(response => {
       const communityDto: CommunityDTO = first(response);
-      communitiesInMunicipality.push(communityDto._id);
-      community = communityByDTO(communityDto);
+      return communityByDTO(communityDto);
     })
     .catch(err => {
       console.warn(`The query to lookup the community '${slug}' reference for at sanity failed.`);
+      return null;
     });
+  console.timeEnd('fetchCommunity');
+  return community;
+};
 
+/**
+ * Fetch all other communities of the same municipality, exclude the current one.
+ */
+const fetchCommunitiesInMunicipality = async (
+  currentCommunity: Community
+): Promise<CommunityExcerpt[]> => {
+  console.time('fetchCommunitiesInMunicipality');
+  const communitiesOfMunicipalityQuery = `*[_type == "community" && references($municipalityId)]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesOfMunicipalityQueryParams = {
+    municipalityId: currentCommunity.municipality._id,
+  };
+  const communitiesOfMunicipality: CommunityExcerpt[] = await cdnClient
+    .fetch(communitiesOfMunicipalityQuery, communitiesOfMunicipalityQueryParams)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response || [];
+      return communityDtoList.map(communityDto => {
+        return communityExcerptByDTO(communityDto);
+      });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup communities of the same municipality '${currentCommunity.municipality._id}' at sanity failed:`
+      );
+      return null;
+    });
+  console.timeEnd('fetchCommunitiesInMunicipality');
+  return communitiesOfMunicipality;
+};
+
+/**
+ * Fetch communities nearby by geosearch, exclude the communities of the municipality
+ */
+const fetchCommunitiesNearby = async (currentCommunity: Community): Promise<CommunityExcerpt[]> => {
+  console.time('fetchCommunitiesNearby');
+
+  const communitiesNearbyQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 7500]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesNearbyQueryParams = {
+    currentCommunityGeopoint: currentCommunity.geoLocation.point,
+  };
+  const communitiesNearby: CommunityExcerpt[] = await cdnClient
+    .fetch(communitiesNearbyQuery, communitiesNearbyQueryParams)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response || [];
+      return communityDtoList.map(communityDto => {
+        return communityExcerptByDTO(communityDto);
+      });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup communities nearby '${currentCommunity._id}' at sanity failed:`
+      );
+      return null;
+    });
+  console.timeEnd('fetchCommunitiesNearby');
+  return communitiesNearby;
+};
+
+/**
+ * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
+ */
+const fetchCommunitiesInRegion = async (
+  currentCommunity: Community
+): Promise<CommunityExcerpt[]> => {
+  console.time('fetchCommunitiesInRegion');
+
+  const communitiesRegionQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 15000]{ ${CommunityDTOcoreQueryFields} }`;
+  const communitiesRegionQueryParams = {
+    currentCommunityGeopoint: currentCommunity.geoLocation.point,
+  };
+  const communitiesInRegion: CommunityExcerpt[] = await cdnClient
+    .fetch(communitiesRegionQuery, communitiesRegionQueryParams)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response || [];
+      return communityDtoList.map(communityDto => {
+        return communityExcerptByDTO(communityDto);
+      });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup communities in the region '${currentCommunity._id}' at sanity failed:`
+      );
+      return null;
+    });
+  console.timeEnd('fetchCommunitiesInRegion');
+  return communitiesInRegion;
+};
+
+/**
+ * fetch news for the municipality
+ */
+const fetchNews = async (municipalityId: string): Promise<News[]> => {
+  console.time('fetchNews');
+
+  const newsQuery = `*[_type == "news" && references($municipalityId)] | order(date desc) { ${NewsDTOteaserQueryFields}}`;
+  const newsQueryParams = {
+    municipalityId: municipalityId,
+  };
+  const news: News[] = await cdnClient
+    .fetch(newsQuery, newsQueryParams)
+    .then(response => {
+      const newsDtoList: NewsDTO[] = response || [];
+      return newsDtoList.map(newsDto => {
+        return newsByDTO(newsDto);
+      });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup news of the municipality '${municipalityId}' at sanity failed:`
+      );
+      return null;
+    });
+  console.timeEnd('fetchNews');
+  return news;
+};
+
+/**
+ * Get scope id list by scope identifier.
+ * @param scope
+ * @returns
+ */
+const scopeIdList = (scope: 'community' | 'municipality' | 'surrounding' | 'region'): number[] => {
+  switch (scope) {
+    case 'community':
+      return [0];
+    case 'municipality':
+      return [1, 2, 3];
+    case 'surrounding':
+      return [2, 3];
+    case 'region':
+      return [3];
+    default:
+      return [1];
+  }
+};
+
+/**
+ * Fetch events of all nearby communities with a scope adressing the surrounding or region.
+ */
+const fetchEventsByCommunityList = async (
+  communityIdList: string[],
+  scope: 'community' | 'municipality' | 'surrounding' | 'region'
+): Promise<Event[]> => {
+  console.time('fetchEventsByCommunityList-' + scope);
+  if (communityIdList?.length <= 0) {
+    console.error('communityIdList in fetchEventsByCommunityList missing or empty');
+    return null;
+  }
+
+  // compose a query part to match all given communities
+  const communitiesMatchQueryPart = communityIdList
+    .map(function (cid) {
+      return `references("${cid}")`;
+    })
+    .join(' || ')
+    .trim();
+  if (communitiesMatchQueryPart?.length <= 0) {
+    console.error(
+      'could not create a query part based on communityIdList in fetchEventsByCommunityList'
+    );
+    return null;
+  }
+
+  // compose a query part for the correct scopes
+  const eventsScopeQueryPart: string =
+    'calendar->scope in [' +
+    scopeIdList(scope)
+      .map(scopeId => {
+        return `"${scopeId.toString()}"`;
+      })
+      .join(', ') +
+    ']';
+
+  const eventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && ${eventsScopeQueryPart}]| order(start asc){ ${EventDTOdetailQueryFields} }`;
+  const eventsQueryParams = {};
+  const events: Event[] = await cdnClient
+    .fetch(eventsQuery, eventsQueryParams)
+    .then(response => {
+      const eventDtoList: EventDTO[] = response || [];
+      return eventDtoList.map(eventDto => {
+        return {
+          ...eventByDTO(eventDto),
+          distance: scope,
+        };
+      });
+    })
+    .catch(err => {
+      console.warn(
+        `The query to lookup events based on a community id list '${communityIdList.join(
+          ','
+        )}' and the scope '${scope}' at sanity failed:`,
+        eventsQuery
+      );
+      return null;
+    });
+  console.timeEnd('fetchEventsByCommunityList-' + scope);
+  return events;
+};
+
+/**
+ *
+ * @param param0
+ * @returns
+ */
+export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => {
+  console.time('dataFetching');
+  const slug = join(params!.slug, '/');
+
+  // fetch community data
+  console.time('fetchCommunityData');
+  const community: Community = await fetchCommunity(slug);
   if (!community) {
     return {
       notFound: true, // returns the default 404 page with a status code of 404
     };
   }
+  let communitiesOfMunicipality: CommunityExcerpt[] = undefined;
+  let communitiesNearby: CommunityExcerpt[] = undefined;
+  let communitiesInRegion: CommunityExcerpt[] = undefined;
+  [communitiesOfMunicipality, communitiesNearby, communitiesInRegion] = await Promise.all([
+    fetchCommunitiesInMunicipality(community),
+    fetchCommunitiesNearby(community),
+    fetchCommunitiesInRegion(community),
+  ]);
+  console.timeEnd('fetchCommunityData');
+
+  // fetch events
+  console.time('fetchEventData');
+  let communityEvents: Event[] = [];
+  let municipalityEvents: Event[] = [];
+  let nearbyEvents: Event[] = [];
+  let regionEvents: Event[] = [];
+  let news: News[] = [];
+
+  [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
+    fetchEventsByCommunityList([community._id], 'community'),
+    fetchEventsByCommunityList(
+      communitiesOfMunicipality.map(c => c._id),
+      'municipality'
+    ),
+    fetchEventsByCommunityList(
+      communitiesNearby.map(c => c._id),
+      'surrounding'
+    ),
+    fetchEventsByCommunityList(
+      communitiesInRegion.map(c => c._id),
+      'region'
+    ),
+    fetchNews(community.municipality._id),
+  ]);
+  // put everything together
+  let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
+  console.timeEnd('fetchEventData');
+
+  // generate canonical url
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
-  console.timeEnd('fetchCommunity');
-
-  /**
-   * fetch news for the municipality
-   */
-  console.time('fetchNews');
-  let news: News[] = []; // init events array with proper type
-  const newsQuery = `*[_type == "news" && references($municipalityId)] | order(date desc) { ${NewsDTOteaserQueryFields}}`;
-  const newsQueryParams = {
-    municipalityId: community.municipality._id,
-  };
-  await cdnClient
-    .fetch(newsQuery, newsQueryParams)
-    .then(response => {
-      const newsDtoList: NewsDTO[] = response;
-      if (newsDtoList)
-        news = newsDtoList.map(newsDto => {
-          return newsByDTO(newsDto);
-        });
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup events of the community '${community._id}' at sanity failed:`
-      );
-    });
-  console.timeEnd('fetchNews');
-
-  /**
-   * fetch all events for the given community incl. organizer and place
-   */
-  console.time('fetchEventsForCommunity');
-  let events: Event[] = []; // init events array with proper type
-  const eventQuery = `*[_type == "event" && references($communityId) && !cancelled] | order(start asc){ ${EventDTOdetailQueryFields} }`;
-  const eventQueryParams = {
-    communityId: community._id,
-  };
-  await cdnClient
-    .fetch(eventQuery, eventQueryParams)
-    .then(response => {
-      const eventDtoList: EventDTO[] = response;
-      if (eventDtoList)
-        eventDtoList.map(eventDto => {
-          return events.push(eventByDTO(eventDto));
-        });
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup events of the community '${community._id}' at sanity failed:`
-      );
-    });
-  console.timeEnd('fetchEventsForCommunity');
-
-  /**
-   * Fetch all other communities of the same municipality, exclude the current one.
-   */
-  console.time('fetchCommunitiesInMunicipality');
-  let communitiesOfMunicipality: CommunityExcerpt[] = undefined;
-  const communitiesOfMunicipalityQuery = `*[_type == "community" && _id != $currentCommuinityId && references($municipalityId)]{ ${CommunityDTOcoreQueryFields} }`;
-  const communitiesOfMunicipalityQueryParams = {
-    municipalityId: community.municipality._id,
-    currentCommuinityId: community._id,
-  };
-  await cdnClient
-    .fetch(communitiesOfMunicipalityQuery, communitiesOfMunicipalityQueryParams)
-    .then(response => {
-      const communityDtoList: CommunityDTO[] = response;
-      communitiesOfMunicipality = communityDtoList
-        ? communityDtoList.map(communityDto => {
-            communitiesInMunicipality.push(communityDto._id);
-            return communityExcerptByDTO(communityDto);
-          })
-        : undefined;
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup communities of the same municipality '${community.municipality._id}' at sanity failed:`
-      );
-    });
-  console.timeEnd('fetchCommunitiesInMunicipality');
-
-  /**
-   * Fetch events of all communities of the municipality with a scope higher than for the own community.
-   */
-  console.time('fetchEventsForMunicipality');
-  await Promise.all(
-    communitiesOfMunicipality.map(async c => {
-      const municipalityEventsQuery = `*[_type == "event" && references($communityId) && !cancelled && calendar->scope in ["1", "2", "3"]]{ ${EventDTOdetailQueryFields} }`;
-      const municipalityEventsQueryParams = {
-        communityId: c._id,
-      };
-      await cdnClient
-        .fetch(municipalityEventsQuery, municipalityEventsQueryParams)
-        .then(response => {
-          const municipalityEventDtoList: EventDTO[] = response;
-          if (municipalityEventDtoList)
-            municipalityEventDtoList.map(eventDto => {
-              let municipalityEvent = eventByDTO(eventDto);
-              municipalityEvent.distance = 'municipality';
-              return events.push(municipalityEvent);
-            });
-        })
-        .catch(err => {
-          console.warn(
-            `The query to lookup the community '${slug}' reference for at sanity failed:`
-          );
-        });
-    })
-  );
-  console.timeEnd('fetchEventsForMunicipality');
-
-  /**
-   * Fetch communities nearby by geosearch, exclude the communities of the municipality
-   */
-  console.time('fetchCommunitiesNearby');
-  const communitiesExcludeQueryPart = communitiesInMunicipality
-    .map(function (cid) {
-      return ` && _id != "${cid}"`;
-    })
-    .join('');
-  let communitiesNearby: CommunityExcerpt[] = undefined;
-  const communitiesNearbyQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 7500 ${communitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
-  const communitiesNearbyQueryParams = {
-    municipalityId: community.municipality._id,
-    currentCommuinityId: community._id,
-    currentCommunityGeopoint: community.geoLocation.point,
-  };
-  await cdnClient
-    .fetch(communitiesNearbyQuery, communitiesNearbyQueryParams)
-    .then(response => {
-      const communityDtoList: CommunityDTO[] = response;
-      communitiesNearby = communityDtoList
-        ? communityDtoList.map(communityDto => {
-            communitiesInNearbySurrounding.push(communityDto._id);
-            return communityExcerptByDTO(communityDto);
-          })
-        : undefined;
-    })
-    .catch(err => {
-      console.warn(`The query to lookup communities nearby '${community.name}' at sanity failed:`);
-    });
-  console.timeEnd('fetchCommunitiesNearby');
-
-  /**
-   * Fetch events of all nearby communities with a scope adressing the surrounding or region.
-   */
-  console.time('fetchEventsNearby');
-  if (communitiesNearby?.length > 0) {
-    const communitiesMatchQueryPart = communitiesInNearbySurrounding
-      .map(function (cid) {
-        return `references("${cid}")`;
-      })
-      .join(' || ');
-    const communitiesMatchQueryPartWrapped =
-      communitiesMatchQueryPart.trim().length > 0 ? '&& (' + communitiesMatchQueryPart + ')' : '';
-    const nearbyEventsQuery = `*[_type == "event" ${communitiesMatchQueryPartWrapped} && !cancelled && calendar->scope in ["2", "3"]]{ ${EventDTOdetailQueryFields} }`;
-    const nearbyEventsQueryParams = {};
-    await cdnClient
-      .fetch(nearbyEventsQuery, nearbyEventsQueryParams)
-      .then(response => {
-        const nearbyEventDtoList: EventDTO[] = response;
-        if (nearbyEventDtoList)
-          nearbyEventDtoList.map(eventDto => {
-            let surroundingEvent = eventByDTO(eventDto);
-            surroundingEvent.distance = 'surrounding';
-            return events.push(surroundingEvent);
-          });
-      })
-      .catch(err => {
-        console.warn(
-          `The query to lookup eventy in the nearby surrounding of the community '${slug}' at sanity failed:`,
-          nearbyEventsQuery
-        );
-      });
-  }
-  console.timeEnd('fetchEventsNearby');
-
-  /**
-   * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
-   */
-  console.time('fetchCommunitiesInRegion');
-  const fetchRegionCommunitiesExcludeQueryPart = communitiesInNearbySurrounding
-    .concat(communitiesInMunicipality)
-    .map(function (cid) {
-      return ` && _id != "${cid}"`;
-    })
-    .join('');
-  let communitiesInRegion: CommunityExcerpt[] = undefined;
-  const communitiesRegionQuery = `*[_type == "community" && geo::distance(geolocation, $currentCommunityGeopoint) < 15000 ${fetchRegionCommunitiesExcludeQueryPart}]{ ${CommunityDTOcoreQueryFields} }`;
-  const communitiesRegionQueryParams = {
-    currentCommunityGeopoint: community.geoLocation.point,
-  };
-  await cdnClient
-    .fetch(communitiesRegionQuery, communitiesRegionQueryParams)
-    .then(response => {
-      const communityDtoList: CommunityDTO[] = response;
-      communitiesInRegion = communityDtoList
-        ? communityDtoList.map(communityDto => {
-            communitiesInBroaderRegion.push(communityDto._id);
-            return communityExcerptByDTO(communityDto);
-          })
-        : undefined;
-      // console.log(communitiesInRegion);
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup communities in the region '${community.name}' at sanity failed:`
-      );
-    });
-  console.timeEnd('fetchCommunitiesInRegion');
-
-  /**
-   * Fetch events in the broader region with a scope adressing region.
-   */
-  console.time('fetchEventsInRegion');
-  if (communitiesNearby?.length > 0) {
-    const communitiesRegionMatchQueryPart = communitiesInBroaderRegion
-      .map(function (cid) {
-        return `references("${cid}")`;
-      })
-      .join(' || ');
-    const communitiesRegionMatchQueryPartWrapped =
-      communitiesRegionMatchQueryPart.trim().length > 0
-        ? '&& (' + communitiesRegionMatchQueryPart + ')'
-        : '';
-    const regionEventsQuery = `*[_type == "event" ${communitiesRegionMatchQueryPartWrapped} && !cancelled && calendar->scope in ["3"]]{ ${EventDTOdetailQueryFields} }`;
-    const regionEventsQueryParams = {};
-    await cdnClient
-      .fetch(regionEventsQuery, regionEventsQueryParams)
-      .then(response => {
-        const regionEventDtoList: EventDTO[] = response;
-        if (regionEventDtoList)
-          regionEventDtoList.map(eventDto => {
-            let regionEvent = eventByDTO(eventDto);
-            regionEvent.distance = 'region';
-            return events.push(regionEvent);
-          });
-      })
-      .catch(err => {
-        console.warn(
-          `The query to lookup eventy in the broader region of the community '${slug}' at sanity failed:`,
-          regionEventsQuery
-        );
-      });
-  }
-  console.timeEnd('fetchEventsInRegion');
 
   /**
    * Structur events in a calendar-kind array.
