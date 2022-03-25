@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no"
         />
-        <script
+        {/* <script
           id="_etLoader"
           type="text/javascript"
           charSet="UTF-8"
@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={'//static.zdassets.com/ekr/snippet.js?key=' + process.env.NEXT_PUBLIC_ZENDESK_KEY}
           async
           defer
-        ></script>
+        ></script> */}
       </Head>
       <IntlProvider locale="de" defaultLocale="de">
         <Component {...pageProps} />
