@@ -39,6 +39,7 @@ export interface Event {
   place?: Place;
   community: CommunityExcerpt;
   distance?: 'community' | 'municipality' | 'surrounding' | 'region';
+  debug?: any;
 }
 
 /*

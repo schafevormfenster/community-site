@@ -54,19 +54,14 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  const eventStartDate = new Date(eventDto?.start);
-  const eventStartDay = new Date(
-    eventStartDate.getFullYear(),
-    eventStartDate.getMonth(),
-    eventStartDate.getDate()
-  );
+  const eventStartDate: Date = new Date(eventDto?.start);
+  const eventStartDay: Date = eventStartDate;
+  eventStartDay.setHours(0, 0, 0, 0);
 
   const eventEndDate = new Date(eventDto?.end);
-  const eventEndDay = new Date(
-    eventEndDate.getFullYear(),
-    eventEndDate.getMonth(),
-    eventEndDate.getDate()
-  );
+  const eventEndDay: Date = eventEndDate;
+  eventEndDay.setHours(0, 0, 0, 0);
+
   let event: Event = {
     _id: eventDto._id,
     summary: eventDto.name,
