@@ -41,7 +41,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
-                  const thisDayEvents: Event[] = events;
+                  const thisDayEvents: Event[] = [events[0]];
                   // .filter(e => {
                   //   if (iDay.toISOString() === e.startDay) return e;
                   // })
