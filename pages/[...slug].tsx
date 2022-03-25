@@ -280,9 +280,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let communitiesNearby: CommunityExcerpt[] = undefined;
   let communitiesInRegion: CommunityExcerpt[] = undefined;
   [communitiesOfMunicipality, communitiesNearby, communitiesInRegion] = await Promise.all([
-    fetchCommunitiesInMunicipality(community),
-    fetchCommunitiesNearby(community),
-    fetchCommunitiesInRegion(community),
+    await fetchCommunitiesInMunicipality(community),
+    await fetchCommunitiesNearby(community),
+    await fetchCommunitiesInRegion(community),
   ]);
   console.timeEnd('fetchCommunityData');
 
@@ -295,20 +295,20 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let news: News[] = [];
 
   [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
-    fetchEventsByCommunityList([community._id], 'community'),
-    fetchEventsByCommunityList(
+    await fetchEventsByCommunityList([community._id], 'community'),
+    await fetchEventsByCommunityList(
       communitiesOfMunicipality.map(c => c._id),
       'municipality'
     ),
-    fetchEventsByCommunityList(
+    await fetchEventsByCommunityList(
       communitiesNearby.map(c => c._id),
       'surrounding'
     ),
-    fetchEventsByCommunityList(
+    await fetchEventsByCommunityList(
       communitiesInRegion.map(c => c._id),
       'region'
     ),
-    fetchNews(community.municipality._id),
+    await fetchNews(community.municipality._id),
   ]);
   // put everything together
   let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
