@@ -29,9 +29,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
-      All Events:
-      <pre>{events.length} events</pre>
-      <pre>{JSON.stringify(events, null, 2)}</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -40,9 +37,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 month={new Date(month.year, month.month)}
                 key={`monthSection${year.year}${monthIndex}`}
               >
-                <pre>
-                  {month.year}.{month.month}
-                </pre>
                 {month.days.map((day, dayIndex) => {
                   const iDay: string = new Date(day.year, day.month, day.day)
                     .toISOString()
@@ -100,38 +94,17 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      <pre>{iDay}</pre>
-
-                      <pre>
-                        events count:
-                        {JSON.stringify(events.length, null, 2)}
-                        thisDayEvents count:
-                        {JSON.stringify(thisDayEvents.length, null, 2)}
-                      </pre>
-                      <pre>
-                        microEvents:
-                        {JSON.stringify(microEvents, null, 2)}
-                      </pre>
+                      <p>
+                        {day.year}, {day.month}, {day.day}
+                      </p>
                       {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
-                      <pre>
-                        onelineEvents:
-                        {JSON.stringify(onelineEvents, null, 2)}
-                      </pre>
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
-                      <pre>
-                        onelineCombinedEvents:
-                        {JSON.stringify(onelineCombinedEvents, null, 2)}
-                      </pre>
                       {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
-                      <pre>
-                        regularEvents:
-                        {JSON.stringify(regularEvents, null, 2)}
-                      </pre>
                       {regularEvents?.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
                           <Fragment key={regularEventIndex}>
@@ -143,10 +116,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                             )}
                           </Fragment>
                         ))}
-                      <pre>
-                        commercialEvents:
-                        {JSON.stringify(commercialEvents, null, 2)}
-                      </pre>
                       {commercialEvents?.length > 0 &&
                         commercialEvents.map((commercialEvent, regularEventIndex) => (
                           <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
