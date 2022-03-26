@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortBy } from 'lodash';
+import { sortBy, first, join } from 'lodash';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
@@ -8,7 +8,6 @@ import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
-import { first, join } from 'lodash';
 import { Event } from '../src/entities/Event';
 import { communityByDTO, communityExcerptByDTO } from '../src/mapper/communityByDTO';
 import {
@@ -27,7 +26,6 @@ import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntr
 import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
-import { GeoPoint } from '../src/types/GeoLocation';
 
 export interface IPageProps {
   community: Community;
@@ -72,6 +70,7 @@ const fetchCommunity = async (slug: string): Promise<Community> => {
 
 /**
  * Fetch all other communities of the same municipality, exclude the current one.
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesInMunicipality = async (
   currentCommunity: Community
@@ -101,6 +100,7 @@ const fetchCommunitiesInMunicipality = async (
 
 /**
  * Fetch communities nearby by geosearch, exclude the communities of the municipality
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesNearby = async (currentCommunity: Community): Promise<CommunityExcerpt[]> => {
   console.time('fetchCommunitiesNearby');
@@ -129,6 +129,7 @@ const fetchCommunitiesNearby = async (currentCommunity: Community): Promise<Comm
 
 /**
  * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesInRegion = async (
   currentCommunity: Community
