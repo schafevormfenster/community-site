@@ -32,14 +32,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
       All Events:
       <pre>{events.length} events</pre>
       <pre>{JSON.stringify(events, null, 2)}</pre>
-      <pre>
-        {events[8]}
-        <br />
-        {events[10]}
-        <br />
-        {events[12]}
-        <br />
-      </pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -52,13 +44,12 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   {month.year}.{month.month}
                 </pre>
                 {month.days.map((day, dayIndex) => {
-                  const iDay: string = new Date(day.year, day.month, day.day).toISOString();
+                  const iDay: string = new Date(day.year, day.month, day.day)
+                    .toISOString()
+                    .substring(0, 10);
 
                   const thisDayEvents: Event[] = events
-                    .filter(item => {
-                      const trueOrFalse = iDay == item.startDay ? 'match' : 'n/a';
-                      if (iDay == item.startDay) return item;
-                    })
+                    .filter(item => iDay == item.startDay)
                     .map(item => {
                       const mappedEvent: Event = {
                         ...item,

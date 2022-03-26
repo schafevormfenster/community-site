@@ -62,7 +62,7 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     summary: eventDto.name,
     description: eventDto?.description || null,
     start: eventDto?.start || null,
-    startDay: tempDay.toISOString(),
+    startDay: eventDto?.start?.substring(0, 10) || null,
     end: eventDto?.end || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
