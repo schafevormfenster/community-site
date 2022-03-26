@@ -48,12 +48,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
                   const thisDayEvents: Event[] = events
-                    // .filter(item => iDay.toISOString() === item.startDay)
+                    .filter(item => iDay.toISOString() == item.startDay)
                     .map(item => {
-                      console.log('---');
-                      console.log(iDay.toISOString());
-                      console.log(item.startDay);
-                      console.log(iDay.toISOString() === item.startDay ? 'true' : 'false');
                       const mappedEvent: Event = {
                         ...item,
                         startDate: new Date(item.start),
@@ -61,29 +57,24 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                         debug: {
                           _iDay: iDay.toISOString(),
                           _startDay: item.startDay,
-                          _today: iDay.toISOString() === item.startDay ? true : false,
+                          _today: iDay.toISOString() == item.startDay ? true : false,
                         },
                       };
                       return mappedEvent;
                     });
 
-                  // console.debug(thisDayEvents);
-
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
                   });
-                  // console.debug(onelineEvents);
 
                   const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
                       return item;
                   });
-                  // console.debug(onelineCombinedEvents);
 
                   const microEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
                   });
-                  // console.debug(microEvents);
 
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
@@ -94,7 +85,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
-                  // console.debug(regularEvents);
 
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
@@ -109,7 +99,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
-                  // console.debug(commercialEvents);
 
                   return (
                     <CalendarDaySection
@@ -117,8 +106,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
                       <pre>
-                        thisDayEvents:
-                        {JSON.stringify(thisDayEvents, null, 2)}
+                        thisDayEvents count:
+                        {JSON.stringify(thisDayEvents.length, null, 2)}
                       </pre>
                       <pre>
                         microEvents:
