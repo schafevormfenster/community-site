@@ -54,29 +54,16 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  const eventStartDate = new Date(eventDto?.start);
-  const eventStartDay = new Date(
-    eventStartDate.getFullYear(),
-    eventStartDate.getMonth(),
-    eventStartDate.getDate()
-  );
+  let tempDay: Date = new Date(eventDto.start);
+  tempDay.setHours(0, 0, 0, 0);
 
-  const eventEndDate = new Date(eventDto?.end);
-  const eventEndDay = new Date(
-    eventEndDate.getFullYear(),
-    eventEndDate.getMonth(),
-    eventEndDate.getDate()
-  );
   let event: Event = {
     _id: eventDto._id,
     summary: eventDto.name,
-    description: eventDto.description ? eventDto.description : null,
-    start: eventStartDate.toISOString() || null,
-    startDate: null,
-    startDay: eventStartDay.toISOString() || null,
-    end: eventEndDate.toISOString() || null,
-    endDate: null,
-    endDay: eventEndDay.toISOString() || null,
+    description: eventDto?.description || null,
+    start: eventDto?.start || null,
+    startDay: eventDto?.start?.substring(0, 10) || null,
+    end: eventDto?.end || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
     community: communityExcerptByDTO(eventDto.community),
@@ -84,7 +71,7 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
 
   if (eventDto.calendar) {
     event.calendar = {
-      _id: eventDto.calendar._id,
+      // _id: eventDto.calendar._id,
       name: eventDto.calendar.name,
       display_mode: displayMode(
         eventDto?.calendar?.display_mode ? eventDto.calendar.display_mode : undefined
@@ -93,9 +80,8 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
         eventDto?.calendar?.time_display_mode ? eventDto.calendar.time_display_mode : undefined
       ),
       organizer: {
-        _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
-        name: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer.name : null,
-        longname: eventDto?.calendar?.organizer?.longname
+        // _id: eventDto?.calendar?.organizer ? eventDto.calendar?.organizer._id : null,
+        name: eventDto?.calendar?.organizer?.longname
           ? eventDto.calendar?.organizer.longname
           : eventDto.calendar?.organizer.name,
       },
@@ -104,20 +90,20 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
 
   if (eventDto.place) {
     event.place = {
-      _id: eventDto?.place ? eventDto.place._id : null,
+      // _id: eventDto?.place ? eventDto.place._id : null,
       name: eventDto?.place ? eventDto.place.name : null,
       localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
-      geoLocation: {
-        identifiers: {
-          geonamesId: null,
-          googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
-        },
-        address: { address: eventDto?.place?.address ? eventDto.place.address : null },
-        point: {
-          lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
-          lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
-        },
-      },
+      // geoLocation: {
+      //   identifiers: {
+      //     geonamesId: null,
+      //     googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
+      //   },
+      //   address: { address: eventDto?.place?.address ? eventDto.place.address : null },
+      //   point: {
+      //     lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
+      //     lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
+      //   },
+      // },
     };
   }
 

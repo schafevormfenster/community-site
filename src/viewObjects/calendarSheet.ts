@@ -25,8 +25,6 @@ const monthDays = (year: number, month: number): number => {
 };
 
 export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
-  console.time('calendarSheet');
-
   let sheet: CalendarSheet = { years: [] };
   const startAsDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
   const endAsDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
@@ -64,8 +62,6 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
     }
     sheet.years.push(iYear);
   }
-
-  console.timeEnd('calendarSheet');
 
   return sheet;
 };

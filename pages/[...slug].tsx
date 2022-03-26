@@ -1,4 +1,5 @@
 import React from 'react';
+import { sortBy, first, join } from 'lodash';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
@@ -7,7 +8,6 @@ import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
-import { first, join } from 'lodash';
 import { Event } from '../src/entities/Event';
 import { communityByDTO, communityExcerptByDTO } from '../src/mapper/communityByDTO';
 import {
@@ -26,7 +26,6 @@ import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntr
 import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
-import { GeoPoint } from '../src/types/GeoLocation';
 
 export interface IPageProps {
   community: Community;
@@ -71,6 +70,7 @@ const fetchCommunity = async (slug: string): Promise<Community> => {
 
 /**
  * Fetch all other communities of the same municipality, exclude the current one.
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesInMunicipality = async (
   currentCommunity: Community
@@ -100,6 +100,7 @@ const fetchCommunitiesInMunicipality = async (
 
 /**
  * Fetch communities nearby by geosearch, exclude the communities of the municipality
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesNearby = async (currentCommunity: Community): Promise<CommunityExcerpt[]> => {
   console.time('fetchCommunitiesNearby');
@@ -128,6 +129,7 @@ const fetchCommunitiesNearby = async (currentCommunity: Community): Promise<Comm
 
 /**
  * Fetch communities in the broader region by geosearch, exclude the communities of the municipality and surrounding
+ * TODO: add a cache or use the new cached service
  */
 const fetchCommunitiesInRegion = async (
   currentCommunity: Community
@@ -256,6 +258,7 @@ const fetchEventsByCommunityList = async (
       return [];
     });
   console.timeEnd('fetchEventsByCommunityList-' + scope);
+  // console.debug(events);
   return events;
 };
 
@@ -280,9 +283,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let communitiesNearby: CommunityExcerpt[] = undefined;
   let communitiesInRegion: CommunityExcerpt[] = undefined;
   [communitiesOfMunicipality, communitiesNearby, communitiesInRegion] = await Promise.all([
-    await fetchCommunitiesInMunicipality(community),
-    await fetchCommunitiesNearby(community),
-    await fetchCommunitiesInRegion(community),
+    fetchCommunitiesInMunicipality(community),
+    fetchCommunitiesNearby(community),
+    fetchCommunitiesInRegion(community),
   ]);
   console.timeEnd('fetchCommunityData');
 
@@ -295,54 +298,35 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let news: News[] = [];
 
   [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
-    await fetchEventsByCommunityList([community._id], 'community'),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList([community._id], 'community'),
+    fetchEventsByCommunityList(
       communitiesOfMunicipality.map(c => c._id),
       'municipality'
     ),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList(
       communitiesNearby.map(c => c._id),
       'surrounding'
     ),
-    await fetchEventsByCommunityList(
+    fetchEventsByCommunityList(
       communitiesInRegion.map(c => c._id),
       'region'
     ),
-    await fetchNews(community.municipality._id),
+    fetchNews(community.municipality._id),
   ]);
+
   // put everything together
-  let events: Event[] = communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents);
+  let events: Event[] = sortBy(
+    communityEvents.concat(municipalityEvents, nearbyEvents, regionEvents),
+    ['start', 'allday']
+  );
+
+  console.log(`Fetched ${events.length} events for community calendar '${community.slug}'.`);
   console.timeEnd('fetchEventData');
 
   // generate canonical url
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/${community.slug}`
     : `https://${process.env.VERCEL_URL}/${community.slug}`;
-
-  /**
-   * Structur events in a calendar-kind array.
-   */
-  console.time('calendarizeEvents');
-  let calendarizedEvents = new Array();
-  events.forEach(event => {
-    const eventStartDay = new Date(event.start);
-    if (!calendarizedEvents[eventStartDay.getFullYear()])
-      calendarizedEvents[eventStartDay.getFullYear()] = new Array();
-    if (!calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()])
-      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()] = new Array();
-    if (
-      !calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-        eventStartDay.getDate()
-      ]
-    )
-      calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-        eventStartDay.getDate()
-      ] = new Array();
-    calendarizedEvents[eventStartDay.getFullYear()][eventStartDay.getMonth()][
-      eventStartDay.getDate()
-    ].push(event);
-  });
-  console.timeEnd('calendarizeEvents');
 
   console.timeEnd('dataFetching');
 
@@ -354,7 +338,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
         canonicalUrl: canonicalUrl,
       },
       community: community,
-      events: calendarizedEvents,
+      events: events,
       news: news,
     },
     revalidate: 3600,
@@ -402,14 +386,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     });
 
   return { paths: paths, fallback: true };
-  //return { paths: [], fallback: true };
+  // return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
   const community: Community = props.community;
   const meta = props.meta;
 
-  if (!community) return <>404 no community</>;
+  if (!community) return <>Dein Dorfterminkalender wird gerade geladen ...</>;
 
   const events: any = props.events;
   const news: News[] = props.news;
@@ -489,7 +473,7 @@ export default function Page(props: IPageProps) {
           </div>
           <div className="col-span-1 lg:col-span-2">
             <Calendar
-              start={new Date()}
+              start={new Date(new Date().setDate(new Date().getDate() + 1))}
               end={new Date(new Date().setDate(new Date().getDate() + 90))}
               events={events}
               key="eventList"

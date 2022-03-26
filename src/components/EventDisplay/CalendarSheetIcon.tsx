@@ -9,11 +9,8 @@ export interface CalendarSheetIconProps {
  * Shows a calendar sheet icon of a given date.
  */
 const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
-  // console.time('CalendarSheetIcon');
-
   const intl = useIntl();
-
-  const render = (
+  return (
     <div className="w-full bg-gray-400 text-white overflow-hidden rounded text-center leading-none print:bg-white print:text-black print:border-0">
       <span className="pt-0.5 block bg-gray-800 print:bg-white text-xs">
         {intl.formatDate(day, { weekday: 'short' })}
@@ -26,8 +23,6 @@ const CalendarSheetIcon: FC<CalendarSheetIconProps> = ({ day }) => {
       </span>
     </div>
   );
-  // console.timeEnd('CalendarSheetIcon');
-  return render;
 };
 
 export default CalendarSheetIcon;

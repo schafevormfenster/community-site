@@ -10,9 +10,8 @@ export interface CalendarDaySectionProps {
  * Shows a section with a special calendar sheet display at the left side.
  */
 const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
-  // console.time('CalendarDaySection');
   const itemCount = React.Children.toArray(children).length;
-  const render = (
+  return (
     <section
       className={`relative pt-4 bg-gradient-to-b to-white from-gray-50 clear-both border-t border-gray-100 print:pt-2 print:bg-white print:from-transparent print:to-transparent ${
         itemCount <= 0 && ' print:hidden'
@@ -26,8 +25,6 @@ const CalendarDaySection: FC<CalendarDaySectionProps> = ({ day, children }) => {
       </div>
     </section>
   );
-  // console.timeEnd('CalendarDaySection');
-  return render;
 };
 
 export default CalendarDaySection;
