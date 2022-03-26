@@ -472,7 +472,7 @@ export default function Page(props: IPageProps) {
           </div>
           <div className="col-span-1 lg:col-span-2">
             <Calendar
-              start={new Date()}
+              start={new Date(new Date().setDate(new Date().getDate() + 1))}
               end={new Date(new Date().setDate(new Date().getDate() + 90))}
               events={events}
               key="eventList"

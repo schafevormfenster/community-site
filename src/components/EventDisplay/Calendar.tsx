@@ -25,8 +25,6 @@ export interface CalendarProps {
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
-  // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
-
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
@@ -42,6 +40,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     .toISOString()
                     .substring(0, 10);
 
+                  // TODO: optimize filtering? maybe creat day based chunks in one stream? maybe measure first?
                   const thisDayEvents: Event[] = events
                     .filter(item => iDay == item.startDay)
                     .map(item => {
@@ -94,9 +93,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      <p>
-                        {day.year}, {day.month}, {day.day}
-                      </p>
                       {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
