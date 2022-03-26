@@ -55,7 +55,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                   const thisDayEvents: Event[] = events
                     .filter(item => {
-                      console.debug(iDay + ' ?== ' + item.startDay);
+                      const trueOrFalse = iDay == item.startDay ? 'match' : 'n/a';
+                      console.debug(iDay + ' ?== ' + item.startDay + ' > ' + trueOrFalse);
                       if (iDay == item.startDay) return item;
                     })
                     .map(item => {
