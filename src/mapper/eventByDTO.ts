@@ -54,24 +54,16 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     }
   };
 
-  const eventStartDate: Date = new Date(eventDto?.start);
-  const eventStartDay: Date = eventStartDate;
-  eventStartDay.setHours(0, 0, 0, 0);
-
-  const eventEndDate = new Date(eventDto?.end);
-  const eventEndDay: Date = eventEndDate;
-  eventEndDay.setHours(0, 0, 0, 0);
+  let tempDay: Date = new Date(eventDto.start);
+  tempDay.setHours(0, 0, 0, 0);
 
   let event: Event = {
     _id: eventDto._id,
     summary: eventDto.name,
-    description: eventDto.description ? eventDto.description : null,
-    start: eventStartDate.toISOString() || null,
-    // startDate: null,
-    startDay: eventStartDay.toISOString() || null,
-    end: eventEndDate.toISOString() || null,
-    // endDate: null,
-    endDay: eventEndDay.toISOString() || null,
+    description: eventDto?.description || null,
+    start: eventDto?.start || null,
+    startDay: tempDay.toISOString(),
+    end: eventDto?.end || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
     community: communityExcerptByDTO(eventDto.community),

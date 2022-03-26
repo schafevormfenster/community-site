@@ -51,20 +51,18 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   {month.year}.{month.month}
                 </pre>
                 {month.days.map((day, dayIndex) => {
-                  const iDay = new Date(day.year, day.month, day.day);
+                  const iDay: string = new Date(day.year, day.month, day.day).toISOString();
 
                   const thisDayEvents: Event[] = events
-                    .filter(item => iDay.toISOString() == item.startDay)
+                    .filter(item => {
+                      console.debug(iDay + ' ?== ' + item.startDay);
+                      if (iDay == item.startDay) return item;
+                    })
                     .map(item => {
                       const mappedEvent: Event = {
                         ...item,
                         startDate: new Date(item.start),
                         endDate: new Date(item.end),
-                        debug: {
-                          _iDay: iDay.toISOString(),
-                          _startDay: item.startDay,
-                          _today: iDay.toISOString() == item.startDay ? true : false,
-                        },
                       };
                       return mappedEvent;
                     });
@@ -95,8 +93,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
                   const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                    let adKey: string =
-                      iDay.getTime().toString() + '#' + item.calendar.organizer._id;
+                    let adKey: string = iDay + '#' + item.calendar.organizer._id;
                     if (
                       !(commercialOrganizerCounter?.[adKey] === true) &&
                       item.calendar.display_mode === CalendarDisplayMode.AD
@@ -108,10 +105,10 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                   return (
                     <CalendarDaySection
-                      day={iDay}
+                      day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      <pre>{iDay.toISOString()}</pre>
+                      <pre>{iDay}</pre>
 
                       <pre>
                         events count:
