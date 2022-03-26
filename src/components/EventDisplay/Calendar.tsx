@@ -9,8 +9,9 @@ import MicroEvent from './MicroEvent';
 import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
-import { sortBy } from 'lodash';
 import CommercialAdEvent from './CommercialAdEvent';
+import EventList from './EventList';
+import { isDynamicRoute } from 'next/dist/next-server/lib/router/utils';
 
 export interface CalendarProps {
   start: Date;
@@ -23,9 +24,8 @@ export interface CalendarProps {
  */
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
-  console.time('Calendar');
-  // TODO: filter always all events on every day and for every type costs much too much calculation time, maybe first sort events into a structured array/object once
-  const render = (
+
+  return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
@@ -36,51 +36,40 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                 key={`monthSection${year.year}${monthIndex}`}
               >
                 {month.days.map((day, dayIndex) => {
-                  const iDay = new Date(day.year, day.month, day.day);
+                  const iDay: string = new Date(day.year, day.month, day.day)
+                    .toISOString()
+                    .substring(0, 10);
 
-                  const thisDayEvents: Event[] = sortBy(
-                    events?.[day.year]?.[day.month]?.[day.day],
-                    ['start', 'allday']
-                  ).map(item => {
-                    const eventStartDate = new Date(item.start);
-                    const mappedEvent: Event = {
-                      ...item,
-                      startDate: new Date(item.start),
-                      endDate: new Date(item.end),
-                    };
-                    return mappedEvent;
-                  });
+                  // TODO: optimize filtering? maybe creat day based chunks in one stream? maybe measure first?
+                  const thisDayEvents: Event[] = events
+                    .filter(item => iDay == item.startDay)
+                    .map(item => {
+                      const mappedEvent: Event = {
+                        ...item,
+                        startDate: new Date(item.start),
+                        endDate: new Date(item.end),
+                      };
+                      return mappedEvent;
+                    });
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (
-                      item.startDay === iDay.toISOString() &&
-                      item.calendar.display_mode === CalendarDisplayMode.ONELINE
-                    )
-                      return item;
+                    if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
                   });
 
                   const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (
-                      item.startDay === iDay.toISOString() &&
-                      item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED
-                    )
+                    if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
                       return item;
                   });
 
                   const microEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (
-                      item.startDay === iDay.toISOString() &&
-                      item.calendar.display_mode === CalendarDisplayMode.MICRO
-                    )
-                      return item;
+                    if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
                   });
 
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
-                      item.startDay === iDay.toISOString() &&
-                      (item.calendar.display_mode === CalendarDisplayMode.MINI ||
-                        item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
-                        item.calendar.display_mode == CalendarDisplayMode.EXTENDED)
+                      item.calendar.display_mode === CalendarDisplayMode.MINI ||
+                      item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
+                      item.calendar.display_mode == CalendarDisplayMode.EXTENDED
                     ) {
                       return item;
                     }
@@ -89,11 +78,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
                   const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                    let adKey: string =
-                      iDay.getTime().toString() + '#' + item.calendar.organizer._id;
+                    let adKey: string = iDay + '#' + item.calendar.organizer._id;
                     if (
                       !(commercialOrganizerCounter?.[adKey] === true) &&
-                      item.startDay === iDay.toISOString() &&
                       item.calendar.display_mode === CalendarDisplayMode.AD
                     ) {
                       commercialOrganizerCounter[adKey] = true;
@@ -103,7 +90,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                   return (
                     <CalendarDaySection
-                      day={iDay}
+                      day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
                       {microEvents?.length > 0 &&
@@ -111,11 +98,9 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
-
                       {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
-
                       {regularEvents?.length > 0 &&
                         regularEvents.map((regularEvent, regularEventIndex) => (
                           <Fragment key={regularEventIndex}>
@@ -127,7 +112,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                             )}
                           </Fragment>
                         ))}
-
                       {commercialEvents?.length > 0 &&
                         commercialEvents.map((commercialEvent, regularEventIndex) => (
                           <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
@@ -142,8 +126,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
       ))}
     </main>
   );
-  console.timeEnd('Calendar');
-  return render;
 };
 
 export default Calendar;
