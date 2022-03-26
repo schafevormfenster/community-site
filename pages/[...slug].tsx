@@ -384,8 +384,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.warn(`The query to lookup all communities at sanity failed:`);
     });
 
-  // return { paths: paths, fallback: true };
-  return { paths: [], fallback: true };
+  return { paths: paths, fallback: true };
+  // return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
