@@ -11,6 +11,7 @@ import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
 import CommercialAdEvent from './CommercialAdEvent';
 import EventList from './EventList';
+import { isDynamicRoute } from 'next/dist/next-server/lib/router/utils';
 
 export interface CalendarProps {
   start: Date;
@@ -30,20 +31,25 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       All Events:
       <pre>{events.length} events</pre>
+      <pre>
+        {events[8].startDay}
+        <br />
+        {events[10].startDay}
+        <br />
+        {events[12].startDay}
+        <br />
+      </pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
-          {year.months.map((month, mi) => (
-            <pre key={mi} className="relative  bg-red-600">
-              {JSON.stringify(month.year, null, 2)} {JSON.stringify(month.month, null, 2)}
-            </pre>
-          ))}
-
           {year.months.map((month, monthIndex) => {
             return (
               <CalendarMonthSection
                 month={new Date(month.year, month.month)}
                 key={`monthSection${year.year}${monthIndex}`}
               >
+                <pre>
+                  {month.year}.{month.month}
+                </pre>
                 {month.days.map((day, dayIndex) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
@@ -105,7 +111,11 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={iDay}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
+                      <pre>{iDay.toISOString()}</pre>
+
                       <pre>
+                        events count:
+                        {JSON.stringify(events.length, null, 2)}
                         thisDayEvents count:
                         {JSON.stringify(thisDayEvents.length, null, 2)}
                       </pre>
