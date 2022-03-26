@@ -31,12 +31,13 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       All Events:
       <pre>{events.length} events</pre>
+      <pre>{JSON.stringify(events, null, 2)}</pre>
       <pre>
-        {events[8].startDay}
+        {events[8]}
         <br />
-        {events[10].startDay}
+        {events[10]}
         <br />
-        {events[12].startDay}
+        {events[12]}
         <br />
       </pre>
       {myCalenderSheet.years.map(year => (
@@ -56,7 +57,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const thisDayEvents: Event[] = events
                     .filter(item => {
                       const trueOrFalse = iDay == item.startDay ? 'match' : 'n/a';
-                      console.debug(iDay + ' ?== ' + item.startDay + ' > ' + trueOrFalse);
                       if (iDay == item.startDay) return item;
                     })
                     .map(item => {
