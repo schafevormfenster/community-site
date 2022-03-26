@@ -67,23 +67,23 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return mappedEvent;
                     });
 
-                  console.debug(thisDayEvents);
+                  // console.debug(thisDayEvents);
 
                   const onelineEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
                   });
-                  console.debug(onelineEvents);
+                  // console.debug(onelineEvents);
 
                   const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
                       return item;
                   });
-                  console.debug(onelineCombinedEvents);
+                  // console.debug(onelineCombinedEvents);
 
                   const microEvents: Event[] = thisDayEvents?.filter(item => {
                     if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
                   });
-                  console.debug(microEvents);
+                  // console.debug(microEvents);
 
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
@@ -94,7 +94,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
-                  console.debug(regularEvents);
+                  // console.debug(regularEvents);
 
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
@@ -109,7 +109,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
-                  console.debug(commercialEvents);
+                  // console.debug(commercialEvents);
 
                   return (
                     <CalendarDaySection
