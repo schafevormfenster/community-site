@@ -48,8 +48,12 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const iDay = new Date(day.year, day.month, day.day);
 
                   const thisDayEvents: Event[] = events
-                    .filter(item => iDay.toISOString() === item.startDay)
+                    // .filter(item => iDay.toISOString() === item.startDay)
                     .map(item => {
+                      console.log('---');
+                      console.log(iDay.toISOString());
+                      console.log(item.startDay);
+                      console.log(iDay.toISOString() === item.startDay ? 'true' : 'false');
                       const mappedEvent: Event = {
                         ...item,
                         startDate: new Date(item.start),
