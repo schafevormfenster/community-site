@@ -187,7 +187,7 @@ export default function Homepage(props: IHomepageProps) {
           </div>
           <p className="font-title text-white text-xl mb-2">Schafe vorm Fenster</p>
           <p className="font-body text-3xl font-semibold text-white">
-            aus Schlakow für Vorpommern-Greifswald
+            aus Schlatkow für Vorpommern-Greifswald
           </p>
         </header>
       </div>
