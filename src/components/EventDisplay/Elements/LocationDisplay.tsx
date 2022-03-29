@@ -12,6 +12,8 @@ export interface LocationDisplayProps {
 const LocationDisplay: FC<LocationDisplayProps> = ({ event }) => {
   if (!event) return <></>;
 
+  const placeName: string = event.place?.localname.replace(event.community.name, '').trim() || null;
+
   return (
     <span className="mr-2">
       <LocationMarkerIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
@@ -26,7 +28,7 @@ const LocationDisplay: FC<LocationDisplayProps> = ({ event }) => {
           <RssIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-red-700 print:text-black" />
         </>
       )}
-      {event.place?.localname || event.community.name}
+      {placeName || event.community.name}
       {['municipality', 'surrounding', 'region'].includes(event.distance) && (
         <span> in {event.community.name}</span>
       )}
