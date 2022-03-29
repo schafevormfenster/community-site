@@ -206,14 +206,17 @@ const scopeId = (scope: 'community' | 'municipality' | 'surrounding' | 'region')
   }
 };
 
+export type Scope = 'community' | 'municipality' | 'surrounding' | 'region';
+
 /**
  * Fetch events of all nearby communities with a scope adressing the surrounding or region.
  */
 const fetchEventsByCommunityList = async (
   communityIdList: string[],
-  scope: 'community' | 'municipality' | 'surrounding' | 'region'
+  excludeCommunityIdList: string[],
+  scopes: Scope[]
 ): Promise<Event[]> => {
-  console.time('fetchEventsByCommunityList-' + scope);
+  console.time('fetchEventsByCommunityList-' + scopes.join('-'));
   if (communityIdList?.length <= 0) {
     console.error('communityIdList in fetchEventsByCommunityList missing or empty');
     return [];
@@ -221,6 +224,7 @@ const fetchEventsByCommunityList = async (
 
   // compose a query part to match all given communities
   const communitiesMatchQueryPart = communityIdList
+    .filter(cid => !excludeCommunityIdList.includes(cid))
     .map(function (cid) {
       return `references("${cid}")`;
     })
@@ -234,7 +238,8 @@ const fetchEventsByCommunityList = async (
   }
 
   // compose a query part for the correct scopes
-  const eventsScopeQueryPart: string = 'calendar->scope == "' + scopeId(scope).toString() + '"';
+  const eventsScopeQueryPart: string =
+    'calendar->scope in [' + scopes.map(scope => `"${scopeId(scope).toString()}"`).join(',') + ']';
   const eventsQuery = `*[_type == "event" && (${communitiesMatchQueryPart}) && !cancelled && ${eventsScopeQueryPart}]{ ${EventDTOdetailQueryFields} }`;
   const eventsQueryParams = {};
   const events: Event[] = await cdnClient
@@ -244,7 +249,7 @@ const fetchEventsByCommunityList = async (
       return eventDtoList.map(eventDto => {
         return {
           ...eventByDTO(eventDto),
-          distance: scope,
+          distance: scopes[0],
         };
       });
     })
@@ -252,12 +257,12 @@ const fetchEventsByCommunityList = async (
       console.error(
         `The query to lookup events based on a community id list '${communityIdList.join(
           ','
-        )}' and the scope '${scope}' at sanity failed:`,
+        )}' and the scope '${scopes.join('-')}' at sanity failed:`,
         eventsQuery
       );
       return [];
     });
-  console.timeEnd('fetchEventsByCommunityList-' + scope);
+  console.timeEnd('fetchEventsByCommunityList-' + scopes.join('-'));
   // console.debug(events);
   return events;
 };
@@ -298,18 +303,25 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let news: News[] = [];
 
   [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
-    fetchEventsByCommunityList([community._id], 'community'),
+    fetchEventsByCommunityList(
+      [community._id],
+      [],
+      ['community', 'municipality', 'surrounding', 'region']
+    ),
     fetchEventsByCommunityList(
       communitiesOfMunicipality.map(c => c._id),
-      'municipality'
+      [community._id],
+      ['municipality', 'surrounding', 'region']
     ),
     fetchEventsByCommunityList(
       communitiesNearby.map(c => c._id),
-      'surrounding'
+      communitiesOfMunicipality.map(c => c._id),
+      ['surrounding', 'region']
     ),
     fetchEventsByCommunityList(
       communitiesInRegion.map(c => c._id),
-      'region'
+      communitiesNearby.map(c => c._id),
+      ['region']
     ),
     fetchNews(community.municipality._id),
   ]);
