@@ -1,16 +1,18 @@
-import { CommunityExcerpt } from './Community';
-import { MunicipalityExcerpt } from './Municipality';
-
 /**
  * Micronews item.
  */
-export interface News {
-  _id: string;
-  title: string;
-  abstract?: string;
-  date: string;
-  link?: string;
-  image?: string;
-  community?: CommunityExcerpt;
-  municipality?: MunicipalityExcerpt;
+export interface NewsType {
+  id: string;
+  abstract: string;
+  image?: {
+    url: string;
+    alt: string;
+  };
+  url: string;
+  source: string;
+  created: string;
+  user: {
+    name: string;
+    username: string;
+  };
 }

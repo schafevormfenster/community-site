@@ -4,7 +4,6 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import CommunityHeader from '../src/components/CommunityHeader/CommunityHeader';
 import { Community, CommunityExcerpt } from '../src/entities/Community';
-import { News } from '../src/entities/News';
 import NewsTeaser from '../src/components/News/NewsTeaser';
 import NewsArrangement from '../src/components/News/NewsArrangement';
 import SanityClientConstructor from '@sanity/client';
@@ -18,19 +17,19 @@ import {
 import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
 import Calendar from '../src/components/EventDisplay/Calendar';
-import { NewsDTO, NewsDTOteaserQueryFields } from '../src/entityDTOs/NewsDTO';
-import { newsByDTO } from '../src/mapper/newsByDTO';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';
 import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
+import { getTwitterUserTimeline } from '../src/apiClients/svfApi/twitterUserTimeline';
+import { NewsType } from '../src/entities/News';
 
 export interface IPageProps {
   community: Community;
   events: Event[];
-  news: News[];
+  news: NewsType[];
   meta: { canonicalUrl: string };
 }
 
@@ -159,34 +158,6 @@ const fetchCommunitiesInRegion = async (
 };
 
 /**
- * fetch news for the municipality
- */
-const fetchNews = async (municipalityId: string): Promise<News[]> => {
-  console.time('fetchNews');
-
-  const newsQuery = `*[_type == "news" && references($municipalityId)] | order(date desc) { ${NewsDTOteaserQueryFields}}`;
-  const newsQueryParams = {
-    municipalityId: municipalityId,
-  };
-  const news: News[] = await cdnClient
-    .fetch(newsQuery, newsQueryParams)
-    .then(response => {
-      const newsDtoList: NewsDTO[] = response || [];
-      return newsDtoList.map(newsDto => {
-        return newsByDTO(newsDto);
-      });
-    })
-    .catch(err => {
-      console.warn(
-        `The query to lookup news of the municipality '${municipalityId}' at sanity failed:`
-      );
-      return null;
-    });
-  console.timeEnd('fetchNews');
-  return news;
-};
-
-/**
  * Get scope id list by scope identifier.
  * @param scope
  * @returns
@@ -300,7 +271,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
   let municipalityEvents: Event[] = [];
   let nearbyEvents: Event[] = [];
   let regionEvents: Event[] = [];
-  let news: News[] = [];
+  let news: NewsType[] = [];
 
   [communityEvents, municipalityEvents, nearbyEvents, regionEvents, news] = await Promise.all([
     fetchEventsByCommunityList(
@@ -323,7 +294,11 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       communitiesNearby.map(c => c._id),
       ['region']
     ),
-    fetchNews(community.municipality._id),
+    community.municipality?.socialMediaAccounts?.twitter?.user
+      ? getTwitterUserTimeline({
+          username: community.municipality.socialMediaAccounts.twitter.user,
+        })
+      : [],
   ]);
 
   // put everything together
@@ -408,7 +383,7 @@ export default function Page(props: IPageProps) {
   if (!community) return <>Dein Dorfterminkalender wird gerade geladen ...</>;
 
   const events: any = props.events;
-  const news: News[] = props.news;
+  const news: NewsType[] = props.news;
   const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;
 
   return (
