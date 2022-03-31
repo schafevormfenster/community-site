@@ -13,12 +13,12 @@ export const getTwitterUserTimeline = async (
   query: TwitterUserTimelineQuery
 ): Promise<TwitterUserTimelineResponse> => {
   console.debug(`Execute getTwitterUserTimeline(${query.username})`);
-  console.time('getTwitterUserTimeline-' + query.username);
-
   if (!query.username) {
     console.error('Twitter username missing.');
     return null;
   }
+  console.time('getTwitterUserTimeline-' + query.username);
+
   const requestUrl: string =
     process.env.NEXT_PUBLIC_SVF_API_URL + '/vendor/twitter/' + query.username;
 

@@ -294,9 +294,11 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       communitiesNearby.map(c => c._id),
       ['region']
     ),
-    getTwitterUserTimeline({
-      username: community.municipality.socialMediaAccounts.twitter.user,
-    }) || [],
+    community.municipality?.socialMediaAccounts?.twitter?.user
+      ? getTwitterUserTimeline({
+          username: community.municipality.socialMediaAccounts.twitter.user,
+        }) || []
+      : [],
   ]);
 
   // put everything together
