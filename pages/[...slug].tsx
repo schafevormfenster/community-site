@@ -294,11 +294,9 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
       communitiesNearby.map(c => c._id),
       ['region']
     ),
-    community.municipality?.socialMediaAccounts?.twitter?.user
-      ? getTwitterUserTimeline({
-          username: community.municipality.socialMediaAccounts.twitter.user,
-        })
-      : [],
+    getTwitterUserTimeline({
+      username: community.municipality.socialMediaAccounts.twitter.user,
+    }) || [],
   ]);
 
   // put everything together
@@ -445,7 +443,7 @@ export default function Page(props: IPageProps) {
             <CommunityIntroPrint community={community} />
           </div>
           <div className="col-span-1 print:hidden">
-            {news.length > 0 ? (
+            {news?.length > 0 ? (
               <NewsArrangement>
                 {community?.wikimediaCommonsImages?.length > 0 && (
                   <CommunityIntroAsNewsTeaserFormat community={community} key="communitySlide" />
