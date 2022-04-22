@@ -16,6 +16,11 @@ export const LeLeCommunities: string[] = [
   'geoname-12110912', // Hondelage
   'geoname-2909225', // Hattorf
   'geoname-2869164', // Mörse
+  'geoname-2907599', // Heiligendorf (Stadt Wolfsburg)
+  'geoname-2946848', // Boimstorf (Stadt Königslutter am Elm)
+  'geoname-2899060', // Hordorf (Gemeinde Cremlingen)
+  'geoname-2932891', // Ehmen (Stadt Wolfsburg)
+  'geoname-2940416', // Calberlah (Gemeinde Calberlah LK Gifhorn)
 ];
 
 export const leLeCommunityListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
@@ -31,4 +36,4 @@ export const leLeCommunityDetailListQuery = `*[_type == "community" && slug.curr
 )}] && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOdetailQueryFields} }`;
 
 export const LeLeCommunitiesAsKeywordList: string =
-  'Lehre, Wendhausen, Flechtorf, Essenrode,  Essehof,  Beienrode,  Groß Brunsrode, Klein Brunsrode, Cremlingen, Hondelage, Hattorf, Mörse';
+  'Lehre, Wendhausen, Flechtorf, Essenrode,  Essehof,  Beienrode,  Groß Brunsrode, Klein Brunsrode, Cremlingen, Hondelage, Hattorf, Mörse, Heiligendorf, Boimstorf, Hordorf, Ehmen, Calberlah';
