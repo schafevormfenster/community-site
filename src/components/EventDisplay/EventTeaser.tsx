@@ -59,7 +59,10 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           />
         )}
       </Head>
-      <div className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0">
+      <div
+        className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
+        id={event._id}
+      >
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />

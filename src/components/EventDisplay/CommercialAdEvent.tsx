@@ -19,7 +19,7 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
   const targetUrl = event.description.match(urlRegex)[1];
 
   return (
-    <div className="pb-2 pt-0">
+    <div className="pb-2 pt-0" id={event._id}>
       {event?.attachment?.type === 'image' && (
         <p className="mt-0 mb-2 text-gray-700 print:text-black leading-none">
           <a
