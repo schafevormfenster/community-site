@@ -66,8 +66,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
                       item.calendar.display_mode === CalendarDisplayMode.MINI ||
-                      item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
-                      item.calendar.display_mode == CalendarDisplayMode.EXTENDED
+                      item.calendar.display_mode === CalendarDisplayMode.DEFAULT ||
+                      item.calendar.display_mode === CalendarDisplayMode.EXTENDED
                     ) {
                       return item;
                     }
@@ -103,9 +103,16 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       {regularEvents?.length > 0 &&
                         regularEvents.map(regularEvent => {
                           if (regularEvent.calendar.display_mode === 'mini') {
-                            return <MiniEvent event={regularEvent} key={regularEvent._id} />;
+                            return (
+                              <MiniEvent event={regularEvent} key={'mini' + regularEvent._id} />
+                            );
                           } else {
-                            return <EventTeaser event={regularEvent} key={regularEvent._id} />;
+                            return (
+                              <EventTeaser
+                                event={regularEvent}
+                                key={'default' + regularEvent._id}
+                              />
+                            );
                           }
                         })}
                       {commercialEvents?.length > 0 &&
