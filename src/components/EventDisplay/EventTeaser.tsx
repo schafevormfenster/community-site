@@ -24,11 +24,27 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
     event?.place ? event.place.localname || event.place.name : ''
   } in ${event.community.name}`;
 
+  let eventDescription: string = event?.description;
+  eventDescription = eventDescription?.replace(/(<html-blob>)+/g, '');
+  eventDescription = eventDescription?.replace(/(<\/html-blob>)+/g, '');
+  eventDescription = eventDescription?.replace('/</html-blob>/', '');
+  eventDescription = eventDescription?.replace('<br> ', '<br>');
+  eventDescription = eventDescription?.replace(' <br>', '<br>');
+  eventDescription = eventDescription?.replace('\n', '<br>');
+  eventDescription = eventDescription?.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2');
+  eventDescription = eventDescription?.replace(/(<br>)+/g, '<br>');
+  eventDescription = eventDescription
+    ?.split('<br>')
+    .map(p => {
+      return `<p>${p}</p>`;
+    })
+    .join('');
+
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
     '@type': 'SocialEvent',
     name: googleEventSummary,
-    description: event.description,
+    description: eventDescription,
     startDate: event.start,
     endDate: event.end,
     location: {
@@ -99,20 +115,21 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
               fileId={event.attachment.fileId}
               fileExt={event.attachment.fileExt}
               alt={event.summary}
-              title={event.description}
+              title={event.summary}
             />
           </p>
         )}
         {event.description && (
           <div className={`prose print:hidden`}>
-            <Interweave
+            <Markup content={eventDescription} noWrap allowList={['p', 'br', 'img', 'a']} />
+            {/* <Interweave
               content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')}
               transform={(node, children) => {
                 if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName.toLowerCase())) {
                   return <strong>{children}</strong>;
                 }
               }}
-            />
+            /> */}
           </div>
         )}
         {event?.attachment?.type === 'download' && (

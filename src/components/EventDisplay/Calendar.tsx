@@ -103,7 +103,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       )}
                       {regularEvents?.length > 0 &&
                         regularEvents.map(regularEvent => (
-                          <Fragment key={regularEvent._id}>
+                          <Fragment key={'regeveFra' + regularEvent._id}>
                             {regularEvent.calendar.display_mode == 'mini' ? (
                               <MiniEvent event={regularEvent} key={regularEvent._id} />
                             ) : (
