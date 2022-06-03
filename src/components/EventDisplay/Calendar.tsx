@@ -94,7 +94,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
                       {microEvents?.length > 0 &&
-                        microEvents.map((microEvent, microEventIndex) => (
+                        microEvents.map(microEvent => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
@@ -102,18 +102,17 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
                       {regularEvents?.length > 0 &&
-                        regularEvents.map((regularEvent, regularEventIndex) => (
-                          <Fragment key={regularEventIndex}>
-                            {regularEvent.calendar.display_mode == 'mini' && (
+                        regularEvents.map(regularEvent => (
+                          <Fragment key={regularEvent._id}>
+                            {regularEvent.calendar.display_mode == 'mini' ? (
                               <MiniEvent event={regularEvent} key={regularEvent._id} />
-                            )}
-                            {regularEvent.calendar.display_mode != 'mini' && (
+                            ) : (
                               <EventTeaser event={regularEvent} key={regularEvent._id} />
                             )}
                           </Fragment>
                         ))}
                       {commercialEvents?.length > 0 &&
-                        commercialEvents.map((commercialEvent, regularEventIndex) => (
+                        commercialEvents.map(commercialEvent => (
                           <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
                         ))}
                     </CalendarDaySection>
