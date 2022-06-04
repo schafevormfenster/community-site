@@ -86,6 +86,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         data-timezone={offset}
       >
         <h4>{event._id}</h4>
+        <pre>{event.startDay}</pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
