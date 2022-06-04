@@ -82,9 +82,11 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
         id={'EventTeaser' + event._id}
       >
+        <h4>{event._id}</h4>
         <pre>
           EventTeaser:
           {JSON.stringify(event, null, 2)}
+          {JSON.stringify(event._id, null, 2)}
         </pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
