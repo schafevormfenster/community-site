@@ -72,7 +72,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   };
 
   return (
-    <>
+    <div>
       <Head>
         {jsonLd && (
           <script
@@ -83,7 +83,8 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       </Head>
       <div
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
-        id={'EventTeaser' + event._id}
+        id={'EventTeaser' + event._id + offset}
+        key={'EventTeaser' + event._id + offset}
         date-name={event.summary}
         data-timezone={offset}
       >
@@ -163,7 +164,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
