@@ -20,6 +20,9 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   const intl = useIntl();
   if (!event) return <></>;
 
+  const date = new Date();
+  const offset = date.getTimezoneOffset();
+
   console.debug('EventTeaser: ') + event._id;
   console.debug(event);
 
@@ -82,6 +85,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
         id={'EventTeaser' + event._id}
         date-name={event.summary}
+        data-timezone={offset}
       >
         <h4>{event._id}</h4>
         <pre>
