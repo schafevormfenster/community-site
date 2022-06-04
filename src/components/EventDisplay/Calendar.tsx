@@ -41,16 +41,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     .substring(0, 10);
 
                   // TODO: optimize filtering? maybe creat day based chunks in one stream? maybe measure first?
-                  const thisDayEvents: Event[] = events
-                    .filter(item => iDay === item.startDay)
-                    .map(item => {
-                      const mappedEvent: Event = {
-                        ...item,
-                        startDate: new Date(item.start),
-                        endDate: new Date(item.end),
-                      };
-                      return mappedEvent;
-                    });
+                  const thisDayEvents: Event[] = events.filter(item => iDay === item.startDay);
 
                   // const onelineEvents: Event[] = thisDayEvents?.filter(item => {
                   //   if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
@@ -93,15 +84,14 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      {events?.length > 0 &&
-                        events.map((regularEvent, regularEventIndex) => (
-                          <div>
-                            <h4>
-                              {iDay} // {regularEvent.startDay}
-                            </h4>
-                            <EventTeaser event={regularEvent} key={regularEvent._id} />
-                          </div>
-                        ))}
+                      {thisDayEvents.map((regularEvent, regularEventIndex) => (
+                        <div>
+                          <h4>
+                            {iDay} // {regularEvent.startDay}
+                          </h4>
+                          <EventTeaser event={regularEvent} key={regularEvent._id} />
+                        </div>
+                      ))}
                       {/* {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
