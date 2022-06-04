@@ -27,10 +27,6 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
-      {events.map(event => (
-        <EventTeaser event={event} key={event._id} />
-      ))}
-      <pre>{JSON.stringify(events, null, 2)}</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -56,48 +52,52 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return mappedEvent;
                     });
 
-                  const onelineEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
-                  });
+                  // const onelineEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   if (item.calendar.display_mode === CalendarDisplayMode.ONELINE) return item;
+                  // });
 
-                  const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
-                      return item;
-                  });
+                  // const onelineCombinedEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   if (item.calendar.display_mode === CalendarDisplayMode.ONELINECOMBINED)
+                  //     return item;
+                  // });
 
-                  const microEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
-                  });
+                  // const microEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
+                  // });
 
-                  const regularEvents: Event[] = thisDayEvents?.filter(item => {
-                    if (
-                      item.calendar.display_mode === CalendarDisplayMode.MINI ||
-                      item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
-                      item.calendar.display_mode == CalendarDisplayMode.EXTENDED
-                    ) {
-                      return item;
-                    }
-                  });
+                  // const regularEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   if (
+                  //     item.calendar.display_mode === CalendarDisplayMode.MINI ||
+                  //     item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
+                  //     item.calendar.display_mode == CalendarDisplayMode.EXTENDED
+                  //   ) {
+                  //     return item;
+                  //   }
+                  // });
 
-                  // reduce commercial event to one per organizer
-                  let commercialOrganizerCounter = [];
-                  const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                    let adKey: string = iDay + '#' + item.calendar.organizer._id;
-                    if (
-                      !(commercialOrganizerCounter?.[adKey] === true) &&
-                      item.calendar.display_mode === CalendarDisplayMode.AD
-                    ) {
-                      commercialOrganizerCounter[adKey] = true;
-                      return item;
-                    }
-                  });
+                  // // reduce commercial event to one per organizer
+                  // let commercialOrganizerCounter = [];
+                  // const commercialEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   let adKey: string = iDay + '#' + item.calendar.organizer._id;
+                  //   if (
+                  //     !(commercialOrganizerCounter?.[adKey] === true) &&
+                  //     item.calendar.display_mode === CalendarDisplayMode.AD
+                  //   ) {
+                  //     commercialOrganizerCounter[adKey] = true;
+                  //     return item;
+                  //   }
+                  // });
 
                   return (
                     <CalendarDaySection
                       day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      {microEvents?.length > 0 &&
+                      {thisDayEvents?.length > 0 &&
+                        thisDayEvents.map((regularEvent, regularEventIndex) => (
+                          <EventTeaser event={regularEvent} key={regularEvent._id} />
+                        ))}
+                      {/* {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
@@ -119,7 +119,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       {commercialEvents?.length > 0 &&
                         commercialEvents.map((commercialEvent, regularEventIndex) => (
                           <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
-                        ))}
+                        ))} */}
                     </CalendarDaySection>
                   );
                 })}
