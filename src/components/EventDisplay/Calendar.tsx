@@ -42,7 +42,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
 
                   // TODO: optimize filtering? maybe creat day based chunks in one stream? maybe measure first?
                   const thisDayEvents: Event[] = events
-                    .filter(item => iDay == item.startDay)
+                    .filter(item => iDay === item.startDay)
                     .map(item => {
                       const mappedEvent: Event = {
                         ...item,
@@ -95,7 +95,12 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     >
                       {events?.length > 0 &&
                         events.map((regularEvent, regularEventIndex) => (
-                          <EventTeaser event={regularEvent} key={regularEvent._id} />
+                          <div>
+                            <h4>
+                              {iDay} // {regularEvent.startDay}
+                            </h4>
+                            <EventTeaser event={regularEvent} key={regularEvent._id} />
+                          </div>
                         ))}
                       {/* {microEvents?.length > 0 &&
                         microEvents.map((microEvent, microEventIndex) => (
