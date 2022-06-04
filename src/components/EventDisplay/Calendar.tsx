@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
 import { CalendarDisplayMode } from '../../entities/Calendar';
@@ -10,6 +10,8 @@ import EventTeaser from './EventTeaser';
 import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
 import CommercialAdEvent from './CommercialAdEvent';
+import EventList from './EventList';
+import { isDynamicRoute } from 'next/dist/next-server/lib/router/utils';
 
 export interface CalendarProps {
   start: Date;
@@ -23,11 +25,12 @@ export interface CalendarProps {
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
-  const date = new Date();
-  const timezoneOffset = date.getTimezoneOffset();
-
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
+      {events.map(event => (
+        <EventTeaser event={event} key={event._id} />
+      ))}
+      <pre>{JSON.stringify(events, null, 2)}</pre>
       {myCalenderSheet.years.map(year => (
         <div key={`yearSection${year.year}`}>
           {year.months.map((month, monthIndex) => {
@@ -69,13 +72,12 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   const regularEvents: Event[] = thisDayEvents?.filter(item => {
                     if (
                       item.calendar.display_mode === CalendarDisplayMode.MINI ||
-                      item.calendar.display_mode === CalendarDisplayMode.DEFAULT ||
-                      item.calendar.display_mode === CalendarDisplayMode.EXTENDED
+                      item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
+                      item.calendar.display_mode == CalendarDisplayMode.EXTENDED
                     ) {
                       return item;
                     }
                   });
-                  console.log(regularEvents);
 
                   // reduce commercial event to one per organizer
                   let commercialOrganizerCounter = [];
@@ -96,40 +98,26 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
                       {microEvents?.length > 0 &&
-                        microEvents.map(microEvent => (
+                        microEvents.map((microEvent, microEventIndex) => (
                           <MicroEvent event={microEvent} key={microEvent._id} />
                         ))}
                       {onelineEvents?.length > 0 && <OnelineEvents events={onelineEvents} />}
                       {onelineCombinedEvents?.length > 0 && (
                         <OnelineCombinedEvents events={onelineCombinedEvents} />
                       )}
-                      <pre className="hidden">{JSON.stringify(regularEvents, null, 2)}</pre>
                       {regularEvents?.length > 0 &&
-                        regularEvents.map(regularEvent => {
-                          if (regularEvent.calendar.display_mode === 'mini') {
-                            return (
-                              <MiniEvent
-                                event={regularEvent}
-                                key={'mini' + regularEvent._id + timezoneOffset}
-                              />
-                            );
-                          } else {
-                            const MemoizedEventTeaser = React.memo(EventTeaser);
-                            return (
-                              <div
-                                className="EventTeaserWrapper"
-                                id={'EventTeaserWrapper' + regularEvent._id + timezoneOffset}
-                              >
-                                <MemoizedEventTeaser
-                                  event={regularEvent}
-                                  key={'default' + regularEvent._id + timezoneOffset}
-                                />
-                              </div>
-                            );
-                          }
-                        })}
+                        regularEvents.map((regularEvent, regularEventIndex) => (
+                          <Fragment key={regularEventIndex}>
+                            {regularEvent.calendar.display_mode == 'mini' && (
+                              <MiniEvent event={regularEvent} key={regularEvent._id} />
+                            )}
+                            {regularEvent.calendar.display_mode != 'mini' && (
+                              <EventTeaser event={regularEvent} key={regularEvent._id} />
+                            )}
+                          </Fragment>
+                        ))}
                       {commercialEvents?.length > 0 &&
-                        commercialEvents.map(commercialEvent => (
+                        commercialEvents.map((commercialEvent, regularEventIndex) => (
                           <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
                         ))}
                     </CalendarDaySection>

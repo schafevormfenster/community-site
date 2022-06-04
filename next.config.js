@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfigs = {
   poweredByHeader: false,
   env: {
-    TZ: 'Europe/Berlin',
+    TZ: 'Asia/Calcutta',
   },
   images: {
     loader: 'default',
