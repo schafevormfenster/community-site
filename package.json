@@ -35,7 +35,7 @@
     "interweave": "^12.7.2",
     "interweave-ssr": "^1.2.1",
     "lodash": "^4.17.21",
-    "next": "10.2.0",
+    "next": "^10.2.3",
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-mdx-remote": "^3.0.2",
