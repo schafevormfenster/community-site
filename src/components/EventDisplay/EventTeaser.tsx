@@ -20,6 +20,9 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   const intl = useIntl();
   if (!event) return <></>;
 
+  console.debug('EventTeaser: ') + event._id;
+  console.debug(event);
+
   const googleEventSummary: string = `${event.summary} - ${
     event?.place ? event.place.localname || event.place.name : ''
   } in ${event.community.name}`;
@@ -79,7 +82,10 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
         id={'EventTeaser' + event._id}
       >
-        <pre className="hidden">{JSON.stringify(event, null, 2)}</pre>
+        <pre>
+          EventTeaser:
+          {JSON.stringify(event, null, 2)}
+        </pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
