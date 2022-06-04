@@ -115,10 +115,15 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                             );
                           } else {
                             return (
-                              <EventTeaser
-                                event={regularEvent}
-                                key={'default' + regularEvent._id + timezoneOffset}
-                              />
+                              <div
+                                className="EventTeaserWrapper"
+                                id={'EventTeaserWrapper' + regularEvent._id + timezoneOffset}
+                              >
+                                <EventTeaser
+                                  event={regularEvent}
+                                  key={'default' + regularEvent._id + timezoneOffset}
+                                />
+                              </div>
                             );
                           }
                         })}
