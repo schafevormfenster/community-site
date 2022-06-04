@@ -81,6 +81,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       <div
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
         id={'EventTeaser' + event._id}
+        date-name={event.summary}
       >
         <h4>{event._id}</h4>
         <pre>
