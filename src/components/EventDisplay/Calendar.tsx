@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { calendarSheet, CalendarSheet } from '../../viewObjects/calendarSheet';
 import { Event } from '../../entities/Event';
 import { CalendarDisplayMode } from '../../entities/Calendar';
@@ -114,12 +114,13 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                               />
                             );
                           } else {
+                            const MemoizedEventTeaser = React.memo(EventTeaser);
                             return (
                               <div
                                 className="EventTeaserWrapper"
                                 id={'EventTeaserWrapper' + regularEvent._id + timezoneOffset}
                               >
-                                <EventTeaser
+                                <MemoizedEventTeaser
                                   event={regularEvent}
                                   key={'default' + regularEvent._id + timezoneOffset}
                                 />
