@@ -23,6 +23,9 @@ export interface CalendarProps {
 const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
   const myCalenderSheet: CalendarSheet = calendarSheet(start, end);
 
+  const date = new Date();
+  const timezoneOffset = date.getTimezoneOffset();
+
   return (
     <main key="CalendarMain" className="print:h-230mm print:w-190mm print:overflow-hidden">
       {myCalenderSheet.years.map(year => (
@@ -74,19 +77,18 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                   });
                   console.log(regularEvents);
 
-                  const commercialEvents: Event[] = [];
                   // reduce commercial event to one per organizer
-                  // let commercialOrganizerCounter = [];
-                  // const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                  //   let adKey: string = iDay + '#' + item.calendar.organizer._id;
-                  //   if (
-                  //     !(commercialOrganizerCounter?.[adKey] === true) &&
-                  //     item.calendar.display_mode === CalendarDisplayMode.AD
-                  //   ) {
-                  //     commercialOrganizerCounter[adKey] = true;
-                  //     return item;
-                  //   }
-                  // });
+                  let commercialOrganizerCounter = [];
+                  const commercialEvents: Event[] = thisDayEvents?.filter(item => {
+                    let adKey: string = iDay + '#' + item.calendar.organizer._id;
+                    if (
+                      !(commercialOrganizerCounter?.[adKey] === true) &&
+                      item.calendar.display_mode === CalendarDisplayMode.AD
+                    ) {
+                      commercialOrganizerCounter[adKey] = true;
+                      return item;
+                    }
+                  });
 
                   return (
                     <CalendarDaySection
@@ -106,13 +108,16 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                         regularEvents.map(regularEvent => {
                           if (regularEvent.calendar.display_mode === 'mini') {
                             return (
-                              <MiniEvent event={regularEvent} key={'mini' + regularEvent._id} />
+                              <MiniEvent
+                                event={regularEvent}
+                                key={'mini' + regularEvent._id + timezoneOffset}
+                              />
                             );
                           } else {
                             return (
                               <EventTeaser
                                 event={regularEvent}
-                                key={'default' + regularEvent._id}
+                                key={'default' + regularEvent._id + timezoneOffset}
                               />
                             );
                           }
