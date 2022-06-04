@@ -73,18 +73,19 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                     }
                   });
 
+                  const commercialEvents: Event[] = [];
                   // reduce commercial event to one per organizer
-                  let commercialOrganizerCounter = [];
-                  const commercialEvents: Event[] = thisDayEvents?.filter(item => {
-                    let adKey: string = iDay + '#' + item.calendar.organizer._id;
-                    if (
-                      !(commercialOrganizerCounter?.[adKey] === true) &&
-                      item.calendar.display_mode === CalendarDisplayMode.AD
-                    ) {
-                      commercialOrganizerCounter[adKey] = true;
-                      return item;
-                    }
-                  });
+                  // let commercialOrganizerCounter = [];
+                  // const commercialEvents: Event[] = thisDayEvents?.filter(item => {
+                  //   let adKey: string = iDay + '#' + item.calendar.organizer._id;
+                  //   if (
+                  //     !(commercialOrganizerCounter?.[adKey] === true) &&
+                  //     item.calendar.display_mode === CalendarDisplayMode.AD
+                  //   ) {
+                  //     commercialOrganizerCounter[adKey] = true;
+                  //     return item;
+                  //   }
+                  // });
 
                   return (
                     <CalendarDaySection
