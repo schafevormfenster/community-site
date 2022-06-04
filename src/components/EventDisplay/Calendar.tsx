@@ -72,6 +72,7 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       return item;
                     }
                   });
+                  console.log(regularEvents);
 
                   const commercialEvents: Event[] = [];
                   // reduce commercial event to one per organizer
