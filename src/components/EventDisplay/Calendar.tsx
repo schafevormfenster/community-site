@@ -93,8 +93,8 @@ const Calendar: FC<CalendarProps> = ({ start, end, events }) => {
                       day={new Date(iDay)}
                       key={`daySection${year.year}${monthIndex}${dayIndex}`}
                     >
-                      {thisDayEvents?.length > 0 &&
-                        thisDayEvents.map((regularEvent, regularEventIndex) => (
+                      {events?.length > 0 &&
+                        events.map((regularEvent, regularEventIndex) => (
                           <EventTeaser event={regularEvent} key={regularEvent._id} />
                         ))}
                       {/* {microEvents?.length > 0 &&
