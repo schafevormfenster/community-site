@@ -1,4 +1,4 @@
-import Interweave, { Markup } from 'interweave';
+import { Markup } from 'interweave';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
 import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
@@ -8,6 +8,7 @@ import LocationDisplay from './Elements/LocationDisplay';
 import GoogleDriveImage from '../Images/GoogleDriveImage';
 import GoogleDriveFile from '../Images/GoogleDriveFile';
 import { useIntl } from 'react-intl';
+import { simplifyMarkup } from '../../transformer/simplifyMarkup';
 
 export interface EventTeaserProps {
   event: Event;
@@ -27,21 +28,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
     event?.place ? event.place.localname || event.place.name : ''
   } in ${event.community.name}`;
 
-  let eventDescription: string = event?.description;
-  eventDescription = eventDescription?.replace(/(<html-blob>)+/g, '');
-  eventDescription = eventDescription?.replace(/(<\/html-blob>)+/g, '');
-  eventDescription = eventDescription?.replace('/</html-blob>/', '');
-  eventDescription = eventDescription?.replace('<br> ', '<br>');
-  eventDescription = eventDescription?.replace(' <br>', '<br>');
-  eventDescription = eventDescription?.replace('\n', '<br>');
-  eventDescription = eventDescription?.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2');
-  eventDescription = eventDescription?.replace(/(<br>)+/g, '<br>');
-  eventDescription = eventDescription
-    ?.split('<br>')
-    .map(p => {
-      return `<p>${p}</p>`;
-    })
-    .join('');
+  const eventDescription: string = simplifyMarkup(event?.description);
 
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
@@ -80,13 +67,10 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       </Head>
       <div
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
-        id={'EventTeaser' + event._id + offset}
-        key={'EventTeaser' + event._id + offset}
+        id={'EventTeaser-' + event._id}
         date-name={event.summary}
         data-timezone={offset}
       >
-        <h4>{event._id}</h4>
-        <pre>{event.startDay}</pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />

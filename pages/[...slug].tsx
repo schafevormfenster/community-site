@@ -16,7 +16,7 @@ import {
 } from '../src/entityDTOs/CommunityDTO';
 import { EventDTO, EventDTOdetailQueryFields } from '../src/entityDTOs/EventDTO';
 import { eventByDTO } from '../src/mapper/eventByDTO';
-import Calendar from '../src/components/EventDisplay/Calendar';
+import Calendar from '../src/components/CalenderDisplay/Calendar';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';

@@ -1,18 +1,22 @@
+import { formatInTimeZone } from 'date-fns-tz';
+
 export interface CalendarDay {
   day: number;
   month: number;
   year: number;
-  data?: any;
+  localString: string;
 }
 
 export interface CalendarMonth {
   month: number;
   year: number;
+  localString: string;
   days: CalendarDay[];
 }
 
 export interface CalendarYear {
   year: number;
+  localString: string;
   months: CalendarMonth[];
 }
 
@@ -31,7 +35,7 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
 
   // iterate years
   for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
-    let iYear: CalendarYear = { year: y, months: [] };
+    let iYear: CalendarYear = { year: y, localString: y.toString(), months: [] };
 
     // iterate months
     for (var m = 0; m <= 11; m++) {
@@ -46,13 +50,24 @@ export const calendarSheet = (start: Date, end: Date): CalendarSheet => {
         (y > start.getFullYear() && y < end.getFullYear()) ||
         (start.getFullYear() != end.getFullYear() && y === end.getFullYear() && m <= end.getMonth())
       ) {
-        let iMonth: CalendarMonth = { month: m, year: y, days: [] };
+        const monthAsDate = new Date(y, m, 1);
+        let iMonth: CalendarMonth = {
+          month: m,
+          year: y,
+          localString: formatInTimeZone(monthAsDate, 'Europe/Berlin', 'yyyy-MM'),
+          days: [],
+        };
 
         // iterate days
         for (var d = 1; d <= monthDays(y, m); d++) {
           const iDate = new Date(y, m, d);
           if (iDate.getTime() >= startAsDay.getTime() && iDate.getTime() < endAsDay.getTime()) {
-            const iDay: CalendarDay = { day: d, month: m, year: y };
+            const iDay: CalendarDay = {
+              day: d,
+              month: m,
+              year: y,
+              localString: formatInTimeZone(iDate, 'Europe/Berlin', 'yyyy-MM-dd'),
+            };
             iMonth.days.push(iDay);
           }
         }
