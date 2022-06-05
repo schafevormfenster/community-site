@@ -20,8 +20,6 @@ import Calendar from '../src/components/CalenderDisplay/Calendar';
 import CommunityIntroAsNewsTeaserFormat from '../src/components/CommunityHeader/CommunityIntroAsNewsTeaserFormat';
 import CommunityIntroWithoutNews from '../src/components/CommunityHeader/CommunityIntroWithoutNews';
 import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntroPrint';
-import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
-import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
 import { getTwitterUserTimeline } from '../src/apiClients/svfApi/twitterUserTimeline';
 import { NewsType } from '../src/entities/News';
@@ -234,7 +232,7 @@ const fetchEventsByCommunityList = async (
       return [];
     });
   console.timeEnd('fetchEventsByCommunityList-' + scopes.join('-'));
-  // console.debug(events);
+
   return events;
 };
 
@@ -460,7 +458,7 @@ export default function Page(props: IPageProps) {
           </div>
           <div className="col-span-1 lg:col-span-2">
             <Calendar
-              start={new Date(new Date().setDate(new Date().getDate() + 1))}
+              start={new Date(new Date().setDate(new Date().getDate()))}
               end={new Date(new Date().setDate(new Date().getDate() + 90))}
               events={events}
               key="eventList"

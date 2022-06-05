@@ -58,7 +58,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   };
 
   return (
-    <div>
+    <>
       <Head>
         {jsonLd && (
           <script
@@ -68,10 +68,8 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
       </Head>
       <div
-        className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
         id={'EventTeaser-' + event._id}
-        date-name={event.summary}
-        data-timezone={offset}
+        className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
       >
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
@@ -139,7 +137,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

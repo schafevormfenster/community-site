@@ -2,6 +2,7 @@ import { FC, Fragment } from 'react';
 import { CalendarDisplayMode } from '../../entities/Calendar';
 import { Event } from '../../entities/Event';
 import { CalendarDay } from '../../viewObjects/calendarSheet';
+import CommercialAdEvent from './CommercialAdEvent';
 import EventTeaser from './EventTeaser';
 import MicroEvent from './MicroEvent';
 import MiniEvent from './MiniEvent';
@@ -42,25 +43,20 @@ const EventList: FC<EventListProps> = ({ events, calendarDay }) => {
   });
 
   // reduce commercial event to one per organizer
-  // let commercialOrganizerCounter = [];
-  // const commercialEvents: Event[] = events?.filter(item => {
-  //   let adKey: string = iDay + '#' + item.calendar.organizer._id;
-  //   if (
-  //     !(commercialOrganizerCounter?.[adKey] === true) &&
-  //     item.calendar.display_mode === CalendarDisplayMode.AD
-  //   ) {
-  //     commercialOrganizerCounter[adKey] = true;
-  //     return item;
-  //   }
-  // });
+  let commercialOrganizerCounter = [];
+  const commercialEvents: Event[] = events?.filter(item => {
+    let adKey: string = calendarDay.localString + '#' + item.calendar.organizer._id;
+    if (
+      !(commercialOrganizerCounter?.[adKey] === true) &&
+      item.calendar.display_mode === CalendarDisplayMode.AD
+    ) {
+      commercialOrganizerCounter[adKey] = true;
+      return item;
+    }
+  });
 
   return (
     <div id={`EventList-${calendarDay.localString}`} className="pb-2">
-      {/* <pre>
-        EventList / events:
-        {JSON.stringify(events, null, 2)}
-      </pre> */}
-
       {microEvents?.length > 0 &&
         microEvents.map((microEvent, microEventIndex) => (
           <MicroEvent event={microEvent} key={`${microEventIndex}-${microEvent._id}`} />
@@ -82,10 +78,14 @@ const EventList: FC<EventListProps> = ({ events, calendarDay }) => {
             )}
           </Fragment>
         ))}
-      {/* {commercialEvents?.length > 0 &&
-        commercialEvents.map((commercialEvent, regularEventIndex) => (
-          <CommercialAdEvent event={commercialEvent} key={commercialEvent._id} />
-        ))} */}
+
+      {commercialEvents?.length > 0 &&
+        commercialEvents.map((commercialEvent, commercialEventIndex) => (
+          <CommercialAdEvent
+            event={commercialEvent}
+            key={`${commercialEventIndex}-${commercialEvent._id}`}
+          />
+        ))}
     </div>
   );
 };
