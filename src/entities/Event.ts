@@ -12,10 +12,8 @@ export interface Event {
   location?: string;
   geoLocation?: Geolocation;
   start?: string; // TODO: change to Date and add to mapper
-  startDate?: Date;
   startDay?: string;
   end?: string; // TODO: change to Date and add to mapper
-  endDate?: Date;
   endDay?: string;
   allday?: boolean;
   status?: 'confirmed' | 'cancelled';

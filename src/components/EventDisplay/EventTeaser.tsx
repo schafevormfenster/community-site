@@ -1,4 +1,4 @@
-import { Markup } from 'interweave';
+import Interweave, { Markup } from 'interweave';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
 import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
@@ -29,6 +29,8 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   } in ${event.community.name}`;
 
   const eventDescription: string = simplifyMarkup(event?.description);
+  const startDate: Date = new Date(event.start);
+  const endDate: Date = new Date(event.end);
 
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
@@ -74,7 +76,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+            {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
@@ -85,7 +87,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         ) : (
           <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+            {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
@@ -114,15 +116,11 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event.description && (
           <div className={`prose print:hidden`}>
-            <Markup content={eventDescription} noWrap allowList={['p', 'br', 'img', 'a']} />
-            {/* <Interweave
-              content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')}
-              transform={(node, children) => {
-                if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName.toLowerCase())) {
-                  return <strong>{children}</strong>;
-                }
-              }}
-            /> */}
+            <Markup
+              content={eventDescription}
+              noWrap
+              allowList={['p', 'br', 'img', 'a', 'ul', 'ol', 'li']}
+            />
           </div>
         )}
         {event?.attachment?.type === 'download' && (

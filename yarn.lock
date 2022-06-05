@@ -2936,10 +2936,10 @@ interweave-ssr@^1.2.1:
     parse5 "^6.0.1"
     style-parser "^1.1.1"
 
-interweave@^12.7.2:
-  version "12.7.2"
-  resolved "https://registry.yarnpkg.com/interweave/-/interweave-12.7.2.tgz#c42c74a512202e2cd05165d94e6590c095a7132b"
-  integrity sha512-F91iYBH6qcE8QnjZAvWJNm/FeMlbYSsTJvwqYWNyBd/c/Wsb7MnQ4ZCTAOfn5DzoKK2U/vdm9os4d9Qu8GZvHw==
+interweave@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/interweave/-/interweave-13.0.0.tgz#68fdaa6bde65cf296ba74829bb3746d2a5455a2b"
+  integrity sha512-Mckwj+ix/VtrZu1bRBIIohwrsXj12ZTvJCoYUMZlJmgtvIaQCj0i77eSZ63ckbA1TsPrz2VOvLW9/kTgm5d+mw==
   dependencies:
     escape-html "^1.0.3"
 
@@ -4583,13 +4583,12 @@ react@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
 
-react@^17.0.2:
-  version "17.0.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
-  integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
+react@^18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"
+  integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 read-cache@^1.0.0:
   version "1.0.0"

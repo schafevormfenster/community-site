@@ -141,31 +141,3 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
 
   return event;
 };
-
-/*
-  description?: string;
-  organizer: Organizer;
-  scope: 'Community' | 'Municipality' | 'Surrounding' | 'Region';
-  publication_status: '0' | '1';
-  display_mode: 'micro' | 'mini' | 'oneline' | 'default' | 'extended';
-
-
-
-          _id: string;
-  name: string;
-  description?: string;
-  start?: string;
-  end?: string;
-  allday?: boolean;
-  cancelled?: boolean;
-  location?: string;
-  googleeventattachment?: string[]; // TODO:
-  place?: PlaceDTO;
-  community?: CommunityDTO;
-  calendar?: CalendarDTO;
-  categories?: string[];
-      event_id?: string;
-
-
-
-      */
