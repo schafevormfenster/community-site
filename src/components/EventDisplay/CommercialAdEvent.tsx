@@ -19,11 +19,14 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
   const targetUrl = event.description.match(urlRegex)[1];
 
   return (
-    <div className="pb-2 pt-0" id={event._id}>
+    <div
+      className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
+      id={`CommercialAdEvent-${event._id}`}
+    >
       {event?.attachment?.type === 'image' && (
         <p className="mt-0 mb-2 text-gray-700 print:text-black leading-none">
           <a
-            href={targetUrl}
+            href={targetUrl} // TODO: use targetUrl not google url
             target="_blank"
             // onMouseDown={"_etracker.sendEvent(new et_UserDefinedEvent('Links.html', 'Links', 'Click', 'Link'));"}
           >

@@ -8,6 +8,7 @@ import LocationDisplay from './Elements/LocationDisplay';
 import GoogleDriveImage from '../Images/GoogleDriveImage';
 import GoogleDriveFile from '../Images/GoogleDriveFile';
 import { useIntl } from 'react-intl';
+import { simplifyMarkup } from '../../transformer/simplifyMarkup';
 
 export interface EventTeaserProps {
   event: Event;
@@ -20,25 +21,16 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   const intl = useIntl();
   if (!event) return <></>;
 
+  const date = new Date();
+  const offset = date.getTimezoneOffset();
+
   const googleEventSummary: string = `${event.summary} - ${
     event?.place ? event.place.localname || event.place.name : ''
   } in ${event.community.name}`;
 
-  let eventDescription: string = event?.description;
-  eventDescription = eventDescription?.replace(/(<html-blob>)+/g, '');
-  eventDescription = eventDescription?.replace(/(<\/html-blob>)+/g, '');
-  eventDescription = eventDescription?.replace('/</html-blob>/', '');
-  eventDescription = eventDescription?.replace('<br> ', '<br>');
-  eventDescription = eventDescription?.replace(' <br>', '<br>');
-  eventDescription = eventDescription?.replace('\n', '<br>');
-  eventDescription = eventDescription?.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2');
-  eventDescription = eventDescription?.replace(/(<br>)+/g, '<br>');
-  eventDescription = eventDescription
-    ?.split('<br>')
-    .map(p => {
-      return `<p>${p}</p>`;
-    })
-    .join('');
+  const eventDescription: string = simplifyMarkup(event?.description);
+  const startDate: Date = new Date(event.start);
+  const endDate: Date = new Date(event.end);
 
   const jsonLd: WithContext<EventJsonLd> = {
     '@context': 'https://schema.org',
@@ -76,14 +68,13 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
       </Head>
       <div
+        id={'EventTeaser-' + event._id}
         className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
-        id={'EventTeaser' + event._id}
       >
-        <pre className="hidden">{JSON.stringify(event, null, 2)}</pre>
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+            {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
@@ -94,7 +85,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         ) : (
           <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-            {intl.formatDateTimeRange(event.startDate, event.endDate, {
+            {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
@@ -123,15 +114,11 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event.description && (
           <div className={`prose print:hidden`}>
-            <Markup content={eventDescription} noWrap allowList={['p', 'br', 'img', 'a']} />
-            {/* <Interweave
-              content={event.description.replace(/^(<br>)*(.*?)( |<br>)*$/, '$2')}
-              transform={(node, children) => {
-                if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName.toLowerCase())) {
-                  return <strong>{children}</strong>;
-                }
-              }}
-            /> */}
+            <Markup
+              content={eventDescription}
+              noWrap
+              allowList={['p', 'br', 'img', 'a', 'ul', 'ol', 'li']}
+            />
           </div>
         )}
         {event?.attachment?.type === 'download' && (

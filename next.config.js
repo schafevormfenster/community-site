@@ -5,6 +5,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfigs = {
   poweredByHeader: false,
+  env: {
+    TZ: 'Asia/Calcutta',
+  },
   images: {
     loader: 'default',
     formats: ['image/avif', 'image/webp'],

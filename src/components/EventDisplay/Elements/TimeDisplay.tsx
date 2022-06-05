@@ -14,19 +14,20 @@ export interface TimeDisplayProps {
 const TimeDisplay: FC<TimeDisplayProps> = ({ event }) => {
   const intl = useIntl();
   if (!event) return <></>;
-
+  const startDate: Date = new Date(event.start);
+  const endDate: Date = new Date(event.end);
   return (
     <>
       {event.calendar.time_display_mode === CalendarTimeDisplayMode.StartTimeOnly && (
         <span className="mr-2">
           <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-          {intl.formatTime(event.startDate, { hour: '2-digit', minute: '2-digit' })}
+          {intl.formatTime(startDate, { hour: '2-digit', minute: '2-digit' })}
         </span>
       )}
       {event.calendar.time_display_mode === CalendarTimeDisplayMode.StartAndEndTime && (
         <span className="mr-2">
           <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
-          {intl.formatDateTimeRange(event.startDate, event.endDate, {
+          {intl.formatDateTimeRange(startDate, endDate, {
             hour: '2-digit',
             minute: '2-digit',
           })}
