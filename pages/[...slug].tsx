@@ -23,6 +23,8 @@ import CommunityIntroPrint from '../src/components/CommunityHeader/CommunityIntr
 import Footer from '../src/components/Footer/Footer';
 import { getTwitterUserTimeline } from '../src/apiClients/svfApi/twitterUserTimeline';
 import { NewsType } from '../src/entities/News';
+import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
+import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 
 export interface IPageProps {
   community: Community;
@@ -334,44 +336,44 @@ export const getStaticPaths: GetStaticPaths = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  // let communityList: Community[] = new Array();
-  // await cdnClient
-  //   .fetch(vorpommernGreifswaldCommunityListQuery)
-  //   .then(response => {
-  //     const communityDtoList: CommunityDTO[] = response;
-  //     if (communityDtoList)
-  //       communityList = communityDtoList.map(communitytDto => {
-  //         return communityByDTO(communitytDto);
-  //       });
-  //   })
-  //   .catch(err => {
-  //     console.warn(`The query to lookup all communities at sanity failed:`);
-  //   });
+  let communityList: Community[] = new Array();
+  await cdnClient
+    .fetch(vorpommernGreifswaldCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityDtoList.map(communitytDto => {
+          return communityByDTO(communitytDto);
+        });
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
 
-  // let paths = [];
-  // if (communityList)
-  //   paths = communityList.map(community => {
-  //     if (community.slug) return { params: { slug: [community.slug] } };
-  //   });
+  let paths = [];
+  if (communityList)
+    paths = communityList.map(community => {
+      if (community.slug) return { params: { slug: [community.slug] } };
+    });
 
-  // // add LeLe communities
-  // await cdnClient
-  //   .fetch(leLeCommunityListQuery)
-  //   .then(response => {
-  //     const communityDtoList: CommunityDTO[] = response;
-  //     if (communityDtoList)
-  //       communityList = communityList.concat(
-  //         communityDtoList.map(communitytDto => {
-  //           return communityByDTO(communitytDto);
-  //         })
-  //       );
-  //   })
-  //   .catch(err => {
-  //     console.warn(`The query to lookup all communities at sanity failed:`);
-  //   });
+  // add LeLe communities
+  await cdnClient
+    .fetch(leLeCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityList.concat(
+          communityDtoList.map(communitytDto => {
+            return communityByDTO(communitytDto);
+          })
+        );
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
 
-  // return { paths: paths, fallback: true };
-  return { paths: [], fallback: true };
+  return { paths: paths, fallback: true };
+  // return { paths: [], fallback: true };
 };
 
 export default function Page(props: IPageProps) {
