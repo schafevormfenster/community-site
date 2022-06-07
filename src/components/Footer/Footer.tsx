@@ -2,10 +2,10 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { LeLeCommunities } from '../../data/LebendigesLehre';
 import { Community } from '../../entities/Community';
+import Enertrag from '../Sponsors/Enertrag';
 import Kulturlandburo from '../Sponsors/Kulturlandburo';
 import LebendigesLehre from '../Sponsors/LebendigesLehre';
 import NextGenerationEu from '../Sponsors/NextGenerationEu';
-import SchafeVormFenster from '../Sponsors/SchafeVormFenster';
 
 export interface FooterProps {
   community: Community;
@@ -22,7 +22,7 @@ const Footer: FC<FooterProps> = props => {
       <div id="partner" className="w-full p-8 print:p-0 print:pt-8 text-center">
         <div className="flex flex-col md:flex-row print:flex-row m-auto">
           <div className="hidden md:block print:block flex-auto mb-4 md:mb-0 px-2">
-            <SchafeVormFenster />
+            <Enertrag />
           </div>
           <div className="flex-auto mb-4 md:mb-0 px-2">
             <NextGenerationEu />
