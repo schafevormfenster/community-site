@@ -7,6 +7,7 @@ import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO, CommunityDTOteaserQueryFields } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import Footer from '../src/components/Footer/Footer';
 
 export interface IHomepageProps {
   communities: Community[];
@@ -215,6 +216,7 @@ export default function Homepage(props: IHomepageProps) {
           ))}
         </div>
       </aside>
+      <Footer community={communities[0]} />
     </div>
   );
 }
