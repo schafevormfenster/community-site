@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { ClockIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
@@ -51,7 +50,6 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
       >
         <p className="mb-1 text-gray-700 print:text-black leading-none">
           <span className="mr-4">
-            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatTime(event.start, { hour: '2-digit', minute: '2-digit' })} Uhr
           </span>
           <span className="mr-4">

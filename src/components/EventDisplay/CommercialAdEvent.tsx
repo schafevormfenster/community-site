@@ -1,7 +1,7 @@
 import { Markup } from 'interweave';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { SpeakerphoneIcon, PresentationChartLineIcon } from '@heroicons/react/outline';
+
 import GoogleDriveImage from '../Images/GoogleDriveImage';
 
 export interface CommercialAdEventProps {
@@ -41,9 +41,8 @@ const CommercialAdEvent: FC<CommercialAdEventProps> = ({ event }) => {
       )}
       {event.calendar?.organizer?.name && (
         <p className="mt-2 mb-2 text-right text-sm text-gray-600 print:text-black leading-none">
-          <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1" />
           <Markup content={event.calendar?.organizer?.name} noWrap />
-          <PresentationChartLineIcon className="h-4 w-4 mb-0.5 inline-block ml-2 mr-1" />
+
           <span className="mr-1">Anzeige</span>
         </p>
       )}

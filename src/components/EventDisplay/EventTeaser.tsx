@@ -1,7 +1,7 @@
 import Interweave, { Markup } from 'interweave';
 import React, { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
+
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
@@ -73,7 +73,6 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       >
         {event.allday !== true ? (
           <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
-            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
@@ -84,7 +83,6 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         ) : (
           <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
-            <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
               month: '2-digit',
@@ -132,7 +130,6 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
         )}
         {event.calendar?.organizer?.name && (
           <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
-            <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             <Markup content={event.calendar?.organizer?.name} noWrap />
           </p>
         )}

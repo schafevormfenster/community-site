@@ -1,4 +1,3 @@
-import { PaperClipIcon } from '@heroicons/react/outline';
 import { Markup } from 'interweave';
 import React, { FC } from 'react';
 
@@ -20,7 +19,6 @@ const GoogleDriveFile: FC<GoogleDriveFileProps> = ({ fileId, fileExt, fileName =
   const fileUrl: string = baseUrl + googleDriveImageId;
   return (
     <a href={fileUrl} target="_blank" download>
-      <PaperClipIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary" />
       <Markup content={fileName} noWrap />
     </a>
   );
