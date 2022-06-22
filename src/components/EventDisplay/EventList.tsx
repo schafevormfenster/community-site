@@ -8,6 +8,9 @@ import MicroEvent from './MicroEvent';
 import MiniEvent from './MiniEvent';
 import OnelineCombinedEvents from './OnelineCombinedEvents';
 import OnelineEvents from './OnelineEvents';
+import OpeningHours from './OpeningHours';
+
+const openingHoursCalendarName = 'Öffnungszeiten';
 
 export interface EventListProps {
   events: Event[];
@@ -32,11 +35,16 @@ const EventList: FC<EventListProps> = ({ events, calendarDay }) => {
     if (item.calendar.display_mode === CalendarDisplayMode.MICRO) return item;
   });
 
+  const openingHours: Event[] = events?.filter(item => {
+    if (item.calendar.name === openingHoursCalendarName) return item;
+  });
+
   const regularEvents: Event[] = events?.filter(item => {
     if (
-      item.calendar.display_mode === CalendarDisplayMode.MINI ||
-      item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
-      item.calendar.display_mode == CalendarDisplayMode.EXTENDED
+      (item.calendar.display_mode === CalendarDisplayMode.MINI ||
+        item.calendar.display_mode == CalendarDisplayMode.DEFAULT ||
+        item.calendar.display_mode == CalendarDisplayMode.EXTENDED) &&
+      item.calendar.name !== openingHoursCalendarName
     ) {
       return item;
     }
@@ -67,6 +75,13 @@ const EventList: FC<EventListProps> = ({ events, calendarDay }) => {
       {onelineCombinedEvents?.length > 0 && (
         <OnelineCombinedEvents events={onelineCombinedEvents} />
       )}
+      {openingHours?.length > 0 &&
+        openingHours.map((openingHoursEvent, openingHoursEventIndex) => (
+          <OpeningHours
+            event={openingHoursEvent}
+            key={`${openingHoursEventIndex}-${openingHoursEvent._id}`}
+          />
+        ))}
       {regularEvents?.length > 0 &&
         regularEvents.map((regularEvent, regularEventIndex) => (
           <Fragment key={regularEventIndex}>
