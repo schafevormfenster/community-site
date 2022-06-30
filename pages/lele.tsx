@@ -97,7 +97,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
                 et_eC_Wrapper({
                   et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
                   et_pagename: 'Schafe vorm Fenster',
-                  et_areas: 'About',
+                  et_areas: 'LeLe',
                    _etr: { eoBlocked:true },
                 });
               }

@@ -6,10 +6,14 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO, CommunityDTOteaserQueryFields } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import {
+  IvenackCommunities,
+  IvenackCommunitiesAsKeywordList,
+  IvenackCommunityListQuery,
+} from '../src/data/Ivenack';
 import Footer from '../src/components/Footer/Footer';
 
-export interface IHomepageProps {
+export interface ILebendigesIvenackLandingPageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
 }
@@ -23,7 +27,7 @@ const cdnClient = SanityClientConstructor({
   useCdn: true,
 });
 
-export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
+export const getStaticProps: GetStaticProps<ILebendigesIvenackLandingPageProps> = async () => {
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
     : `https://${process.env.VERCEL_URL}/`;
@@ -33,7 +37,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
    */
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(vorpommernGreifswaldCommunityListQuery)
+    .fetch(IvenackCommunityListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
@@ -56,7 +60,7 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   };
 };
 
-export default function Homepage(props: IHomepageProps) {
+export default function LebendigesIvenackLandingPage(props: ILebendigesIvenackLandingPageProps) {
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
@@ -79,13 +83,16 @@ export default function Homepage(props: IHomepageProps) {
   return (
     <div className="w-full">
       <Head>
-        <title>Schafe vorm Fenster</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
+        <title>Schafe vorm Fenster für Ivenack und Umgebung</title>
+        <meta
+          name="description"
+          content={`Wann ist wer wo in ${IvenackCommunitiesAsKeywordList}?`}
+        />
+        <meta name="keywords" content={`${IvenackCommunitiesAsKeywordList}`} />
         <meta property="og:image" content="" />
         <meta name="geo.region" content="DE-MV" />
-        <link rel="canonical" href={`${meta.canonicalUrl}`} />
-        <meta property="og:url" content={`${meta.canonicalUrl}`} />
+        <link rel="canonical" href={`${meta.canonicalUrl}Ivenack`} />
+        <meta property="og:url" content={`${meta.canonicalUrl}Ivenack`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -93,7 +100,7 @@ export default function Homepage(props: IHomepageProps) {
                 et_eC_Wrapper({
                   et_et: '${process.env.NEXT_PUBLIC_ETRACKER_CODE}',
                   et_pagename: 'Schafe vorm Fenster',
-                  et_areas: 'Vorpommern-Greifswald',
+                  et_areas: 'Ivenack',
                    _etr: { eoBlocked:true },
                 });
               }
@@ -101,7 +108,7 @@ export default function Homepage(props: IHomepageProps) {
           }}
         />
       </Head>
-      <div className="min-h-screen/cut flex flex-col bg-brand">
+      <div className="min-h-screen/cut flex flex-col bg-gradient-to-b bg-brand">
         <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
           <div>
             <a
@@ -146,7 +153,7 @@ export default function Homepage(props: IHomepageProps) {
                 Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
-                Erfahre was wann wo in deinem Dorf los ist. Einfach per Smartphone.
+                Erfahre was wann wo in deinem Ort los ist. Einfach per Smartphone.
               </p>
             </article>
             <div className="max-w-screen-sm m-auto community-search ">
@@ -178,24 +185,26 @@ export default function Homepage(props: IHomepageProps) {
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-gray-900 text-center py-8 px-4">
-          <div className="inline-block w-auto h-16 m-auto mb-2">
-            <img
-              className="h-full w-auto mx-auto max-w-sm"
-              src="/partner/SchafeVormFenster.svg"
-              alt="Ein Projekt der Schafe vorm Fenster UG"
-            />
-          </div>
-          <p className="font-title text-white text-xl mb-2">Schafe vorm Fenster</p>
-          <p className="font-body text-3xl font-semibold text-white">
-            aus Schlatkow für Vorpommern-Greifswald
+        <header className="flex-0 bg-white text-center py-8 px-4">
+          <p className="text-xl mb-8">
+            Die digitale Terminliste für Ivenack und Umgebung ist ein Projekt von "Schafe vorm
+            Fenster" in Zusammenarbeit mit der Gemeinde Ivenack.
           </p>
+          <div className="inline-block w-auto h-auto m-auto">
+            <a href="https://www.gemeinde-ivenack.de/" target="_blank">
+              <img
+                className="mx-auto px-4"
+                src="/landingpages/ivenack/Ivenack_Wappen.webp"
+                alt="Gemeinde Ivenack"
+              />
+            </a>
+          </div>
         </header>
       </div>
-      <aside className="mx-auto px-4 py-12">
+      <aside className="mx-auto px-4 pb-12">
         <h2 className="text-4xl text-center mb-8">
           unsere {communities.length} Orte
-          <span className="block text-lg">in Vorpommern-Greifswald</span>
+          <span className="block text-lg">in und um Ivenack</span>
         </h2>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
