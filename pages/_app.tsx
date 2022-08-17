@@ -24,12 +24,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           async
           defer
         ></script>
-        <script
-          id="ze-snippet"
-          src={'//static.zdassets.com/ekr/snippet.js?key=' + process.env.NEXT_PUBLIC_ZENDESK_KEY}
-          async
-          defer
-        ></script>
       </Head>
       <IntlProvider locale="de" defaultLocale="de">
         <Component {...pageProps} />
