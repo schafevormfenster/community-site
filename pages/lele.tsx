@@ -13,6 +13,7 @@ import {
 } from '../src/data/LebendigesLehre';
 import Footer from '../src/components/Footer/Footer';
 
+export const LebendigesLehreLandingPageSlug: string = 'lele';
 export interface ILebendigesLehreLandingPageProps {
   communities: Community[];
   meta: { canonicalUrl: string };

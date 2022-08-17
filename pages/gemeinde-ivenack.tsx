@@ -13,7 +13,8 @@ import {
 } from '../src/data/Ivenack';
 import Footer from '../src/components/Footer/Footer';
 
-export interface ILebendigesIvenackLandingPageProps {
+export const GemeindeIvenackLandingPageSlug: string = 'gemeinde-ivenack';
+export interface IGemeindeIvenackLandingPageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
 }
@@ -27,7 +28,7 @@ const cdnClient = SanityClientConstructor({
   useCdn: true,
 });
 
-export const getStaticProps: GetStaticProps<ILebendigesIvenackLandingPageProps> = async () => {
+export const getStaticProps: GetStaticProps<IGemeindeIvenackLandingPageProps> = async () => {
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
     : `https://${process.env.VERCEL_URL}/`;
@@ -60,7 +61,7 @@ export const getStaticProps: GetStaticProps<ILebendigesIvenackLandingPageProps> 
   };
 };
 
-export default function LebendigesIvenackLandingPage(props: ILebendigesIvenackLandingPageProps) {
+export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLandingPageProps) {
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
