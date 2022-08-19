@@ -4,10 +4,11 @@ import Head from 'next/head';
 import { Community } from '../src/entities/Community';
 import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
-import { CommunityDTO, CommunityDTOteaserQueryFields } from '../src/entityDTOs/CommunityDTO';
+import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
+import WebsiteMenu from '../src/components/Header/WebsiteMenu';
 
 export interface IHomepageProps {
   communities: Community[];
@@ -102,40 +103,7 @@ export default function Homepage(props: IHomepageProps) {
         />
       </Head>
       <div className="min-h-screen/cut flex flex-col bg-brand">
-        <nav className="max-w-screen-md m-auto h-20 flex-initial flex items-center text-center">
-          <div>
-            <a
-              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-white hover:border-brand whitespace-nowrap"
-              href="https://www.schafe-vorm-fenster.de/"
-            >
-              Über das Projekt
-            </a>
-            <a
-              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-white hover:border-brand whitespace-nowrap"
-              href="https://www.schafe-vorm-fenster.de/funktionen"
-            >
-              Alle Funktionen
-            </a>
-            <a
-              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-white hover:border-brand whitespace-nowrap"
-              href="https://www.schafe-vorm-fenster.de/#tarifmodell"
-            >
-              Tarife
-            </a>
-            <a
-              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-white hover:border-brand whitespace-nowrap"
-              href="https://www.schafe-vorm-fenster.de/presse"
-            >
-              Presse
-            </a>
-            <a
-              className="inline-block p-2 pb-1 mx-2 font-medium border-b-2 border-transparent hover:text-white hover:border-brand whitespace-nowrap"
-              href="https://schafe-vorm-fenster.zendesk.com/hc/de"
-            >
-              Hilfe und Anleitungen
-            </a>
-          </div>
-        </nav>
+        <WebsiteMenu />
         <main
           className="max-w-screen-md m-auto flex-auto flex-grow flex items-center p-0"
           id="dorfsuche"

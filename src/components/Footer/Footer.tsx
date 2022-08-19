@@ -52,11 +52,6 @@ const Footer: FC<FooterProps> = props => {
             Twitter
           </a>
         </Link>
-        <Link href={`https://schafe-vorm-fenster.zendesk.com/hc/de`}>
-          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
-            Hilfe und Anleitungen
-          </a>
-        </Link>
       </nav>
     </footer>
   );
