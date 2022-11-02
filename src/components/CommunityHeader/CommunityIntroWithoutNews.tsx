@@ -12,14 +12,14 @@ export interface CommunityIntroWithoutNewsProps {
  */
 const CommunityIntroWithoutNews: FC<CommunityIntroWithoutNewsProps> = ({ community }) => {
   return (
-    <div className="relative w-screen lg:w-full lg:mb-4 h-80 bg-yellow-200 overflow-hidden">
+    <div className="relative w-screen overflow-hidden bg-yellow-200 lg:w-full lg:mb-4 h-80">
       <CommunityPhoto community={community} />
-      <div className="absolute bottom-0 w-full text-center bg-gradient-to-t from-black to-transparent p-4 text-white print:text-black">
+      <div className="absolute bottom-0 w-full p-4 text-center text-white bg-gradient-to-t from-black to-transparent print:text-black">
         <h1 className="text-3xl">{community.name}</h1>
-        <p className="text-xs">Gemeinde {community.municipality.name}</p>
+        <p className="text-xs">{community.municipality.name}</p>
         {LeLeCommunities.includes(community._id) && (
           <img
-            className="mx-auto px-16 mb-0"
+            className="px-16 mx-auto mb-0"
             src="/landingpages/lebendigeslehre/LebendigesLehre_xs.png"
             alt="Stiftung Lebendiges Lehre"
           />
