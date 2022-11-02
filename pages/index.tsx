@@ -102,15 +102,15 @@ export default function Homepage(props: IHomepageProps) {
           }}
         />
       </Head>
-      <div className="min-h-screen/cut flex flex-col bg-brand">
+      <div className="flex flex-col min-h-screen/cut bg-brand">
         <WebsiteMenu />
         <main
-          className="max-w-screen-md m-auto flex-auto flex-grow flex items-center p-0"
+          className="flex items-center flex-auto flex-grow max-w-screen-md p-0 m-auto"
           id="dorfsuche"
         >
           <div className="items-center">
-            <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
-              <h1 className="text-5xl md:text-6xl font-semibold text-white">
+            <article className="px-4 py-8 m-auto prose prose-lg text-center md:px-8">
+              <h1 className="text-5xl font-semibold text-white md:text-6xl">
                 Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
@@ -118,7 +118,7 @@ export default function Homepage(props: IHomepageProps) {
               </p>
             </article>
             <div className="max-w-screen-sm m-auto community-search ">
-              <div className="h-16 px-4 md:px-8 py-2">
+              <div className="h-16 px-4 py-2 md:px-8">
                 <input
                   type="text"
                   placeholder="Finde deinen Ort ..."
@@ -129,12 +129,12 @@ export default function Homepage(props: IHomepageProps) {
               </div>
               <div className="relative h-full px-4 pb-8 mt-2">
                 {searchTerm.length > 0 && (
-                  <ul className="absolute text-lg left-4 right-4 md:left-8 md:right-8 bg-secondary rounded px-4 py-2 z-50">
+                  <ul className="absolute z-50 px-4 py-2 text-lg rounded left-4 right-4 md:left-8 md:right-8 bg-secondary">
                     {searchResults.map(item => (
                       <li key={item._id}>
                         <Link href={`/${item.slug}`}>
-                          <a className="block py-1 px-2">
-                            <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
+                          <a className="block px-2 py-1">
+                            <strong className="font-semibold">{item.name}</strong> (
                             {item?.municipality?.name})
                           </a>
                         </Link>
@@ -146,36 +146,36 @@ export default function Homepage(props: IHomepageProps) {
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-gray-900 text-center py-8 px-4">
+        <header className="px-4 py-8 text-center bg-gray-900 flex-0">
           <div className="inline-block w-auto h-16 m-auto mb-2">
             <img
-              className="h-full w-auto mx-auto max-w-sm"
+              className="w-auto h-full max-w-sm mx-auto"
               src="/partner/SchafeVormFenster.svg"
               alt="Ein Projekt der Schafe vorm Fenster UG"
             />
           </div>
-          <p className="font-title text-white text-xl mb-2">Schafe vorm Fenster</p>
-          <p className="font-body text-3xl font-semibold text-white">
+          <p className="mb-2 text-xl text-white font-title">Schafe vorm Fenster</p>
+          <p className="text-3xl font-semibold text-white font-body">
             aus Schlatkow für Vorpommern-Greifswald
           </p>
         </header>
       </div>
-      <aside className="mx-auto px-4 py-12">
-        <h2 className="text-4xl text-center mb-8">
+      <aside className="px-4 py-12 mx-auto">
+        <h2 className="mb-8 text-4xl text-center">
           unsere {communities.length} Orte
           <span className="block text-lg">in Vorpommern-Greifswald</span>
         </h2>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
             <Link href={`/${community.slug}`} key={community.slug + community._id}>
-              <a className="relative block h-44 bg-gray-200">
+              <a className="relative block bg-gray-200 h-44">
                 {community?.wikimediaCommonsImages?.length > 0 && (
                   <img
-                    className="h-full w-full object-cover"
+                    className="object-cover w-full h-full"
                     src={community.wikimediaCommonsImages[0]}
                   />
                 )}
-                <div className="absolute w-full p-2 pt-4 bottom-0 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
+                <div className="absolute bottom-0 w-full p-2 pt-4 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
                   <h4 className="text-xl font-normal ">{community.name}</h4>
                   <p className="text-xs font-light">(Gemeinde {community.municipality.name})</p>
                 </div>

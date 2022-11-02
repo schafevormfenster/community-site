@@ -384,7 +384,7 @@ export default function Page(props: IPageProps) {
 
   const events: any = props.events;
   const news: NewsType[] = props.news;
-  const pageTitle = `${community.name} (Gemeinde ${community.municipality.name})`;
+  const pageTitle = `${community.name} (${community.municipality.name})`;
 
   return (
     <>
@@ -393,7 +393,7 @@ export default function Page(props: IPageProps) {
           <title>{pageTitle}</title>
           <meta
             name="description"
-            content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der Gemeinde ${community.municipality.name}.`}
+            content={`Wann ist wer wo in ${community.name}? Hier findest Du Termine und Neuigkeiten aus ${community.name} in der ${community.municipality.name}.`}
           />
           <meta
             name="keywords"
@@ -405,7 +405,7 @@ export default function Page(props: IPageProps) {
           <meta name="geo.region" content="DE-MV" />
           <meta
             name="geo.placename"
-            content={`${community.name}, Gemeinde ${community.municipality.name}`}
+            content={`${community.name}, ${community.municipality.name}`}
           />
           {community?.geoLocation?.point?.lat && community?.geoLocation?.point?.lng && (
             <>
@@ -440,7 +440,7 @@ export default function Page(props: IPageProps) {
           />
         </Head>
         <CommunityHeader community={community} />
-        <main className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4 lg:mx-4" key="pageSection">
+        <main className="grid grid-cols-1 gap-0 lg:grid-cols-3 lg:gap-4 lg:mx-4" key="pageSection">
           <div className="hidden print:block">
             <CommunityIntroPrint community={community} />
           </div>
