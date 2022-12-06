@@ -1,6 +1,5 @@
 import { Calendar } from './Calendar';
 import { CommunityExcerpt } from './Community';
-import { Place } from './Place';
 
 /**
  * Event item.
@@ -10,6 +9,12 @@ export interface Event {
   summary: string;
   description?: string;
   location?: string;
+  geopoint?: {
+    lat: number;
+    lng: number;
+  };
+  placeName?: string;
+  placeLocalName?: string;
   geoLocation?: Geolocation;
   start?: string; // TODO: change to Date and add to mapper
   startDay?: string;
@@ -34,19 +39,7 @@ export interface Event {
   iCalUID?: string;
   //references
   calendar?: Calendar;
-  place?: Place;
   community: CommunityExcerpt;
   distance?: 'community' | 'municipality' | 'surrounding' | 'region';
   debug?: any;
 }
-
-/*
-TODO: MAP
-
-cancelled?: boolean; // TODO status?: 'confirmed' | 'cancelled';
-  googleeventattachment?: string[]; // TODO: attachments
-  place?: PlaceDTO;
-  community?: CommunityDTO;
-
-  event_id?: string;
-*/

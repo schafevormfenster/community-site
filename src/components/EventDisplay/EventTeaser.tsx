@@ -25,7 +25,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
   const offset = date.getTimezoneOffset();
 
   const googleEventSummary: string = `${event.summary} - ${
-    event?.place ? event.place.localname || event.place.name : ''
+    event?.placeName || event?.location
   } in ${event.community.name}`;
 
   const eventDescription: string = simplifyMarkup(event?.description);
@@ -41,16 +41,10 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
     endDate: event.end,
     location: {
       '@type': 'Place',
-      name: event?.place?.name ? event.place.name : '',
-      address: event?.place?.geoLocation?.address?.address
-        ? event.place.geoLocation.address.address
-        : event?.location,
-      latitude: event?.place?.geoLocation?.point?.lat
-        ? event.place.geoLocation.point.lat
-        : undefined,
-      longitude: event?.place?.geoLocation?.point?.lng
-        ? event.place.geoLocation.point.lng
-        : undefined,
+      name: event?.placeName,
+      address: event?.location,
+      latitude: event?.geopoint?.lat,
+      longitude: event?.geopoint?.lng,
     },
     organizer: event.calendar.organizer.longname
       ? event.calendar.organizer.longname
@@ -69,21 +63,21 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
       </Head>
       <div
         id={'EventTeaser-' + event._id}
-        className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
+        className="pt-2 pb-2 border-t border-gray-200 border-solid first:border-t-0"
       >
         {event.allday !== true ? (
-          <p className="mb-1 text-gray-700 print:text-black leading-none print:inline-block print:mr-4">
+          <p className="mb-1 leading-none text-gray-700 print:text-black print:inline-block print:mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatDateTimeRange(startDate, endDate, {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
+              // day: '2-digit',
+              // month: '2-digit',
+              // year: 'numeric',
               hour: '2-digit',
               minute: '2-digit',
             })}
           </p>
         ) : (
-          <p className="mb-1 text-gray-700 leading-none print:inline-block print:mr-2">
+          <p className="mb-1 leading-none text-gray-700 print:inline-block print:mr-2">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatDateTimeRange(startDate, endDate, {
               day: '2-digit',
@@ -93,16 +87,16 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         )}
         <p
-          className="mb-2 text-gray-700 print:text-black leading-none print:inline-block print:mb-1"
+          className="mb-2 leading-none text-gray-700 print:text-black print:inline-block print:mb-1"
           title={event.location}
         >
           <LocationDisplay event={event} />
         </p>
-        <h4 className="mb-2 font-semibold text-xl print:text-base print:mb-0">
+        <h4 className="mb-2 text-xl font-semibold print:text-base print:mb-0">
           <Markup content={event.summary} noWrap />
         </h4>
         {event?.attachment?.type === 'image' && (
-          <p className="mt-2 mb-2 text-gray-700 print:text-black leading-none print:hidden">
+          <p className="mt-2 mb-2 leading-none text-gray-700 print:text-black print:hidden">
             <GoogleDriveImage
               key={'GoogleDriveImage' + event._id}
               fileId={event.attachment.fileId}
@@ -122,7 +116,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </div>
         )}
         {event?.attachment?.type === 'download' && (
-          <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
+          <p className="mt-2 mb-2 leading-none text-gray-700 print:hidden">
             <GoogleDriveFile
               fileId={event.attachment.fileId}
               fileExt={event.attachment.fileExt}
@@ -131,7 +125,7 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
           </p>
         )}
         {event.calendar?.organizer?.name && (
-          <p className="mt-2 mb-2 text-gray-700 leading-none print:hidden">
+          <p className="mt-2 mb-2 leading-none text-gray-700 print:hidden">
             <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             <Markup content={event.calendar?.organizer?.name} noWrap />
           </p>

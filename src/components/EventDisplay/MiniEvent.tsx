@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Event } from '../../entities/Event';
-import { ClockIcon } from '@heroicons/react/outline';
+import { ClockIcon, SpeakerphoneIcon } from '@heroicons/react/outline';
 import { Event as EventJsonLd, WithContext } from 'schema-dts';
 import Head from 'next/head';
 import LocationDisplay from './Elements/LocationDisplay';
@@ -29,8 +29,8 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
     endDate: event.end,
     location: {
       '@type': 'Place',
-      name: event?.place?.name ? event.place.name : '',
-      address: event?.location ? event.location : '',
+      name: event?.placeName || '',
+      address: event?.location || '',
     },
     organizer: event.calendar.organizer.longname
       ? event.calendar.organizer.longname
@@ -46,10 +46,10 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
         />
       </Head>
       <div
-        className="pb-2 pt-2 border-t border-solid border-gray-200 first:border-t-0"
+        className="pt-2 pb-2 border-t border-gray-200 border-solid first:border-t-0"
         id={event._id}
       >
-        <p className="mb-1 text-gray-700 print:text-black leading-none">
+        <p className="mb-1 leading-none text-gray-700 print:text-black">
           <span className="mr-4">
             <ClockIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
             {intl.formatTime(event.start, { hour: '2-digit', minute: '2-digit' })} Uhr
@@ -58,9 +58,15 @@ const MiniEvent: FC<MiniEventProps> = ({ event }) => {
             <LocationDisplay event={event} />
           </span>
         </p>
-        <h4 className="mb-2 font-semibold text-xl print:text-base print:mb-0">
+        <h4 className="mb-2 text-xl font-semibold print:text-base print:mb-0">
           <Markup content={event.summary} noWrap />
         </h4>
+        {event.calendar?.organizer?.name && (
+          <p className="mt-2 mb-2 leading-none text-gray-700 print:hidden">
+            <SpeakerphoneIcon className="h-4 w-4 mb-0.5 inline-block mr-1 text-secondary print:text-black" />
+            <Markup content={event.calendar?.organizer?.name} noWrap />
+          </p>
+        )}
       </div>
     </>
   );
