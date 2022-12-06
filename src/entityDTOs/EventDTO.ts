@@ -1,6 +1,5 @@
 import { CalendarDTO, CalendarDTOteaserQueryFields } from './CalendarDTO';
 import { CommunityDTO, CommunityDTOcoreQueryFields } from './CommunityDTO';
-import { PlaceDTO, PlaceDTOteaserQueryFields } from './PlaceDTO';
 
 /**
  * Event.
@@ -14,6 +13,12 @@ export interface EventDTO {
   allday?: boolean;
   cancelled?: boolean;
   location?: string;
+  geolocation?: {
+    lat: number;
+    lng: number;
+  };
+  placeName?: string;
+  placeLocalName?: string;
   googleeventattachment?: [
     {
       fileUrl?: string;
@@ -24,7 +29,6 @@ export interface EventDTO {
       fileExt?: string;
     }
   ];
-  place?: PlaceDTO;
   community?: CommunityDTO;
   calendar?: CalendarDTO;
   categories?: string[];
@@ -33,6 +37,6 @@ export interface EventDTO {
 
 export const EventDTOcoreQueryFields = '_id, name, start';
 
-export const EventDTOteaserQueryFields = `_id, name, start, end, allday, location, googleeventattachment, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOteaserQueryFields} }, place->{ ${PlaceDTOteaserQueryFields} }`;
+export const EventDTOteaserQueryFields = `_id, name, start, end, allday, location, geolocation, placeName, placeLocalName, googleeventattachment, community->{ ${CommunityDTOcoreQueryFields} }, calendar->{ ${CalendarDTOteaserQueryFields} }`;
 
 export const EventDTOdetailQueryFields = `cancelled, description, ${EventDTOteaserQueryFields}`;

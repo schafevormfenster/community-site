@@ -12,7 +12,7 @@ export interface LocationDisplayProps {
 const LocationDisplay: FC<LocationDisplayProps> = ({ event }) => {
   if (!event) return <></>;
 
-  const placeName: string = event.place?.localname || event.community.name;
+  const placeName: string = event.placeLocalName || event.placeName || event.community.name;
 
   return (
     <span className="mr-2">

@@ -66,6 +66,10 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
     end: eventDto?.end || null,
     allday: eventDto?.allday ? eventDto.allday : false,
     location: eventDto.location ? eventDto.location : null,
+    placeName: eventDto.placeName ? eventDto.placeName : null,
+    placeLocalName: eventDto.placeLocalName ? eventDto.placeLocalName : null,
+    geopoint:
+      eventDto?.geolocation?.lat && eventDto?.geolocation?.lng ? eventDto.geolocation : null,
     community: communityExcerptByDTO(eventDto.community),
   };
 
@@ -85,25 +89,6 @@ export const eventByDTO = (eventDto: EventDTO): Event => {
           ? eventDto.calendar?.organizer.longname
           : eventDto.calendar?.organizer.name,
       },
-    };
-  }
-
-  if (eventDto.place) {
-    event.place = {
-      // _id: eventDto?.place ? eventDto.place._id : null,
-      name: eventDto?.place ? eventDto.place.name : null,
-      localname: eventDto?.place?.localname ? eventDto.place.localname : eventDto.place.name,
-      // geoLocation: {
-      //   identifiers: {
-      //     geonamesId: null,
-      //     googlePlaceId: eventDto?.place?.place_id ? eventDto.place.place_id : null,
-      //   },
-      //   address: { address: eventDto?.place?.address ? eventDto.place.address : null },
-      //   point: {
-      //     lat: eventDto?.place?.geolocation?.lat ? eventDto.place.geolocation.lat : null,
-      //     lng: eventDto?.place?.geolocation?.lng ? eventDto.place.geolocation.lng : null,
-      //   },
-      // },
     };
   }
 
