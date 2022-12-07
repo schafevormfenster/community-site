@@ -6,7 +6,7 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { LeLeCommunitiesAsKeywordList, leLeCommunityListQuery } from '../src/data/LebendigesLehre';
+import { LeLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import Footer from '../src/components/Footer/Footer';
 import WebsiteMenu from '../src/components/Header/WebsiteMenu';
 
@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<ILebendigesLehreLandingPageProps> = 
    */
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(leLeCommunityListQuery)
+    .fetch(LeLeCommunityListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
@@ -62,6 +62,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
+  const communitiesAsKeywordList: string[] = communities.map(community => community.name);
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -82,8 +83,11 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
     <div className="w-full">
       <Head>
         <title>Schafe vorm Fenster für die Stiftung Lebendiges Lehre</title>
-        <meta name="description" content={`Wann ist wer wo in ${LeLeCommunitiesAsKeywordList}?`} />
-        <meta name="keywords" content={`${LeLeCommunitiesAsKeywordList}`} />
+        <meta
+          name="description"
+          content={`Wann ist wer wo in ${communitiesAsKeywordList.join(', ')}?`}
+        />
+        <meta name="keywords" content={`${communitiesAsKeywordList.join(', ')}`} />
         <meta property="og:image" content="" />
         <meta name="geo.region" content="DE-NI" />
         <link rel="canonical" href={`${meta.canonicalUrl}lele`} />
@@ -103,15 +107,15 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           }}
         />
       </Head>
-      <div className="min-h-screen/cut flex flex-col bg-gradient-to-b bg-brand">
+      <div className="flex flex-col min-h-screen/cut bg-gradient-to-b bg-brand">
         <WebsiteMenu />
         <main
-          className="max-w-screen-md m-auto flex-auto flex-grow flex items-center p-0"
+          className="flex items-center flex-auto flex-grow max-w-screen-md p-0 m-auto"
           id="dorfsuche"
         >
           <div className="items-center">
-            <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
-              <h1 className="text-5xl md:text-6xl font-semibold text-white">
+            <article className="px-4 py-8 m-auto prose prose-lg text-center md:px-8">
+              <h1 className="text-5xl font-semibold text-white md:text-6xl">
                 Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
@@ -119,7 +123,7 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
               </p>
             </article>
             <div className="max-w-screen-sm m-auto community-search ">
-              <div className="h-16 px-4 md:px-8 py-2">
+              <div className="h-16 px-4 py-2 md:px-8">
                 <input
                   type="text"
                   placeholder="Finde deinen Ort ..."
@@ -130,11 +134,11 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
               </div>
               <div className="relative h-full px-4 pb-8 mt-2">
                 {searchTerm.length > 0 && (
-                  <ul className="absolute text-lg left-4 right-4 md:left-8 md:right-8 bg-secondary rounded px-4 py-2 z-50">
+                  <ul className="absolute z-50 px-4 py-2 text-lg rounded left-4 right-4 md:left-8 md:right-8 bg-secondary">
                     {searchResults.map(item => (
                       <li key={item._id}>
                         <Link href={`/${item.slug}`}>
-                          <a className="block py-1 px-2">
+                          <a className="block px-2 py-1">
                             <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
                             {item?.municipality?.name})
                           </a>
@@ -147,15 +151,15 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-white text-center py-8 px-4">
-          <p className="text-xl mb-8">
+        <header className="px-4 py-8 text-center bg-white flex-0">
+          <p className="mb-8 text-xl">
             Die digitale Terminliste für Lehre und Umgebung ist ein Projekt von "Schafe vorm
             Fenster" in Zusammenarbeit mit der
           </p>
           <div className="inline-block w-auto h-16 m-auto mb-4">
             <a href="https://lebendigeslehre.de/" target="_blank">
               <img
-                className="mx-auto px-4 mb-4"
+                className="px-4 mx-auto mb-4"
                 src="/landingpages/lebendigeslehre/LebendigesLehre.png"
                 alt="Stiftung Lebendiges Lehre"
               />
@@ -163,22 +167,22 @@ export default function LebendigesLehreLandingPage(props: ILebendigesLehreLandin
           </div>
         </header>
       </div>
-      <aside className="mx-auto px-4 py-12">
-        <h2 className="text-4xl text-center mb-8">
+      <aside className="px-4 py-12 mx-auto">
+        <h2 className="mb-8 text-4xl text-center">
           unsere {communities.length} Orte
           <span className="block text-lg">in und um Lehre</span>
         </h2>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
             <Link href={`/${community.slug}`} key={community.slug + community._id}>
-              <a className="relative block h-44 bg-gray-200">
+              <a className="relative block bg-gray-200 h-44">
                 {community?.wikimediaCommonsImages?.length > 0 && (
                   <img
-                    className="h-full w-full object-cover"
+                    className="object-cover w-full h-full"
                     src={community.wikimediaCommonsImages[0]}
                   />
                 )}
-                <div className="absolute w-full p-2 pt-4 bottom-0 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
+                <div className="absolute bottom-0 w-full p-2 pt-4 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
                   <h4 className="text-xl font-normal ">{community.name}</h4>
                   <p className="text-xs font-light">(Gemeinde {community.municipality.name})</p>
                 </div>

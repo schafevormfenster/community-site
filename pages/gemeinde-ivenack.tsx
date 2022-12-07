@@ -6,12 +6,12 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { IvenackCommunitiesAsKeywordList, IvenackCommunityListQuery } from '../src/data/Ivenack';
+import { IvenackCommunityListQuery } from '../src/data/Ivenack';
 import Footer from '../src/components/Footer/Footer';
 import WebsiteMenu from '../src/components/Header/WebsiteMenu';
 
 export const GemeindeIvenackLandingPageSlug: string = 'gemeinde-ivenack';
-export interface IGemeindeIvenackLandingPageProps {
+export interface IvenackLandingPageProps {
   communities: Community[];
   meta: { canonicalUrl: string };
 }
@@ -25,7 +25,7 @@ const cdnClient = SanityClientConstructor({
   useCdn: true,
 });
 
-export const getStaticProps: GetStaticProps<IGemeindeIvenackLandingPageProps> = async () => {
+export const getStaticProps: GetStaticProps<IvenackLandingPageProps> = async () => {
   const canonicalUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/`
     : `https://${process.env.VERCEL_URL}/`;
@@ -34,6 +34,7 @@ export const getStaticProps: GetStaticProps<IGemeindeIvenackLandingPageProps> = 
    * fetch all communities to create static pathes
    */
   let communityList: Community[] = new Array();
+
   await cdnClient
     .fetch(IvenackCommunityListQuery)
     .then(response => {
@@ -58,10 +59,11 @@ export const getStaticProps: GetStaticProps<IGemeindeIvenackLandingPageProps> = 
   };
 };
 
-export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLandingPageProps) {
+export default function IvenackLandingPage(props: IvenackLandingPageProps) {
   // TODO: Dummy data, integrate with API
   const meta = props.meta;
   const communities = props.communities;
+  const communitiesAsKeywordList: string[] = communities.map(community => community.name);
 
   /** community search */
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -84,9 +86,9 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
         <title>Schafe vorm Fenster für Ivenack und Umgebung</title>
         <meta
           name="description"
-          content={`Wann ist wer wo in ${IvenackCommunitiesAsKeywordList}?`}
+          content={`Wann ist wer wo in ${communitiesAsKeywordList.join(', ')}?`}
         />
-        <meta name="keywords" content={`${IvenackCommunitiesAsKeywordList}`} />
+        <meta name="keywords" content={`${communitiesAsKeywordList.join(', ')}`} />
         <meta property="og:image" content="" />
         <meta name="geo.region" content="DE-MV" />
         <link rel="canonical" href={`${meta.canonicalUrl}Ivenack`} />
@@ -106,15 +108,15 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
           }}
         />
       </Head>
-      <div className="min-h-screen/cut flex flex-col bg-gradient-to-b bg-brand">
+      <div className="flex flex-col min-h-screen/cut bg-gradient-to-b bg-brand">
         <WebsiteMenu />
         <main
-          className="max-w-screen-md m-auto flex-auto flex-grow flex items-center p-0"
+          className="flex items-center flex-auto flex-grow max-w-screen-md p-0 m-auto"
           id="dorfsuche"
         >
           <div className="items-center">
-            <article className="m-auto prose prose-lg px-4 py-8 md:px-8 text-center">
-              <h1 className="text-5xl md:text-6xl font-semibold text-white">
+            <article className="px-4 py-8 m-auto prose prose-lg text-center md:px-8">
+              <h1 className="text-5xl font-semibold text-white md:text-6xl">
                 Deine digitale Terminliste
               </h1>
               <p className="text-2xl">
@@ -122,7 +124,7 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
               </p>
             </article>
             <div className="max-w-screen-sm m-auto community-search ">
-              <div className="h-16 px-4 md:px-8 py-2">
+              <div className="h-16 px-4 py-2 md:px-8">
                 <input
                   type="text"
                   placeholder="Finde deinen Ort ..."
@@ -133,11 +135,11 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
               </div>
               <div className="relative h-full px-4 pb-8 mt-2">
                 {searchTerm.length > 0 && (
-                  <ul className="absolute text-lg left-4 right-4 md:left-8 md:right-8 bg-secondary rounded px-4 py-2 z-50">
+                  <ul className="absolute z-50 px-4 py-2 text-lg rounded left-4 right-4 md:left-8 md:right-8 bg-secondary">
                     {searchResults.map(item => (
                       <li key={item._id}>
                         <Link href={`/${item.slug}`}>
-                          <a className="block py-1 px-2">
+                          <a className="block px-2 py-1">
                             <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
                             {item?.municipality?.name})
                           </a>
@@ -150,15 +152,15 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
             </div>
           </div>
         </main>
-        <header className="flex-0 bg-white text-center py-8 px-4">
-          <p className="text-xl mb-8">
+        <header className="px-4 py-8 text-center bg-white flex-0">
+          <p className="mb-8 text-xl">
             Die digitale Terminliste für Ivenack und Umgebung ist ein Projekt von "Schafe vorm
             Fenster" in Zusammenarbeit mit der Gemeinde Ivenack.
           </p>
           <div className="inline-block w-auto h-auto m-auto">
             <a href="https://www.gemeinde-ivenack.de/" target="_blank">
               <img
-                className="mx-auto px-4"
+                className="px-4 mx-auto"
                 src="/landingpages/ivenack/Ivenack_Wappen.webp"
                 alt="Gemeinde Ivenack"
               />
@@ -166,22 +168,22 @@ export default function LebendigesIvenackLandingPage(props: IGemeindeIvenackLand
           </div>
         </header>
       </div>
-      <aside className="mx-auto px-4 pb-12">
-        <h2 className="text-4xl text-center mb-8">
+      <aside className="px-4 pb-12 mx-auto">
+        <h2 className="mb-8 text-4xl text-center">
           unsere {communities.length} Orte
           <span className="block text-lg">in und um Ivenack</span>
         </h2>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (
             <Link href={`/${community.slug}`} key={community.slug + community._id}>
-              <a className="relative block h-44 bg-gray-200">
+              <a className="relative block bg-gray-200 h-44">
                 {community?.wikimediaCommonsImages?.length > 0 && (
                   <img
-                    className="h-full w-full object-cover"
+                    className="object-cover w-full h-full"
                     src={community.wikimediaCommonsImages[0]}
                   />
                 )}
-                <div className="absolute w-full p-2 pt-4 bottom-0 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
+                <div className="absolute bottom-0 w-full p-2 pt-4 text-center text-white bg-gradient-to-t from-gray-800 to-transparent">
                   <h4 className="text-xl font-normal ">{community.name}</h4>
                   <p className="text-xs font-light">(Gemeinde {community.municipality.name})</p>
                 </div>
