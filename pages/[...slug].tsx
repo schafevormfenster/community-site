@@ -337,18 +337,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
    * fetch all communities to create static pathes
    */
   let communityList: Community[] = new Array();
-  await cdnClient
-    .fetch(vorpommernGreifswaldCommunityListQuery)
-    .then(response => {
-      const communityDtoList: CommunityDTO[] = response;
-      if (communityDtoList)
-        communityList = communityDtoList.map(communitytDto => {
-          return communityByDTO(communitytDto);
-        });
-    })
-    .catch(err => {
-      console.warn(`The query to lookup all communities at sanity failed:`);
-    });
+  // await cdnClient
+  //   .fetch(vorpommernGreifswaldCommunityListQuery)
+  //   .then(response => {
+  //     const communityDtoList: CommunityDTO[] = response;
+  //     if (communityDtoList)
+  //       communityList = communityDtoList.map(communitytDto => {
+  //         return communityByDTO(communitytDto);
+  //       });
+  //   })
+  //   .catch(err => {
+  //     console.warn(`The query to lookup all communities at sanity failed:`);
+  //   });
 
   let paths = [];
   if (communityList)

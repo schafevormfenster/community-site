@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import { FC } from 'react';
-import { CameraIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { Markup } from 'interweave';
 
 export interface IncidentProps {
