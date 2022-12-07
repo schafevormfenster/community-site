@@ -23,17 +23,14 @@ export const LeLeCommunities: string[] = [
   'geoname-2940416', // Calberlah (Gemeinde Calberlah LK Gifhorn)
 ];
 
-export const leLeCommunityListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
+export const LeLeCommunityListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
   c => `"${c}"`
 ).join(
   ','
 )}] && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOteaserQueryFields} }`;
 
-export const leLeCommunityDetailListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
+export const LeLeCommunityDetailListQuery = `*[_type == "community" && slug.current!='' && _id in [${LeLeCommunities.map(
   c => `"${c}"`
 ).join(
   ','
 )}] && !(_id in path('drafts.**'))] | order(name asc) { ${CommunityDTOdetailQueryFields} }`;
-
-export const LeLeCommunitiesAsKeywordList: string =
-  'Lehre, Wendhausen, Flechtorf, Essenrode,  Essehof,  Beienrode,  Groß Brunsrode, Klein Brunsrode, Cremlingen, Hondelage, Hattorf, Mörse, Heiligendorf, Boimstorf, Hordorf, Ehmen, Calberlah';

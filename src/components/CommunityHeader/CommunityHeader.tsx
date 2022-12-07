@@ -3,7 +3,7 @@ import { Community } from '../../entities/Community';
 import SvFLogo from '../Images/SvFLogo';
 import Link from 'next/link';
 import { LeLeCommunities } from '../../data/LebendigesLehre';
-import { IvenackCommunities } from '../../data/Ivenack';
+import { IvenackMunicipylityId } from '../../data/Ivenack';
 import { LebendigesLehreLandingPageSlug } from '../../../pages/lele';
 import { GemeindeIvenackLandingPageSlug } from '../../../pages/gemeinde-ivenack';
 
@@ -15,10 +15,11 @@ export interface CommunityHeaderProps {
   badge?: 'beta';
 }
 
-const homeLink = (communityId: string): string => {
+const homeLink = (community: Community): string => {
   let homePath: string = '/';
-  if (LeLeCommunities.includes(communityId)) homePath = `/${LebendigesLehreLandingPageSlug}`;
-  if (IvenackCommunities.includes(communityId)) homePath = `/${GemeindeIvenackLandingPageSlug}`;
+  if (LeLeCommunities.includes(community._id)) homePath = `/${LebendigesLehreLandingPageSlug}`;
+  if (community.municipality._id === IvenackMunicipylityId)
+    homePath = `/${GemeindeIvenackLandingPageSlug}`;
   return homePath;
 };
 
@@ -33,8 +34,8 @@ const CommunityHeader: FC<CommunityHeaderProps> = props => {
   return (
     <header className="print:hidden">
       <div className="text-center">
-        <div className="relative w-12 h-12 ml-2 my-2 -mb-4 z-10 lg:m-4">
-          <Link href={homeLink(community._id)}>
+        <div className="relative z-10 w-12 h-12 my-2 ml-2 -mb-4 lg:m-4">
+          <Link href={homeLink(community)}>
             <a title="zu den Terminlisten anderer Orte">
               <SvFLogo />
             </a>

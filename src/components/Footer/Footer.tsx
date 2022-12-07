@@ -19,36 +19,40 @@ const Footer: FC<FooterProps> = props => {
 
   return (
     <footer className="print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
-      <div id="partner" className="w-full p-8 print:p-0 print:pt-8 text-center">
-        <div className="flex flex-col md:flex-row print:flex-row m-auto">
-          <div className="hidden md:block print:block flex-auto mb-4 md:mb-0 px-2">
+      <div id="partner" className="w-full p-8 text-center print:p-0 print:pt-8">
+        <div className="flex flex-col m-auto md:flex-row print:flex-row">
+          <div className="flex-auto hidden px-2 mb-4 md:block print:block md:mb-0">
             <Enertrag />
           </div>
-          <div className="flex-auto mb-4 md:mb-0 px-2">
+          <div className="flex-auto px-2 mb-4 md:mb-0">
             <NextGenerationEu />
           </div>
-          <div className="flex-auto mb-4 md:mb-0 px-2">
-            {LeLeCommunities.includes(community._id) ? <LebendigesLehre /> : <Kulturlandburo />}
+          <div className="flex-auto px-2 mb-4 md:mb-0">
+            {community && LeLeCommunities.includes(community._id) ? (
+              <LebendigesLehre />
+            ) : (
+              <Kulturlandburo />
+            )}
           </div>
         </div>
       </div>
 
       <nav
         id="legal"
-        className="h-24 bg-gray-800 py-4 px-4 pr-28 md:pr-4 text-left md:text-center print:hidden"
+        className="h-24 px-4 py-4 text-left bg-gray-800 pr-28 md:pr-4 md:text-center print:hidden"
       >
         <Link href={`https://www.schafe-vorm-fenster.de/impressum`}>
-          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+          <a className="inline-block py-2 pl-0 pr-4 my-2 ml-0 mr-2 leading-none text-gray-200 md:mx-2 md:px-2 whitespace-nowrap">
             Impressum
           </a>
         </Link>
         <Link href={`https://www.schafe-vorm-fenster.de/impressum`}>
-          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+          <a className="inline-block py-2 pl-0 pr-4 my-2 ml-0 mr-2 leading-none text-gray-200 md:mx-2 md:px-2 whitespace-nowrap">
             Datenschutz
           </a>
         </Link>
         <Link href={`https://twitter.com/schafeamfenster`}>
-          <a className="inline-block text-gray-200 ml-0 mr-2 md:mx-2 pl-0 pr-4 md:px-2 py-2 my-2 leading-none whitespace-nowrap">
+          <a className="inline-block py-2 pl-0 pr-4 my-2 ml-0 mr-2 leading-none text-gray-200 md:mx-2 md:px-2 whitespace-nowrap">
             Twitter
           </a>
         </Link>
