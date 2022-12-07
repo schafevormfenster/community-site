@@ -1,5 +1,6 @@
 import React from 'react';
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
+import Incident from '../src/components/Messages/Incident';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -26,7 +27,7 @@ class MyDocument extends Document {
           <meta name="twitter:site" content="@schafeamfenster" />
           <meta name="twitter:creator" content="@schafeamfenster" />
         </Head>
-        <body className="w-screen m-0 p-0 flex flex-col h-screen bg-white text-black font-body font-normal text-base print:h-297mm print:w-190mm print:px-10mm print:overflow-hidden print:text-sm leading-normal hyphens-auto">
+        <body className="flex flex-col w-screen h-screen p-0 m-0 text-base font-normal leading-normal text-black bg-white font-body print:h-297mm print:w-190mm print:px-10mm print:overflow-hidden print:text-sm hyphens-auto">
           <main className="flex-grow">
             <Main />
           </main>

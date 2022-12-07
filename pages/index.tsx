@@ -6,9 +6,12 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../src/mapper/communityByDTO';
 import { CommunityDTO } from '../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import { VorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
 import Footer from '../src/components/Footer/Footer';
 import WebsiteMenu from '../src/components/Header/WebsiteMenu';
+import { UeckerlandCommunityListQuery } from '../src/data/Uckerland';
+import { IvenackCommunityListQuery } from '../src/data/Ivenack';
+import { LeLeCommunityListQuery } from '../src/data/LebendigesLehre';
 
 export interface IHomepageProps {
   communities: Community[];
@@ -32,19 +35,40 @@ export const getStaticProps: GetStaticProps<IHomepageProps> = async () => {
   /**
    * fetch all communities to create static pathes
    */
-  let communityList: Community[] = new Array();
-  await cdnClient
-    .fetch(vorpommernGreifswaldCommunityListQuery)
-    .then(response => {
+  let vg, lele, ivenack, uckerland: any;
+
+  [vg, lele, ivenack, uckerland] = await Promise.all([
+    cdnClient.fetch(VorpommernGreifswaldCommunityListQuery).then(response => {
       const communityDtoList: CommunityDTO[] = response;
-      if (communityDtoList)
-        communityList = communityDtoList.map(communitytDto => {
-          return communityByDTO(communitytDto);
-        });
-    })
-    .catch(err => {
-      console.warn(`The query to lookup all communities at sanity failed:`);
-    });
+      return communityDtoList.map(communitytDto => {
+        return communityByDTO(communitytDto);
+      });
+    }),
+    cdnClient.fetch(LeLeCommunityListQuery).then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      return communityDtoList.map(communitytDto => {
+        return communityByDTO(communitytDto);
+      });
+    }),
+    cdnClient.fetch(IvenackCommunityListQuery).then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      return communityDtoList.map(communitytDto => {
+        return communityByDTO(communitytDto);
+      });
+    }),
+    cdnClient.fetch(UeckerlandCommunityListQuery).then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      return communityDtoList.map(communitytDto => {
+        return communityByDTO(communitytDto);
+      });
+    }),
+  ]);
+
+  let communityList: Community[] = new Array();
+  communityList = communityList.concat(vg);
+  communityList = communityList.concat(lele);
+  communityList = communityList.concat(ivenack);
+  communityList = communityList.concat(uckerland);
 
   return {
     props: {
@@ -155,15 +179,17 @@ export default function Homepage(props: IHomepageProps) {
             />
           </div>
           <p className="mb-2 text-xl text-white font-title">Schafe vorm Fenster</p>
-          <p className="text-3xl font-semibold text-white font-body">
-            aus Schlatkow für Vorpommern-Greifswald
+          <p className="text-4xl font-medium text-white font-body">
+            aus Schlatkow für den ländlichen Raum
           </p>
         </header>
       </div>
       <aside className="px-4 py-12 mx-auto">
         <h2 className="mb-8 text-4xl text-center">
           unsere {communities.length} Orte
-          <span className="block text-lg">in Vorpommern-Greifswald</span>
+          <span className="block text-lg">
+            in Mecklenburg-Vorpommern, Brandenburg und Niedersachsen
+          </span>
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xxl:grid-cols-7">
           {communities.map(community => (

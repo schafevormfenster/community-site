@@ -6,7 +6,7 @@ import SanityClientConstructor from '@sanity/client';
 import { communityByDTO } from '../../../src/mapper/communityByDTO';
 import { CommunityDTO } from '../../../src/entityDTOs/CommunityDTO';
 import Link from 'next/link';
-import { vorpommernGreifswaldCommunityDetailListQuery } from '../../../src/data/VorpommernGreifswald';
+import { VorpommernGreifswaldCommunityDetailListQuery } from '../../../src/data/VorpommernGreifswald';
 
 export interface ICommunitiesProps {
   communities: Community[];
@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<ICommunitiesProps> = async () => {
    */
   let communityList: Community[] = new Array();
   await cdnClient
-    .fetch(vorpommernGreifswaldCommunityDetailListQuery)
+    .fetch(VorpommernGreifswaldCommunityDetailListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
@@ -58,7 +58,7 @@ export default function Communities(props: ICommunitiesProps) {
         <meta name="description" content="" />
         <meta name="keywords" content="" />
       </Head>
-      <div className="min-h-screen flex flex-col ">
+      <div className="flex flex-col min-h-screen ">
         <main className="p-0 text-base" id="dorfliste">
           <table>
             <tbody>
@@ -66,7 +66,7 @@ export default function Communities(props: ICommunitiesProps) {
                 <tr>
                   <th key={item._id} className="text-left">
                     <Link href={`/${item.slug}`}>
-                      <a className="inline-block py-1 px-2 whitespace-nowrap" target="_blank">
+                      <a className="inline-block px-2 py-1 whitespace-nowrap" target="_blank">
                         <strong className="font-semibold">{item.name}</strong> (Gemeinde{' '}
                         {item?.municipality?.name})
                       </a>
@@ -85,7 +85,7 @@ export default function Communities(props: ICommunitiesProps) {
                     {item.geoLocation.identifiers.wikidataId && (
                       <a
                         href={`https://www.wikidata.org/wiki/${item.geoLocation.identifiers.wikidataId}`}
-                        className="inline-block whitespace-nowrap px-2"
+                        className="inline-block px-2 whitespace-nowrap"
                         target="_blank"
                       >
                         {item.geoLocation.identifiers.wikidataId}
@@ -96,7 +96,7 @@ export default function Communities(props: ICommunitiesProps) {
                         href={`https://www.wikidata.org/w/index.php?search=${encodeURIComponent(
                           item.name
                         )}`}
-                        className="inline-block whitespace-nowrap px-2"
+                        className="inline-block px-2 whitespace-nowrap"
                         target="_blank"
                       >
                         <b className="text-red-600">Search</b> at Wikidata
@@ -121,7 +121,7 @@ export default function Communities(props: ICommunitiesProps) {
                         href={`https://commons.wikimedia.org/w/index.php?search=${encodeURIComponent(
                           item.name
                         )}`}
-                        className="inline-block whitespace-nowrap px-2"
+                        className="inline-block px-2 whitespace-nowrap"
                         target="_blank"
                       >
                         <b className="text-red-600">Search</b> at Wikimedia Commons
