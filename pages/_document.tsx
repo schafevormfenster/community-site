@@ -31,7 +31,6 @@ class MyDocument extends Document {
           <main className="flex-grow">
             <Main />
           </main>
-          <Incident message="Ein aktuelles Problem mit dem Geocoding führt dazu, dass einige Termine nicht angezeigt werden. Wir arbeiten bereits an einer kurzfristigen Lösung. (07.12.2022, 06:46)" />
           <NextScript />
         </body>
       </Html>

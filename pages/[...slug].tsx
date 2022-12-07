@@ -25,6 +25,8 @@ import { getTwitterUserTimeline } from '../src/apiClients/svfApi/twitterUserTime
 import { NewsType } from '../src/entities/News';
 import { leLeCommunityListQuery } from '../src/data/LebendigesLehre';
 import { vorpommernGreifswaldCommunityListQuery } from '../src/data/VorpommernGreifswald';
+import { IvenackCommunityListQuery } from '../src/data/Ivenack';
+import { UeckerlandCommunityListQuery } from '../src/data/Uckerland';
 
 export interface IPageProps {
   community: Community;
@@ -337,18 +339,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
    * fetch all communities to create static pathes
    */
   let communityList: Community[] = new Array();
-  // await cdnClient
-  //   .fetch(vorpommernGreifswaldCommunityListQuery)
-  //   .then(response => {
-  //     const communityDtoList: CommunityDTO[] = response;
-  //     if (communityDtoList)
-  //       communityList = communityDtoList.map(communitytDto => {
-  //         return communityByDTO(communitytDto);
-  //       });
-  //   })
-  //   .catch(err => {
-  //     console.warn(`The query to lookup all communities at sanity failed:`);
-  //   });
+  await cdnClient
+    .fetch(vorpommernGreifswaldCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityDtoList.map(communitytDto => {
+          return communityByDTO(communitytDto);
+        });
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
 
   let paths = [];
   if (communityList)
@@ -359,6 +361,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // add LeLe communities
   await cdnClient
     .fetch(leLeCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityList.concat(
+          communityDtoList.map(communitytDto => {
+            return communityByDTO(communitytDto);
+          })
+        );
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
+
+  // add Ivenack communities
+  await cdnClient
+    .fetch(IvenackCommunityListQuery)
+    .then(response => {
+      const communityDtoList: CommunityDTO[] = response;
+      if (communityDtoList)
+        communityList = communityList.concat(
+          communityDtoList.map(communitytDto => {
+            return communityByDTO(communitytDto);
+          })
+        );
+    })
+    .catch(err => {
+      console.warn(`The query to lookup all communities at sanity failed:`);
+    });
+
+  // add Uckerland communities
+  await cdnClient
+    .fetch(UeckerlandCommunityListQuery)
     .then(response => {
       const communityDtoList: CommunityDTO[] = response;
       if (communityDtoList)
