@@ -111,7 +111,23 @@ const EventTeaser: FC<EventTeaserProps> = ({ event }) => {
             <Markup
               content={eventDescription}
               noWrap
-              allowList={['p', 'br', 'img', 'a', 'ul', 'ol', 'li']}
+              allowList={[
+                'p',
+                'strong',
+                'b',
+                'em',
+                'i',
+                'br',
+                'img',
+                'a',
+                'ul',
+                'ol',
+                'li',
+                'table',
+                'tr',
+                'th',
+                'td',
+              ]}
             />
           </div>
         )}
