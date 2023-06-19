@@ -16,8 +16,9 @@ export const stripHtmlRegex = /<[^>]+>/g;
 const GoogleDriveImage: FC<GoogleDriveImageProps> = ({ fileId, fileExt, alt, title = '' }) => {
   const baseUrl: string = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_COUNDINARY_CLOUD_NAME}/image/upload/`;
   const tranformation: string = 'c_scale,w_800/';
-  const googleDriveImageId: string = `${process.env.NEXT_PUBLIC_COUNDINARY_UPLOAD_GOOGLEDRIVE}/${fileId}.${fileExt}`;
-  const imageUrl: string = baseUrl + tranformation + googleDriveImageId;
+  const googleDriveImageId: string = `${process.env.NEXT_PUBLIC_COUNDINARY_UPLOAD_GOOGLEDRIVE}/${fileId}`;
+  const imageFormat: string = 'webp';
+  const imageUrl: string = baseUrl + tranformation + googleDriveImageId + '.' + imageFormat;
   return (
     <img
       className="w-full h-auto"
