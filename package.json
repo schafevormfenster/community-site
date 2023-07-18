@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && next build",
-    "dev": "next dev",
-    "start": "next start",
+    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && next dev",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && next start",
     "lint": "eslint"
   },
   "engines": {
