@@ -196,12 +196,13 @@ const fetchEventsByCommunityList = async (
   }
 
   // compose a query part to match all given communities
+  // console.log('communityIdList', communityIdList);
   const communitiesMatchQueryPart = communityIdList
     .filter(cid => !excludeCommunityIdList.includes(cid))
     .map(function (cid) {
       return `references("${cid}")`;
     })
-    .join(' || ')
+    .join(' || ')
     .trim();
   if (communitiesMatchQueryPart?.length <= 0) {
     console.error(
@@ -293,7 +294,7 @@ export const getStaticProps: GetStaticProps<IPageProps> = async ({ params }) => 
     ),
     fetchEventsByCommunityList(
       communitiesInRegion.map(c => c._id),
-      communitiesNearby.map(c => c._id),
+      [...communitiesNearby.map(c => c._id), ...communitiesOfMunicipality.map(c => c._id)], // it's important to include nearby and municipality communities, because both can differ and do not contain each other
       ['region']
     ),
     community.municipality?.socialMediaAccounts?.twitter?.user
