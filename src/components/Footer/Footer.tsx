@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { LeLeCommunities } from '../../data/LebendigesLehre';
 import { Community } from '../../entities/Community';
-import Enertrag from '../Sponsors/Enertrag';
 import Kulturlandburo from '../Sponsors/Kulturlandburo';
 import LebendigesLehre from '../Sponsors/LebendigesLehre';
 import NextGenerationEu from '../Sponsors/NextGenerationEu';
@@ -21,9 +20,6 @@ const Footer: FC<FooterProps> = props => {
     <footer className="print:absolute print:w-210mm print:px-10mm print:-ml-10mm print:pb-8 print:bottom-0 print:bg-white print:z-overhelpdesk">
       <div id="partner" className="w-full p-8 text-center print:p-0 print:pt-8">
         <div className="flex flex-col m-auto md:flex-row print:flex-row">
-          <div className="flex-auto hidden px-2 mb-4 md:block print:block md:mb-0">
-            <Enertrag />
-          </div>
           <div className="flex-auto px-2 mb-4 md:mb-0">
             <NextGenerationEu />
           </div>
